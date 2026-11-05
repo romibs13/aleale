@@ -19,6 +19,11 @@ button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 #prompt{position:fixed;left:50%;bottom:max(24px,env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--gold);color:#1b1b12;border:0;border-radius:999px;padding:14px 22px;font-weight:700;display:none;max-width:90vw}
 #joy{position:fixed;left:24px;bottom:max(24px,env(safe-area-inset-bottom));width:120px;height:120px;border-radius:50%;background:rgba(230,240,238,.12);border:2px solid rgba(230,240,238,.4);display:none}
 #knob{position:absolute;left:36px;top:36px;width:48px;height:48px;border-radius:50%;background:rgba(227,179,65,.85)}
+#dlg{position:fixed;left:50%;transform:translateX(-50%);bottom:max(16px,env(safe-area-inset-bottom));width:min(680px,94vw);display:none;background:rgba(14,47,51,.96);border:2px solid var(--gold);border-radius:14px;padding:16px 16px 12px;z-index:5}
+#dname{position:absolute;top:-15px;left:16px;background:var(--gold);color:#1b1b12;font-weight:700;padding:3px 12px;border-radius:999px;font-size:13px}
+#dtext{font-size:17px;line-height:1.6;min-height:3.3em;margin-top:6px}
+#dbtns{display:flex;gap:8px;justify-content:flex-end;margin-top:10px;flex-wrap:wrap}
+.b2{background:transparent;border:1px solid var(--silver);color:var(--text);border-radius:8px;padding:9px 14px}
 #mbtn{position:fixed;top:max(12px,env(safe-area-inset-top));right:12px;display:none;background:var(--gold);color:#1b1b12;border:0;border-radius:999px;padding:9px 14px;font-weight:700;font-size:13px}
 @media (pointer:coarse){#joy{display:block}#prompt{bottom:max(160px,env(safe-area-inset-bottom))}}
 .layer{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(6,22,25,.82)}
@@ -37,10 +42,11 @@ p{line-height:1.65;margin:0 0 14px;max-width:62ch}
 <div id="hud"><div id="room"></div><div>Koleksi: <b id="cnt">0/8</b></div></div>
 <button id="prompt"></button>
 <button id="mbtn">♪ Musik: nyala</button>
+<div id="dlg"><div id="dname"></div><div id="dtext"></div><div id="dbtns"><button class="b2" id="dvoice">🔊 Suara</button><button class="b2" id="dcard">Lihat kartu</button><button class="btn" id="dnext">Lanjut ▶</button></div></div>
 <div id="joy"><div id="knob"></div></div>
 <div class="layer on" id="start"><div class="panel">
 <h1>Museum Virtual Ketapang</h1>
-<p>Kamu mulai di halaman depan museum. Masuk lewat pintu utama, jelajahi dua ruang di lantai 1, lalu naik tangga di lobi ke galeri lantai 2. Dekati koleksi untuk membuka kisahnya.</p>
+<p>Kamu mulai di halaman depan museum. Masuk lewat pintu utama, jelajahi dua ruang di lantai 1, lalu naik tangga di lobi ke galeri lantai 2. Dekati koleksi dan pemandu (tanda “!”), lalu tekan tombol untuk mendengar ceritanya.</p>
 <p class="small">Komputer: W A S D atau panah untuk jalan, seret mouse untuk memutar kamera, E untuk membuka koleksi. HP: joystick di kiri bawah, geser layar untuk memutar kamera.</p>
 <button class="btn" id="go">Masuk museum</button></div></div>
 <div class="layer" id="card"><div class="panel">
@@ -65,6 +71,20 @@ const EXHIBITS=[
 {id:'u2',room:'Galeri Lantai 2',kind:'pot',pos:[0,2,4.3],title:'Kuliner Ketapang (contoh)',img:'',text:'Ruang ini disiapkan untuk koleksi kuliner. Ganti teks ini dengan makanan dan minuman khas Ketapang.'},
 {id:'u3',room:'Galeri Lantai 2',kind:'ring',pos:[12,0,4.3],title:'Adat dan Tradisi (contoh)',img:'',text:'Ruang ini disiapkan untuk koleksi adat istiadat. Ganti teks ini dengan upacara dan tradisi Ketapang.'}
 ];
+/* Percakapan pemandu: tiap koleksi (id) berisi beberapa kalimat pendek. Ganti sesuai materi. */
+const DIALOGS={
+l1:['Selamat datang! Aku pemandu di ruang ini. Mau dengar asal-usul nama Ketapang?','Menurut cerita rakyat, dahulu ada pohon Ketapang yang sangat besar.','Saking besarnya, pohon itu menaungi permukiman. Warga jadi sulit mendapat sinar matahari dan sulit bercocok tanam.'],
+l2:['Warga sudah berusaha menebang pohon raksasa itu, tapi semua usaha gagal.','Sampai akhirnya, sebuah kapak perak berhasil merobohkannya.'],
+l3:['Nah, ini kelanjutan ceritanya.','Konon, pohon yang roboh itu menjelma menjadi Sungai Pawan.'],
+l4:['Ini bagian terakhir dari legendanya.','Konon, buah pohon itu berubah menjadi kerang Ale-Ale.','Dan wilayah itu kemudian dikenal sebagai Ketapang. Begitulah asal-usul namanya!'],
+m1:['Halo! Sekarang kita ada di ruang Kerajaan Matan.','Kerajaan Matan adalah bagian dari perjalanan panjang Kerajaan Tanjungpura.','Tanjungpura sendiri adalah salah satu kerajaan tua di Kalimantan Barat.'],
+m2:['Tahukah kamu? Pusat pemerintahan kerajaan ini beberapa kali berpindah.','Perjalanannya dimulai dari Negeri Baru, lalu Sukadana, hingga Matan dan Muliakerta.','Coba lihat peta di sebelahku. Pin-pinnya menunjukkan perpindahan itu.'],
+m3:['Kerajaan ini berkembang lewat perdagangan.','Selain itu, pengaruh budaya dan penyebaran Islam ikut membentuk perjalanannya.'],
+m4:['Ini bagian yang sedih dari sejarahnya.','Perjalanan kerajaan kemudian berakhir dalam dinamika kolonialisme dan pendudukan Jepang.','Di masa itu terjadi tragedi yang menimpa Gusti Muhammad Saunan. Mari kita kenang dan pelajari sejarahnya.'],
+u1:['Halo! Ruang ini disiapkan untuk koleksi kesenian, tapi isinya belum ditambahkan.','Nanti di sini aku akan bercerita tentang tari, musik, dan kerajinan Ketapang.'],
+u2:['Halo! Bagian ini disiapkan untuk kuliner Ketapang, tapi isinya belum ditambahkan.','Nanti aku akan bercerita tentang makanan dan minuman khasnya.'],
+u3:['Halo! Bagian ini disiapkan untuk adat dan tradisi, tapi isinya belum ditambahkan.','Nanti aku akan bercerita tentang upacara dan tradisi Ketapang.']
+};
 /* ===== akhir isi ===== */
 
 const $=id=>document.getElementById(id);
@@ -75,16 +95,17 @@ const cam=new THREE.PerspectiveCamera(70,1,.1,80);cam.rotation.order='YXZ';cam.p
 function resize(){renderer.setSize(innerWidth,innerHeight,false);cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix()}
 addEventListener('resize',resize);resize();
 
+const RH=1.2,BG=new THREE.Group();BG.position.y=RH;scene.add(BG);let TG=BG;
 scene.add(new THREE.HemisphereLight(0xdff3f0,0x203538,.95));
-[[0,3.4,0,0xffe2a0],[-12,3.4,0,0xcfe9ff],[12,3.4,0,0xffd27a]].forEach(([x,y,z,c])=>{const l=new THREE.PointLight(c,.9,16);l.position.set(x,y,z);scene.add(l)});
+[[0,3.4,0,0xffe2a0],[-12,3.4,0,0xcfe9ff],[12,3.4,0,0xffd27a]].forEach(([x,y,z,c])=>{const l=new THREE.PointLight(c,.9,16);l.position.set(x,y,z);BG.add(l)});
 
-[-12,0,12].forEach(x=>{const l=new THREE.PointLight(0xfff0d0,.8,16);l.position.set(x,7.6,0);scene.add(l)});
+[-12,0,12].forEach(x=>{const l=new THREE.PointLight(0xfff0d0,.8,16);l.position.set(x,7.6,0);BG.add(l)});
 const MT={};const mat=c=>MT[c]||new THREE.MeshLambertMaterial({color:c});
 function tex(w,h,draw,rx,ry){const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');draw(x,w,h);const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(rx,ry);t.anisotropy=4;return t}
 function spk(x,w,h,n,a){for(let i=0;i<n;i++){x.fillStyle='rgba('+(Math.random()<.5?'0,0,0':'255,255,255')+','+Math.random()*a+')';x.fillRect(Math.random()*w,Math.random()*h,2+Math.random()*3,2+Math.random()*3)}}
 const tm=t=>new THREE.MeshLambertMaterial({map:t});
 const tile=(fill,line,rx,ry)=>tm(tex(128,128,(x,w,h)=>{x.fillStyle=fill;x.fillRect(0,0,w,h);spk(x,w,h,300,.1);x.fillStyle=line;x.fillRect(0,0,w,3);x.fillRect(0,0,3,h)},rx,ry));
-MT[0x1d4a50]=tm(tex(128,128,(x,w,h)=>{x.fillStyle='#e0d6bd';x.fillRect(0,0,w,h);spk(x,w,h,500,.07)},3,2));
+MT[0x1d4a50]=tm(tex(128,128,(x,w,h)=>{x.fillStyle='#ecc049';x.fillRect(0,0,w,h);spk(x,w,h,500,.07)},3,2));
 MT[0x6d5a3c]=tm(tex(256,256,(x,w,h)=>{for(let r=0;r<8;r++){x.fillStyle='hsl(30,'+(35+r%3*5)+'%,'+(28+(r*7)%9)+'%)';x.fillRect(0,r*32,256,32);x.fillStyle='rgba(0,0,0,.35)';x.fillRect(0,r*32,256,2);x.fillRect(r%2?64:192,r*32,2,32)}spk(x,w,h,600,.1)},6,6));
 MT[0x2f5a4a]=tm(tex(256,256,(x,w,h)=>{for(let i=0;i<2;i++)for(let j=0;j<2;j++){x.fillStyle=(i+j)%2?'#3b6b58':'#d6dccf';x.fillRect(i*128,j*128,128,128)}x.fillStyle='#222';x.fillRect(0,0,256,3);x.fillRect(0,128,256,3);x.fillRect(0,0,3,256);x.fillRect(128,0,3,256);spk(x,w,h,500,.08)},6,6));
 MT[0x5a3a2a]=tm(tex(128,128,(x,w,h)=>{x.fillStyle='#5b1f22';x.fillRect(0,0,w,h);x.fillStyle='#e3b341';x.beginPath();x.moveTo(64,14);x.lineTo(114,64);x.lineTo(64,114);x.lineTo(14,64);x.closePath();x.fill();x.fillStyle='#5b1f22';x.beginPath();x.moveTo(64,34);x.lineTo(94,64);x.lineTo(64,94);x.lineTo(34,64);x.closePath();x.fill();x.strokeStyle='#e3b341';x.lineWidth=3;x.strokeRect(2,2,124,124);spk(x,w,h,300,.08)},5,5));
@@ -93,8 +114,8 @@ MT[0x8a3b2e]=tm(tex(128,128,(x,w,h)=>{x.fillStyle='#8a3b2e';x.fillRect(0,0,w,h);
 MT[0x4f8a4a]=tm(tex(128,128,(x,w,h)=>{x.fillStyle='#4f8a4a';x.fillRect(0,0,w,h);for(let i=0;i<700;i++){x.fillStyle=Math.random()<.5?'rgba(30,90,30,.35)':'rgba(140,200,90,.3)';x.fillRect(Math.random()*w,Math.random()*h,2,4)}},70,70));
 MT[0xb9ad94]=tile('#b9ad94','#8f846c',11,4.5);
 MT[0xcbbfa5]=tile('#cbbfa5','#a39878',1.6,8);
-function box(w,h,d,x,y,z,c){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat(c));m.position.set(x,y,z);scene.add(m);return m}
-function floor(cx,c){const m=new THREE.Mesh(new THREE.PlaneGeometry(12,12),mat(c));m.rotation.x=-Math.PI/2;m.position.set(cx,0,0);scene.add(m)}
+function box(w,h,d,x,y,z,c){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat(c));m.position.set(x,y,z);TG.add(m);return m}
+function floor(cx,c){const m=new THREE.Mesh(new THREE.PlaneGeometry(12,12),mat(c));m.rotation.x=-Math.PI/2;m.position.set(cx,0,0);TG.add(m)}
 floor(0,0x6d5a3c);floor(-12,0x2f5a4a);floor(12,0x5a3a2a);
 const W=0x1d4a50;
 box(12,4,.3,0,2,-6,W);box(4.5,4,.3,-3.75,2,6,W);box(4.5,4,.3,3.75,2,6,W);box(3,1,.3,0,3.5,6,W);
@@ -104,7 +125,7 @@ box(12,4,.3,0,2,-6,W);box(4.5,4,.3,-3.75,2,6,W);box(4.5,4,.3,3.75,2,6,W);box(3,1
 function label(text,w,h,fs){const c=document.createElement('canvas');c.width=512;c.height=Math.round(512*h/w);const x=c.getContext('2d');
 x.fillStyle='rgba(14,47,51,.9)';x.fillRect(0,0,c.width,c.height);x.strokeStyle='#e3b341';x.lineWidth=6;x.strokeRect(6,6,c.width-12,c.height-12);
 x.fillStyle='#f1e7c8';x.font='bold '+fs+'px Georgia,serif';x.textAlign='center';x.textBaseline='middle';x.fillText(text,c.width/2,c.height/2);
-const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(c)}));scene.add(m);return m}
+const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(c)}));TG.add(m);return m}
 let s=label('Legenda Ale-Ale',2.8,.7,44);s.position.set(-5.8,3.5,0);s.rotation.y=Math.PI/2;
 s=label('Kerajaan Matan',2.8,.7,44);s.position.set(5.8,3.5,0);s.rotation.y=-Math.PI/2;
 s=label('Selamat datang di Ketapang',5,.8,40);s.position.set(0,3.5,-5.8);
@@ -114,7 +135,7 @@ s=label('Kerajaan Matan',5,.8,40);s.position.set(12,3,-5.8);
 /* tugu di lobi */
 const tugu=new THREE.Group();
 [[1.4,.4,1.4,.2],[.9,1.6,.9,1.2],[.6,.4,.6,2.2]].forEach(([w,h,d,y])=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat(0xcfd8dc));m.position.y=y;tugu.add(m)});
-const sh=new THREE.Mesh(new THREE.SphereGeometry(.35,16,12),mat(0xe3b341));sh.scale.y=.6;sh.position.y=2.65;tugu.add(sh);scene.add(tugu);
+const sh=new THREE.Mesh(new THREE.SphereGeometry(.35,16,12),mat(0xe3b341));sh.scale.y=.6;sh.position.y=2.65;tugu.add(sh);TG.add(tugu);
 
 const M={wood:0x8a5a34,leaf:0x3f9a4f,silver:0xdfe6ea,water:0x3a8fc4,shell:0xe9e1d2,gold:0xe3b341,stone:0x8d8f8a,dark:0x2b2b33};
 function part(g,c,x,y,z){const m=new THREE.Mesh(g,mat(c));m.position.set(x,y,z);return m}
@@ -156,13 +177,12 @@ return g}
 
 const spots=[[-3.5,-3],[3.5,-3],[-3.5,3],[3.5,3]];
 const obstacles=[[0,0]];
-EXHIBITS.forEach((e,i)=>{const cx=i<4?-12:12,p=spots[i%4],q=e.pos||[cx+p[0],p[1],0],x=q[0],z=q[1],y=q[2];e.x=x;e.z=z;e.y=y;obstacles.push([x,z,y]);
-scene.add(part(new THREE.CylinderGeometry(.6,.7,.5,12),0xcfc5ae,x,y+.25,z));
-const m=model(e.kind);m.position.set(x,y+.5,z);m.scale.setScalar(1.1);scene.add(m);e.mesh=m;
+EXHIBITS.forEach((e,i)=>{const cx=i<4?-12:12,p=spots[i%4],q=e.pos||[cx+p[0],p[1],0],x=q[0],z=q[1],y=q[2];e.x=x;e.z=z;e.y=y+RH;obstacles.push([x,z,y+RH]);
+TG.add(part(new THREE.CylinderGeometry(.6,.7,.5,12),0xcfc5ae,x,y+.25,z));
+const m=model(e.kind);m.position.set(x,y+.5,z);m.scale.setScalar(1.1);TG.add(m);e.mesh=m;
 if(e.glb&&THREE.GLTFLoader)new THREE.GLTFLoader().load(e.glb,r=>{const o=r.scene,sz=new THREE.Box3().setFromObject(o).getSize(new THREE.Vector3());o.scale.setScalar(1.6/Math.max(sz.x,sz.y,sz.z));o.position.y=-new THREE.Box3().setFromObject(o).min.y;m.clear();m.add(o)},undefined,()=>{})});
 
 /* area yang boleh dilalui */
-const R=[[-5.7,5.7,-5.7,5.7],[-17.7,-6.3,-5.7,5.7],[6.3,17.7,-5.7,5.7],[-6.3,-5.7,-1.2,1.2],[5.7,6.3,-1.2,1.2],[-1.2,1.2,5.7,6.3],[-28,28,6.3,28]];
 /* halaman luar */
 const gr=part(new THREE.PlaneGeometry(140,140),0x4f8a4a,0,-.02,0);gr.rotation.x=-Math.PI/2;scene.add(gr);
 const pz=part(new THREE.PlaneGeometry(22,9),0xb9ad94,0,.01,11);pz.rotation.x=-Math.PI/2;scene.add(pz);
@@ -175,41 +195,82 @@ for(let i=0;i<36;i++){const hh=FL*(i+1)/36;box(.25,hh,1.6,-4.375+i*.25,hh/2,-4.9
 box(9.4,.9,.08,0,4.75,-4,0x5a3a2a);
 s=label('Tangga ke lantai 2',2.6,.6,34);s.position.set(-4.2,1.4,-5.8);
 s=label('Galeri Lantai 2',5,.8,40);s.position.set(0,7,-5.8);
-const RW=0x8a3b2e,ang=Math.atan2(3,6.2),sl=Math.hypot(6.2,3);
-[-1,1].forEach(g=>{const m=box(36.8,.3,sl+.6,0,9.8,g*3.1,RW);m.rotation.x=g*ang});
-const gs=new THREE.Shape();gs.moveTo(-6.2,0);gs.lineTo(6.2,0);gs.lineTo(0,3);
-[-1,1].forEach(g=>{const m=new THREE.Mesh(new THREE.ShapeGeometry(gs),new THREE.MeshLambertMaterial({color:0x1d4a50,side:THREE.DoubleSide}));m.position.set(g*18.15,8.3,0);m.rotation.y=Math.PI/2;scene.add(m)});
-box(17.8,.5,2.6,0,8.55,7.1,CR);
-const pg=new THREE.Shape();pg.moveTo(-8.9,0);pg.lineTo(8.9,0);pg.lineTo(0,2);
-const pm=new THREE.Mesh(new THREE.ShapeGeometry(pg),new THREE.MeshLambertMaterial({color:CR,side:THREE.DoubleSide}));pm.position.set(0,8.8,8.3);scene.add(pm);
-s=label('Museum Virtual Ketapang',6,.9,34);s.position.set(0,8.55,8.45);
-[-8.5,-5.5,-2.5,2.5,5.5,8.5].forEach(x=>{scene.add(part(new THREE.CylinderGeometry(.35,.38,8.3,12),CR,x,4.15,7.3));obstacles.push([x,7.3])});
-[-16,-13,13,16].forEach(x=>[2,6.3].forEach(y=>{scene.add(part(new THREE.BoxGeometry(1.8,2,.1),0x9fd8e8,x,y,6.16));
-[[1.9,.1,0,.95],[1.9,.1,0,-.95],[.1,2,.95,0],[.1,2,-.95,0],[.05,1.9,0,0],[1.8,.05,0,0]].forEach(q=>box(q[0],q[1],.1,x+q[2],y+q[3],6.22,CR));box(2.3,.14,.32,x,y-1.07,6.28,CR);box(2.2,.14,.2,x,y+1.07,6.24,CR)}));
-[-9.85,9.85].forEach(x=>box(16.7,.6,.3,x,.3,6.2,0x8d8f8a));
-box(36.8,.3,.5,0,4.15,6.12,CR);box(37.2,.3,.7,0,8.4,6.15,CR);[-18.1,18.1].forEach(x=>box(.5,.3,12.6,x,4.15,0,CR));
-[-18.15,18.15].forEach(x=>box(.8,8.3,.8,x,4.15,6,CR));[-1.75,1.75].forEach(x=>box(.4,4,.4,x,2,6.2,CR));
-box(36.9,.25,.4,0,11.35,0,0x6b2d23);
-[[-3.5,9],[3.5,9],[-11,9],[11,9]].forEach(q=>{scene.add(part(new THREE.CylinderGeometry(.06,.09,3.2,8),0x2b2b33,q[0],1.6,q[1]));const bl=new THREE.Mesh(new THREE.SphereGeometry(.22,12,10),new THREE.MeshBasicMaterial({color:0xfff2b0}));bl.position.set(q[0],3.3,q[1]);scene.add(bl);obstacles.push([q[0],q[1]])});
-s=label('Museum Ketapang',2.9,.8,40);s.position.set(0,3.5,6.2);
+const RW=0x8a3b2e,GD=0xe0a81f,ULIN=0x6b4328,ang=Math.atan2(3,6.2),sl=Math.hypot(6.2,3);
+/* tekstur motif Dayak & Melayu */
+const carve=tex(64,256,(x,w,h)=>{x.fillStyle='#6b4328';x.fillRect(0,0,w,h);x.fillStyle='#17110d';x.fillRect(0,0,8,h);x.fillRect(w-8,0,8,h);for(let y=20;y<h;y+=44){x.fillStyle='#e0a81f';x.beginPath();x.moveTo(32,y-16);x.lineTo(50,y);x.lineTo(32,y+16);x.lineTo(14,y);x.closePath();x.fill();x.fillStyle='#b3261e';x.beginPath();x.arc(32,y,5,0,7);x.fill();x.fillRect(12,y+24,6,6);x.fillRect(46,y+24,6,6)}spk(x,w,h,200,.1)},1,1);
+const band=tex(256,64,(x,w,h)=>{x.fillStyle='#17110d';x.fillRect(0,0,w,h);for(let i=0;i<4;i++){const cx=32+i*64;x.fillStyle='#e0a81f';x.beginPath();x.moveTo(cx,10);x.lineTo(cx+22,32);x.lineTo(cx,54);x.lineTo(cx-22,32);x.closePath();x.fill();x.fillStyle='#b3261e';x.beginPath();x.arc(cx,32,6,0,7);x.fill()}x.fillStyle='#e0a81f';x.fillRect(0,0,w,4);x.fillRect(0,h-4,w,4)},1,1);
+const lamb=tex(128,64,(x,w,h)=>{x.fillStyle='#1f4d3a';x.fillRect(0,0,w,18);for(let i=0;i<2;i++){x.fillStyle='#e0a81f';x.beginPath();x.moveTo(i*64+4,18);x.lineTo(i*64+60,18);x.lineTo(i*64+32,60);x.closePath();x.fill();x.fillStyle='#1f4d3a';x.beginPath();x.arc(i*64+32,30,5,0,7);x.fill()}},1,1);
+const winTex=a=>tex(128,192,(x,w,h)=>{const P=()=>{x.beginPath();if(a){x.moveTo(10,h-10);x.lineTo(10,66);x.arc(64,66,54,Math.PI,0);x.lineTo(w-10,h-10)}else x.rect(10,10,w-20,h-20);x.closePath()};
+P();x.fillStyle='#b9772c';x.fill();x.save();x.clip();x.strokeStyle='#f0c23b';x.lineWidth=4;for(let i=-h;i<w+h;i+=24){x.beginPath();x.moveTo(i,0);x.lineTo(i+h,h);x.stroke();x.beginPath();x.moveTo(i,h);x.lineTo(i+h,0);x.stroke()}x.restore();P();x.strokeStyle=a?'#1f5a42':'#4a2a1a';x.lineWidth=14;x.stroke()},1,1);
+const wTa=winTex(true),wTs=winTex(false);
+const pt2=carve.clone();pt2.needsUpdate=true;pt2.repeat.set(1,2);const pmat=new THREE.MeshLambertMaterial({map:pt2});
+function strip(t,w,h,rx,x,y,z){const tt=t.clone();tt.needsUpdate=true;tt.repeat.set(rx,1);const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({map:tt,transparent:true,alphaTest:.4,side:THREE.DoubleSide}));m.position.set(x,y,z);TG.add(m);return m}
+function win(x,y,w,h,t,z){const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({map:t,transparent:true,alphaTest:.4}));m.position.set(x,y,z||6.18);TG.add(m)}
+function pillar(x,y,z,w,h){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,w),pmat);m.position.set(x,y,z);TG.add(m)}
+function statue(x,z){const g=new THREE.Group(),L=(w,h,d,c,px,py,pz)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),c.isMaterial?c:mat(c));m.position.set(px,py,pz);g.add(m)};
+L(.6,.15,.5,0x4a2f1c,0,.08,0);L(.5,1.1,.4,pmat,0,.7,0);L(.5,.5,.45,ULIN,0,1.5,0);L(.58,.18,.5,0xb3261e,0,1.82,0);
+L(.1,.08,.03,0xffffff,-.12,1.55,.23);L(.1,.08,.03,0xffffff,.12,1.55,.23);L(.24,.06,.03,0x17110d,0,1.38,.23);g.position.set(x,0,z);TG.add(g)}
+const horn=(x,y,rz,sc)=>{const m=new THREE.Mesh(new THREE.ConeGeometry(.16*sc,1.7*sc,6),mat(GD));m.position.set(x,y,0);m.rotation.z=rz;TG.add(m)};
+
+/* atap: sayap berpelana + atap tumpang di tengah */
+[-12.2,12.2].forEach(wx=>{[-1,1].forEach(g=>{const m=box(12.4,.3,sl+.6,wx,9.8,g*3.1,RW);m.rotation.x=g*ang});box(12.5,.22,.3,wx,11.4,0,GD)});
+const gsh=new THREE.Shape();gsh.moveTo(-6.2,0);gsh.lineTo(6.2,0);gsh.lineTo(0,3);
+[-18.4,-6.1,6.1,18.4].forEach(x=>{const m=new THREE.Mesh(new THREE.ShapeGeometry(gsh),new THREE.MeshLambertMaterial({color:0xecc049,side:THREE.DoubleSide}));m.position.set(x,8.3,0);m.rotation.y=Math.PI/2;TG.add(m)});
+const fr=(rt,rb,h,y)=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,4),mat(RW));m.rotation.y=Math.PI/4;m.position.set(0,y,0);TG.add(m)};
+fr(3.2,9.3,3,9.8);box(4.4,1.8,4.4,0,12.2,0,W);fr(.12,3.7,2.8,14.5);
+s=label('Museum Virtual Ketapang',3.2,.75,30);s.position.set(0,12.2,2.22);
+win(-1.95,12.2,.55,.85,wTs,2.22);win(1.95,12.2,.55,.85,wTs,2.22);
+/* selembayung (tanduk emas) */
+[-1,1].forEach(g=>{horn(g*18.6,12.0,-g*.6,1);horn(g*18.3,11.9,-g*.2,.8);horn(g*.8,16.4,-g*.55,1.1)});
+/* burung enggang di puncak */
+const eg=new THREE.Group(),E=(geo,c,x,y,z,sx,sy,sz)=>{const m=new THREE.Mesh(geo,mat(c));m.position.set(x,y,z);m.scale.set(sx,sy,sz);eg.add(m);return m};
+E(new THREE.SphereGeometry(.4,12,10),0x17110d,0,.45,0,1.5,.8,.8);E(new THREE.SphereGeometry(.2,10,8),0x17110d,.62,.7,0,1,1,1);
+E(new THREE.ConeGeometry(.12,.55,8),0xf29a1f,.98,.68,0,1,1,1).rotation.z=-Math.PI/2;E(new THREE.ConeGeometry(.1,.3,6),0xb3261e,.78,.95,0,1,1,1);
+E(new THREE.BoxGeometry(1.1,.08,.4),0xf5eedc,-.95,.35,0,1,1,1);E(new THREE.BoxGeometry(.55,.06,.5),0x6b4328,-.1,.55,0,1,1,1);
+eg.position.set(0,15.9,0);eg.scale.setScalar(1.4);TG.add(eg);
+/* hiasan lambai-lambai & pita ukir Dayak */
+[-1,1].forEach(g=>strip(lamb,12.4,.55,12.4/1.8,g*12.2,7.95,6.92));strip(lamb,12.8,.55,12.8/1.8,0,8.0,6.66);
+strip(band,36.6,.5,18.3,0,4.15,6.22);
+/* jendela lengkung berkisi */
+[-15.1,-12.2,-9.3,9.3,12.2,15.1].forEach(x=>[2.1,6.4].forEach(y=>win(x,y,1.3,1.95,wTa)));
+[-3.9,3.9].forEach(x=>{win(x,2.2,1.5,1.7,wTs);win(x,6.6,1.5,1.7,wTs)});
+/* pintu masuk & tiang ukir */
+const arch=(r,c,t)=>{const m=new THREE.Mesh(new THREE.TorusGeometry(r,t,8,28,Math.PI),mat(c));m.position.set(0,3.0,6.22);TG.add(m)};arch(1.55,0x1f4d3a,.14);arch(1.28,GD,.07);
+[-18.15,18.15].forEach(x=>pillar(x,4.15,6,.8,8.3));[-1.75,1.75].forEach(x=>pillar(x,2,6.2,.4,4));
+/* teras panggung */
+box(12.4,.3,1.9,0,-.17,7.1,ULIN);box(37,.32,12.6,0,-.18,0,ULIN);
+const pr=box(12.6,.2,2.6,0,5.0,7.0,RW);pr.rotation.x=Math.atan2(1.2,1.8);
+box(12.4,.3,.3,0,4.35,7.9,ULIN);strip(band,12.4,.4,6.2,0,4.35,8.06);
+[-5.5,-3.9,3.9,5.5].forEach(x=>{pillar(x,2.225,7.7,.5,4.45);obstacles.push([x,7.7,RH])});
+[-2.5,2.5].forEach(x=>{statue(x,7.6);obstacles.push([x,7.6,RH])});
+/* tiang kolong, tangga lebar, lampu (di tanah) */
+TG=scene;
+[-17.5,-14.5,-11.5,-8.5,-5.5,5.5,8.5,11.5,14.5,17.5].forEach(x=>box(.35,RH,.35,x,RH/2,5.5,ULIN));
+[-5.5,-3.9,3.9,5.5].forEach(x=>box(.35,RH,.35,x,RH/2,7.8,ULIN));
+for(let i=0;i<5;i++){const hh=RH-.2*(i+1);box(4.8,hh,.4,0,hh/2,8.2+i*.4,i%2?0x9a7650:0x8d6b4a)}
+[[-4.2,11],[4.2,11],[-10,10],[10,10]].forEach(q=>{scene.add(part(new THREE.CylinderGeometry(.06,.09,3.2,8),0x2b2b33,q[0],1.6,q[1]));const bl=new THREE.Mesh(new THREE.SphereGeometry(.22,12,10),new THREE.MeshBasicMaterial({color:0xfff2b0}));bl.position.set(q[0],3.3,q[1]);scene.add(bl);obstacles.push([q[0],q[1]])});
+TG=BG;
 function tree(x,z){const m=model('tree');m.position.set(x,0,z);m.scale.setScalar(1.8);scene.add(m);obstacles.push([x,z])}
 [[-9,12],[9,12],[-14,18],[14,18],[-6,24],[6,24],[-21,10],[21,10],[-24,22],[24,22]].forEach(q=>tree(q[0],q[1]));
-function buildHero(){const g=new THREE.Group(),B=THREE.BoxGeometry,skin=0xd9a066;
+function buildHero(sh0,cap0,pn0){const g=new THREE.Group(),B=THREE.BoxGeometry,skin=0xd9a066;
 const limb=(x,y,w,h,c)=>{const q=new THREE.Group();q.position.set(x,y,0);q.add(part(new B(w,h,w),c,0,-h/2,0));g.add(q);return q};
-g.add(part(new B(.5,.6,.28),M.gold,0,1.05,0),part(new THREE.SphereGeometry(.2,12,10),skin,0,1.55,0),part(new THREE.CylinderGeometry(.2,.21,.14,12),0x1b1b22,0,1.72,0),
+g.add(part(new B(.5,.6,.28),sh0||M.gold,0,1.05,0),part(new THREE.SphereGeometry(.2,12,10),skin,0,1.55,0),part(new THREE.CylinderGeometry(.2,.21,.14,12),cap0||0x1b1b22,0,1.72,0),
 part(new THREE.SphereGeometry(.03,6,6),0x111111,-.07,1.58,.18),part(new THREE.SphereGeometry(.03,6,6),0x111111,.07,1.58,.18));
 const sh=part(new THREE.CircleGeometry(.4,16),0x000000,0,.03,0);sh.rotation.x=-Math.PI/2;sh.material.transparent=true;sh.material.opacity=.3;g.add(sh);
-return {g,armL:limb(-.33,1.3,.14,.55,skin),armR:limb(.33,1.3,.14,.55,skin),legL:limb(-.13,.75,.18,.75,0x1d4a50),legR:limb(.13,.75,.18,.75,0x1d4a50)}}
-const REG=R.map(r=>[r,()=>0]);
-[[-17.7,17.7,-4,5.7],[5.7,17.7,-5.7,-4],[-17.7,-4.7,-5.7,-4],[4.5,5.7,-5.7,-4]].forEach(r=>REG.push([r,()=>FL]));
-REG.push([[-4.5,4.5,-5.7,-4.1],x=>FL*(Math.floor((x+4.5)/.25)+1)/36]);
-function hAt(x,z,y){let b=null;for(const g of REG){const r=g[0];if(x>r[0]&&x<r[1]&&z>r[2]&&z<r[3]){const h=g[1](x);if(b===null||Math.abs(h-y)<Math.abs(b-y))b=h}}return b}
+return {g,armL:limb(-.33,1.3,.14,.55,skin),armR:limb(.33,1.3,.14,.55,skin),legL:limb(-.13,.75,.18,.75,pn0||0x1d4a50),legR:limb(.13,.75,.18,.75,pn0||0x1d4a50)}}
+const REG=[],rg=(r,h)=>REG.push([r,h]);
+[[-5.7,5.7,-4.1,5.7],[-5.7,-4.5,-5.7,-4.1],[4.5,5.7,-5.7,-4.1],[-17.7,-6.3,-5.7,5.7],[6.3,17.7,-5.7,5.7],[-6.3,-5.7,-1.2,1.2],[5.7,6.3,-1.2,1.2],[-1.2,1.2,5.7,6.3],[-5.8,5.8,6.3,8.0]].forEach(r=>rg(r,()=>RH));
+[[-28,-2.4,8.1,28],[2.4,28,8.1,28],[-2.4,2.4,10.0,28]].forEach(r=>rg(r,()=>0));
+rg([-2.4,2.4,8.0,10.0],(x,z)=>RH-.2*(Math.floor((z-8.0)/.4)+1));
+[[-17.7,17.7,-4,5.7],[5.7,17.7,-5.7,-4],[-17.7,-4.7,-5.7,-4],[4.5,5.7,-5.7,-4]].forEach(r=>rg(r,()=>FL+RH));
+rg([-4.5,4.5,-5.7,-4.1],x=>RH+FL*(Math.floor((x+4.5)/.25)+1)/36);
+function hAt(x,z,y){let b=null;for(const g of REG){const r=g[0];if(x>r[0]&&x<r[1]&&z>r[2]&&z<r[3]){const h=g[1](x,z);if(b===null||Math.abs(h-y)<Math.abs(b-y))b=h}}return b}
 function ok(x,z,y){const h=hAt(x,z,y);if(h===null||Math.abs(h-y)>.6)return null;
 if(obstacles.some(o=>Math.abs((o[2]||0)-h)<2&&Math.hypot(x-o[0],z-o[1])<(o[0]==0&&o[1]==0?1.1:.9)))return null;return h}
 
 /* kontrol */
 let yaw=0,pitch=.3,open=false,started=false;const keys={};let jx=0,jy=0;
-addEventListener('keydown',e=>{keys[e.code]=1;if(e.code=='KeyE')interact();if(e.code=='Escape')closeCard()});
+addEventListener('keydown',e=>{keys[e.code]=1;if(e.code=='KeyE'||e.code=='Space'||e.code=='Enter'){if(dlgOpen)dlgNext();else if(e.code=='KeyE')interact()}if(e.code=='Escape'){closeCard();closeDlg()}});
 addEventListener('keyup',e=>keys[e.code]=0);
 let look=null;const cv=$('c');
 cv.addEventListener('pointerdown',e=>{look={id:e.pointerId,x:e.clientX,y:e.clientY};cv.setPointerCapture(e.pointerId)});
@@ -226,7 +287,7 @@ joy.addEventListener('pointermove',e=>{if(e.pointerId==jid)jmove(e)});
 let seen=new Set();try{seen=new Set(JSON.parse(localStorage.getItem('ketapang-seen')||'[]'))}catch(_){}
 function hud(){$('cnt').textContent=seen.size+'/'+EXHIBITS.length}hud();
 let near=null;
-function interact(){if(started&&!open&&near){if(near.act)near.act();else show(near)}}
+function interact(){if(started&&!open&&near){if(near.act)near.act();else talk(near)}}
 function show(e){open=true;$('ctag').textContent=e.room;$('ctitle').textContent=e.title;$('ctext').textContent=e.text;
 $('cimg').innerHTML=e.img?'<img alt="'+e.title+'" src="'+e.img+'">':'<div class="ph">Foto belum ditambahkan</div>';
 $('card').classList.add('on');seen.add(e.id);hud();try{localStorage.setItem('ketapang-seen',JSON.stringify([...seen]))}catch(_){}}
@@ -237,18 +298,47 @@ $('go').onclick=()=>{started=true;$('start').classList.remove('on');$('mbtn').st
 /* musik latar (file lokal) */
 const bgm=new Audio('musik/melayu.mp3');bgm.loop=true;bgm.volume=.5;let musicOn=true;
 function mlabel(){$('mbtn').textContent=musicOn?'♪ Musik: nyala':'♪ Musik: mati'}
-function playMusic(){if(!musicOn)return;const r=bgm.play();if(r&&r.catch)r.catch(()=>{musicOn=false;mlabel()})}
+function noFile(){musicOn=false;$('mbtn').textContent='♪ File musik tidak ditemukan'}
+function playMusic(){if(!musicOn)return;const r=bgm.play();if(r&&r.catch)r.catch(e=>{if(e&&e.name==='NotAllowedError'){const f=()=>{removeEventListener('pointerdown',f);playMusic()};addEventListener('pointerdown',f)}else noFile()})}
+bgm.addEventListener('error',noFile);
 $('mbtn').onclick=()=>{musicOn=!musicOn;mlabel();musicOn?playMusic():bgm.pause()};
 document.addEventListener('visibilitychange',()=>{if(document.hidden)bgm.pause();else if(started)playMusic()});
+/* percakapan pemandu */
+let dlgOpen=false,dE=null,dPage=0,dLines=[],dTimer=null,voiceOn=true;
+let VOICE=null,FEM=false;
+function pickVoice(){if(!('speechSynthesis' in window))return;const vs=speechSynthesis.getVoices().filter(v=>/^(id|in)[-_]/i.test(v.lang||'')||/indonesia/i.test(v.name));
+const f=vs.find(v=>/gadis|damayanti|google.*indonesia|female|perempuan|wanita/i.test(v.name));VOICE=f||vs.find(v=>!/andika|\bmale\b/i.test(v.name))||vs[0]||null;FEM=!!f}
+if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
+function speak(t){if(!('speechSynthesis' in window))return;speechSynthesis.cancel();if(!voiceOn)return;const u=new SpeechSynthesisUtterance(t);u.lang='id-ID';u.rate=.95;
+if(!VOICE)pickVoice();if(VOICE)u.voice=VOICE;u.pitch=FEM?1:1.2;u.onstart=()=>{bgm.volume=.15};u.onend=u.onerror=()=>{bgm.volume=.5};speechSynthesis.speak(u)}
+function typeLine(){const t=dLines[dPage];let i=0;clearInterval(dTimer);$('dtext').textContent='';
+dTimer=setInterval(()=>{i++;$('dtext').textContent=t.slice(0,i);if(i>=t.length)clearInterval(dTimer)},22);
+const last=dPage==dLines.length-1;$('dnext').textContent=last?'Selesai':'Lanjut ▶';$('dcard').style.display=last?'inline-block':'none';speak(t)}
+function talk(e){dE=e;dLines=DIALOGS[e.id]||[e.text];dPage=0;dlgOpen=true;open=true;$('dname').textContent=e.guideName||'Pemandu';$('dlg').style.display='block';
+seen.add(e.id);hud();try{localStorage.setItem('ketapang-seen',JSON.stringify([...seen]))}catch(_){}typeLine()}
+function dlgNext(){const t=dLines[dPage];if($('dtext').textContent.length<t.length){clearInterval(dTimer);$('dtext').textContent=t;return}if(dPage<dLines.length-1){dPage++;typeLine()}else closeDlg()}
+function closeDlg(){if(!dlgOpen)return;clearInterval(dTimer);if('speechSynthesis' in window)speechSynthesis.cancel();bgm.volume=.5;dlgOpen=false;open=false;$('dlg').style.display='none'}
+$('dnext').onclick=dlgNext;
+$('dcard').onclick=()=>{const e=dE;closeDlg();show(e)};
+$('dvoice').onclick=()=>{voiceOn=!voiceOn;$('dvoice').textContent=voiceOn?'🔊 Suara':'🔇 Suara';if(voiceOn&&dlgOpen)speak(dLines[dPage]);else if('speechSynthesis' in window)speechSynthesis.cancel()};
 const clock=new THREE.Clock();
 const me=new THREE.Vector3(0,0,15);let face=Math.PI,phase=0,dy=0,ks=1;
 const hero=buildHero();scene.add(hero.g);
-const STAIRS=[{x:-4.2,z:-3.2,y:0,tol:.8,title:'Naik ke lantai 2',act:()=>{me.set(5.1,FL,-4.8);dy=FL;face=Math.PI/2}},
-{x:5.1,z:-3.2,y:FL,tol:.8,title:'Turun ke lantai 1',act:()=>{me.set(-5,0,-3.4);dy=0;face=-Math.PI/2}}];
+const GC={'Legenda Ale-Ale':[0x2f7a4a,0x17110d,0x1d4a50],'Kerajaan Matan':[0xb3261e,0xe0a81f,0x17110d],'Galeri Lantai 2':[0x1f4d3a,0x6b4328,0x17110d]};
+const GN={'Legenda Ale-Ale':'Pemandu Legenda','Kerajaan Matan':'Pemandu Sejarah','Galeri Lantai 2':'Pemandu Galeri'};
+function bubbleSprite(){const c=document.createElement('canvas');c.width=c.height=128;const x=c.getContext('2d');x.fillStyle='#fffdf2';x.strokeStyle='#e0a81f';x.lineWidth=7;x.beginPath();x.arc(64,56,44,0,7);x.fill();x.stroke();
+x.beginPath();x.moveTo(46,92);x.lineTo(50,120);x.lineTo(76,94);x.closePath();x.fill();x.fillStyle='#8a2f25';x.font='bold 70px Georgia,serif';x.textAlign='center';x.textBaseline='middle';x.fillText('!',64,58);
+const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c)}));sp.scale.set(.7,.7,1);return sp}
+EXHIBITS.forEach(e=>{const c=GC[e.room]||GC['Legenda Ale-Ale'],cxr=e.x<-6?-12:e.x>6?12:0;
+e.gx=e.pos?e.x+1.5:e.x+(e.x<cxr?1.5:-1.5);e.gz=e.z+(e.z<0?.9:-.9);
+const gd=buildHero(c[0],c[1],c[2]);gd.g.position.set(e.gx,e.y-RH,e.gz);e.gf=Math.atan2(e.x-e.gx,e.z-e.gz);gd.g.rotation.y=e.gf;BG.add(gd.g);
+const b=bubbleSprite();b.position.set(0,2.3,0);gd.g.add(b);e.gd=gd;e.bub=b;e.guideName=GN[e.room]||'Pemandu';obstacles.push([e.gx,e.gz,e.y])});
+const STAIRS=[{x:-4.2,z:-3.2,y:RH,tol:.8,title:'Naik ke lantai 2',act:()=>{me.set(5.1,FL+RH,-4.8);dy=FL+RH;face=Math.PI/2}},
+{x:5.1,z:-3.2,y:FL+RH,tol:.8,title:'Turun ke lantai 1',act:()=>{me.set(-5,RH,-3.4);dy=RH;face=-Math.PI/2}}];
 const ALL=EXHIBITS.concat(STAIRS);
 const inB=(x,z)=>x>-18.3&&x<18.3&&z>-6.3&&z<6.3;
 const CRECT=[[-5.75,5.75,-5.75,5.75],[-17.75,-6.25,-5.75,5.75],[6.25,17.75,-5.75,5.75],[-6.25,-5.75,-1.35,1.35],[5.75,6.25,-1.35,1.35],[-1.35,1.35,5.75,6.25]];
-const camOk=(x,z)=>!inB(x,z)||(me.y>2?(x>-17.8&&x<17.8&&z>-5.8&&z<5.8):CRECT.some(r=>x>r[0]&&x<r[1]&&z>r[2]&&z<r[3]));
+const camOk=(x,z)=>!inB(x,z)||(me.y>RH+2?(x>-17.8&&x<17.8&&z>-5.8&&z<5.8):CRECT.some(r=>x>r[0]&&x<r[1]&&z>r[2]&&z<r[3]));
 (function loop(){requestAnimationFrame(loop);const dt=Math.min(clock.getDelta(),.05),t=clock.elapsedTime;let moving=false;
 if(started&&!open){const f=(keys.KeyW||keys.ArrowUp?1:0)-(keys.KeyS||keys.ArrowDown?1:0)-jy,r=(keys.KeyD?1:0)-(keys.KeyA?1:0)+jx;
 if(keys.ArrowLeft)yaw+=1.8*dt;if(keys.ArrowRight)yaw-=1.8*dt;
@@ -265,9 +355,10 @@ k=Math.max(k,.2);ks+=(k-ks)*Math.min(1,(k<ks?14:2.5)*dt);hero.g.visible=ks*D>.9;
 let cy=dy+1.3+Math.sin(pitch)*D*ks;if(inB(cx,cz))cy=Math.min(cy,dy+3.5);
 cam.position.set(cx,cy,cz);cam.lookAt(me.x,dy+1.3,me.z);
 near=null;let best=2.8;if(started)ALL.forEach(e=>{const d=Math.hypot(me.x-e.x,me.z-e.z);if(d<best&&Math.abs(me.y-e.y)<(e.tol||2.5)){best=d;near=e}});
-const pb=$('prompt');pb.style.display=near&&!open?'block':'none';if(near)pb.textContent=(near.act?'':'Lihat cerita: ')+near.title;
-EXHIBITS.forEach(e=>e.mesh.rotation.y=t*.6);tugu.rotation.y=t*.2;
-$('room').textContent=me.y>2?'Galeri lantai 2':me.z>6.2?'Halaman museum':me.x<-6?'Legenda Ale-Ale':me.x>6?'Kerajaan Matan':'Lobi';
+const pb=$('prompt');pb.style.display=near&&!open?'block':'none';if(near)pb.textContent=(near.act?'':'Bicara dengan pemandu: ')+near.title;
+EXHIBITS.forEach(e=>{e.mesh.rotation.y=t*.6;const tx=near===e?me.x:e.x,tz=near===e?me.z:e.z,tg=Math.atan2(tx-e.gx,tz-e.gz),d=((tg-e.gf+Math.PI)%(2*Math.PI)+2*Math.PI)%(2*Math.PI)-Math.PI;
+e.gf+=d*Math.min(1,6*dt);e.gd.g.rotation.y=e.gf;e.bub.position.y=2.3+Math.sin(t*3+e.gx)*.06});tugu.rotation.y=t*.2;
+$('room').textContent=me.y>RH+2?'Galeri lantai 2':me.z>8.1?'Halaman museum':me.z>6.2?'Teras depan':me.x<-6?'Legenda Ale-Ale':me.x>6?'Kerajaan Matan':'Lobi';
 renderer.render(scene,cam)})();
 
 if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
