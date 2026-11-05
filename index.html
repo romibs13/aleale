@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="id"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Museum Virtual Ketapang</title>
+<meta name="theme-color" content="#0e2f33">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--ink:#0e2f33;--gold:#e3b341;--silver:#cfd8dc;--text:#e6f0ee}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--ink);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;touch-action:none;-webkit-user-select:none;user-select:none}
+canvas{position:fixed;inset:0;width:100%;height:100%;display:block}
+button{font:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+#hud{position:fixed;top:max(12px,env(safe-area-inset-top));left:12px;background:rgba(14,47,51,.8);border:1px solid var(--gold);border-radius:8px;padding:8px 12px;font-size:14px;line-height:1.4}
+#hud b{font-family:Georgia,serif;font-size:16px}
+#prompt{position:fixed;left:50%;bottom:max(24px,env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--gold);color:#1b1b12;border:0;border-radius:999px;padding:14px 22px;font-weight:700;display:none;max-width:90vw}
+#joy{position:fixed;left:24px;bottom:max(24px,env(safe-area-inset-bottom));width:120px;height:120px;border-radius:50%;background:rgba(230,240,238,.12);border:2px solid rgba(230,240,238,.4);display:none}
+#knob{position:absolute;left:36px;top:36px;width:48px;height:48px;border-radius:50%;background:rgba(227,179,65,.85)}
+@media (pointer:coarse){#joy{display:block}#prompt{bottom:max(160px,env(safe-area-inset-bottom))}}
+.layer{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(6,22,25,.82)}
+.layer.on{display:flex}
+.panel{background:var(--ink);border:2px solid var(--gold);border-radius:14px;max-width:520px;width:100%;max-height:90vh;overflow:auto;padding:22px}
+h1,h2{font-family:Georgia,"Times New Roman",serif;margin:0 0 10px;line-height:1.2}
+h1{font-size:30px}h2{font-size:24px}
+p{line-height:1.65;margin:0 0 14px;max-width:62ch}
+.tag{color:var(--gold);font-size:13px;margin-bottom:6px}
+.ph{height:150px;border:2px dashed var(--silver);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--silver);margin-bottom:14px;font-size:14px;text-align:center;padding:8px}
+.panel img{width:100%;border-radius:10px;margin-bottom:14px}
+.btn{background:var(--gold);color:#1b1b12;border:0;border-radius:8px;padding:12px 20px;font-weight:700}
+.small{font-size:13px;color:var(--silver)}
+</style></head><body>
+<canvas id="c"></canvas>
+<div id="hud"><div id="room"></div><div>Koleksi: <b id="cnt">0/8</b></div></div>
+<button id="prompt"></button>
+<div id="joy"><div id="knob"></div></div>
+<div class="layer on" id="start"><div class="panel">
+<h1>Museum Virtual Ketapang</h1>
+<p>Kamu mulai di halaman depan museum. Jalan lewat pintu utama, jelajahi dua ruang pameran, dan dekati koleksi untuk membuka kisahnya.</p>
+<p class="small">Komputer: W A S D atau panah untuk jalan, seret mouse untuk memutar kamera, E untuk membuka koleksi. HP: joystick di kiri bawah, geser layar untuk memutar kamera.</p>
+<button class="btn" id="go">Masuk museum</button></div></div>
+<div class="layer" id="card"><div class="panel">
+<div class="tag" id="ctag"></div><h2 id="ctitle"></h2><div id="cimg"></div><p id="ctext"></p>
+<button class="btn" id="cclose">Tutup</button></div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ===== ISI MUSEUM: ganti teks / tambah foto di sini =====
+   img: alamat foto, misalnya 'foto/pohon.webp' (kosongkan jika belum ada) */
+const EXHIBITS=[
+{id:'l1',room:'Legenda Ale-Ale',kind:'tree',title:'Pohon Ketapang Raksasa',img:'',text:'Menurut cerita rakyat, dahulu terdapat pohon Ketapang raksasa yang menaungi permukiman hingga masyarakat kesulitan mendapatkan sinar matahari dan bercocok tanam.'},
+{id:'l2',room:'Legenda Ale-Ale',kind:'axe',title:'Kapak Perak',img:'',text:'Berbagai upaya menebang pohon itu gagal, hingga akhirnya sebuah kapak perak berhasil merobohkannya.'},
+{id:'l3',room:'Legenda Ale-Ale',kind:'river',title:'Sungai Pawan',img:'',text:'Konon, pohon yang roboh itu menjelma menjadi Sungai Pawan.'},
+{id:'l4',room:'Legenda Ale-Ale',kind:'shell',title:'Kerang Ale-Ale',img:'',text:'Buah pohon itu berubah menjadi kerang Ale-Ale, dan wilayah tersebut kemudian dikenal sebagai Ketapang.'},
+{id:'m1',room:'Kerajaan Matan',kind:'palace',title:'Jejak Tanjungpura',img:'',text:'Kerajaan Matan merupakan bagian dari perjalanan panjang Kerajaan Tanjungpura, salah satu kerajaan tua di Kalimantan Barat.'},
+{id:'m2',room:'Kerajaan Matan',kind:'stones',title:'Pusat Pemerintahan yang Berpindah',img:'',text:'Pusat pemerintahan beberapa kali berpindah, mulai dari Negeri Baru, Sukadana, hingga Matan dan Muliakerta.'},
+{id:'m3',room:'Kerajaan Matan',kind:'ship',title:'Perdagangan dan Islam',img:'',text:'Kerajaan ini berkembang melalui perdagangan, pengaruh budaya, dan penyebaran Islam.'},
+{id:'m4',room:'Kerajaan Matan',kind:'flag',title:'Akhir Perjalanan Kerajaan',img:'',text:'Perjalanan kerajaan kemudian berakhir dalam dinamika kolonialisme dan pendudukan Jepang, termasuk tragedi yang menimpa Gusti Muhammad Saunan.'}
+];
+/* ===== akhir isi ===== */
+
+const $=id=>document.getElementById(id);
+const renderer=new THREE.WebGLRenderer({canvas:$('c'),antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x8fcfdc);scene.fog=new THREE.Fog(0x8fcfdc,28,75);
+const cam=new THREE.PerspectiveCamera(70,1,.1,80);cam.rotation.order='YXZ';cam.position.set(0,1.6,4);
+function resize(){renderer.setSize(innerWidth,innerHeight,false);cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix()}
+addEventListener('resize',resize);resize();
+
+scene.add(new THREE.HemisphereLight(0xdff3f0,0x203538,.95));
+[[0,3.4,0,0xffe2a0],[-12,3.4,0,0xcfe9ff],[12,3.4,0,0xffd27a]].forEach(([x,y,z,c])=>{const l=new THREE.PointLight(c,.9,16);l.position.set(x,y,z);scene.add(l)});
+
+const mat=c=>new THREE.MeshLambertMaterial({color:c});
+function box(w,h,d,x,y,z,c){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat(c));m.position.set(x,y,z);scene.add(m);return m}
+function floor(cx,c){const m=new THREE.Mesh(new THREE.PlaneGeometry(12,12),mat(c));m.rotation.x=-Math.PI/2;m.position.set(cx,0,0);scene.add(m)}
+floor(0,0x6d5a3c);floor(-12,0x2f5a4a);floor(12,0x5a3a2a);
+const W=0x1d4a50;
+box(12,4,.3,0,2,-6,W);box(4.5,4,.3,-3.75,2,6,W);box(4.5,4,.3,3.75,2,6,W);box(3,1,.3,0,3.5,6,W);
+[-6,6].forEach(x=>{box(.3,4,4.5,x,2,-3.75,W);box(.3,4,4.5,x,2,3.75,W);box(.3,1,3,x,3.5,0,W)});
+[-12,12].forEach(cx=>{box(12,4,.3,cx,2,-6,W);box(12,4,.3,cx,2,6,W);box(.3,4,12,cx+Math.sign(cx)*6,2,0,W)});
+
+function label(text,w,h,fs){const c=document.createElement('canvas');c.width=512;c.height=Math.round(512*h/w);const x=c.getContext('2d');
+x.fillStyle='rgba(14,47,51,.9)';x.fillRect(0,0,c.width,c.height);x.strokeStyle='#e3b341';x.lineWidth=6;x.strokeRect(6,6,c.width-12,c.height-12);
+x.fillStyle='#f1e7c8';x.font='bold '+fs+'px Georgia,serif';x.textAlign='center';x.textBaseline='middle';x.fillText(text,c.width/2,c.height/2);
+const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(c)}));scene.add(m);return m}
+let s=label('Legenda Ale-Ale',2.8,.7,44);s.position.set(-5.8,3.5,0);s.rotation.y=Math.PI/2;
+s=label('Kerajaan Matan',2.8,.7,44);s.position.set(5.8,3.5,0);s.rotation.y=-Math.PI/2;
+s=label('Selamat datang di Ketapang',5,.8,40);s.position.set(0,3,-5.8);
+s=label('Legenda Ale-Ale',5,.8,40);s.position.set(-12,3,-5.8);
+s=label('Kerajaan Matan',5,.8,40);s.position.set(12,3,-5.8);
+
+/* tugu di lobi */
+const tugu=new THREE.Group();
+[[1.4,.4,1.4,.2],[.9,1.6,.9,1.2],[.6,.4,.6,2.2]].forEach(([w,h,d,y])=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat(0xcfd8dc));m.position.y=y;tugu.add(m)});
+const sh=new THREE.Mesh(new THREE.SphereGeometry(.35,16,12),mat(0xe3b341));sh.scale.y=.6;sh.position.y=2.65;tugu.add(sh);scene.add(tugu);
+
+const M={wood:0x8a5a34,leaf:0x3f9a4f,silver:0xdfe6ea,water:0x3a8fc4,shell:0xe9e1d2,gold:0xe3b341,stone:0x8d8f8a,dark:0x2b2b33};
+function part(g,c,x,y,z){const m=new THREE.Mesh(g,mat(c));m.position.set(x,y,z);return m}
+function model(k){const g=new THREE.Group(),B=THREE.BoxGeometry,C=THREE.CylinderGeometry;
+if(k=='tree'){g.add(part(new C(.12,.16,.7,8),M.wood,0,.35,0),part(new THREE.ConeGeometry(.5,.9,8),M.leaf,0,1.05,0))}
+if(k=='axe'){g.add(part(new B(.08,.9,.08),M.wood,0,.5,0),part(new B(.4,.3,.05),M.silver,.2,.8,0));g.rotation.z=.3}
+if(k=='river'){g.add(part(new B(1.3,.06,.5),M.water,0,.1,0),part(new B(.9,.06,.3),0x6fb4de,.2,.16,0))}
+if(k=='shell'){const m=part(new THREE.SphereGeometry(.4,16,12),M.shell,0,.4,0);m.scale.set(1.2,.7,.9);g.add(m)}
+if(k=='palace'){g.add(part(new B(.9,.5,.7),M.gold,0,.3,0),part(new THREE.ConeGeometry(.7,.5,4),M.wood,0,.8,0))}
+if(k=='stones'){g.add(part(new B(.35,.25,.35),M.stone,-.5,.15,0),part(new B(.35,.35,.35),M.stone,0,.2,.1),part(new B(.35,.45,.35),M.stone,.5,.25,0))}
+if(k=='ship'){g.add(part(new B(1,.2,.4),M.wood,0,.15,0),part(new B(.05,.9,.05),M.wood,0,.65,0),part(new B(.6,.6,.03),0xf0e6d0,.05,.7,0))}
+if(k=='flag'){g.add(part(new B(.05,1.2,.05),M.silver,0,.6,0),part(new B(.6,.35,.03),M.dark,.3,1,0))}
+return g}
+
+const spots=[[-3.5,-3],[3.5,-3],[-3.5,3],[3.5,3]];
+const obstacles=[[0,0]];
+EXHIBITS.forEach((e,i)=>{const cx=i<4?-12:12,p=spots[i%4],x=cx+p[0],z=p[1];e.x=x;e.z=z;obstacles.push([x,z]);
+const ped=part(new THREE.CylinderGeometry(.6,.7,.5,12),0xcfc5ae,x,.25,z);scene.add(ped);
+const m=model(e.kind);m.position.set(x,.5,z);m.scale.setScalar(1.1);m.userData.spin=1;scene.add(m);e.mesh=m});
+
+/* area yang boleh dilalui */
+const R=[[-5.7,5.7,-5.7,5.7],[-17.7,-6.3,-5.7,5.7],[6.3,17.7,-5.7,5.7],[-6.3,-5.7,-1.2,1.2],[5.7,6.3,-1.2,1.2],[-1.2,1.2,5.7,6.3],[-28,28,6.3,28]];
+/* halaman luar */
+const gr=part(new THREE.PlaneGeometry(140,140),0x4f8a4a,0,-.02,0);gr.rotation.x=-Math.PI/2;scene.add(gr);
+const pz=part(new THREE.PlaneGeometry(22,9),0xb9ad94,0,.01,11);pz.rotation.x=-Math.PI/2;scene.add(pz);
+const pt=part(new THREE.PlaneGeometry(3.2,16),0xcbbfa5,0,.02,14);pt.rotation.x=-Math.PI/2;scene.add(pt);
+[-12,0,12].forEach((cx,i)=>box(12.3,.3,12.3,cx,4.15+i*.01,0,0x5a3a2a));
+s=label('Museum Ketapang',2.9,.8,40);s.position.set(0,3.5,6.2);
+function tree(x,z){scene.add(part(new THREE.CylinderGeometry(.18,.25,1.4,8),M.wood,x,.7,z),part(new THREE.SphereGeometry(1.1,10,8),M.leaf,x,2.2,z));obstacles.push([x,z])}
+[[-9,12],[9,12],[-14,18],[14,18],[-6,24],[6,24],[-21,10],[21,10],[-24,22],[24,22]].forEach(q=>tree(q[0],q[1]));
+function buildHero(){const g=new THREE.Group(),B=THREE.BoxGeometry,skin=0xd9a066;
+const limb=(x,y,w,h,c)=>{const q=new THREE.Group();q.position.set(x,y,0);q.add(part(new B(w,h,w),c,0,-h/2,0));g.add(q);return q};
+g.add(part(new B(.5,.6,.28),M.gold,0,1.05,0),part(new THREE.SphereGeometry(.2,12,10),skin,0,1.55,0),part(new THREE.CylinderGeometry(.2,.21,.14,12),0x1b1b22,0,1.72,0),
+part(new THREE.SphereGeometry(.03,6,6),0x111111,-.07,1.58,.18),part(new THREE.SphereGeometry(.03,6,6),0x111111,.07,1.58,.18));
+const sh=part(new THREE.CircleGeometry(.4,16),0x000000,0,.03,0);sh.rotation.x=-Math.PI/2;sh.material.transparent=true;sh.material.opacity=.3;g.add(sh);
+return {g,armL:limb(-.33,1.3,.14,.55,skin),armR:limb(.33,1.3,.14,.55,skin),legL:limb(-.13,.75,.18,.75,0x1d4a50),legR:limb(.13,.75,.18,.75,0x1d4a50)}}
+function ok(x,z){if(!R.some(r=>x>r[0]&&x<r[1]&&z>r[2]&&z<r[3]))return false;return !obstacles.some(o=>Math.hypot(x-o[0],z-o[1])<(o[0]==0&&o[1]==0?1.1:.9))}
+
+/* kontrol */
+let yaw=0,pitch=.3,open=false,started=false;const keys={};let jx=0,jy=0;
+addEventListener('keydown',e=>{keys[e.code]=1;if(e.code=='KeyE')interact();if(e.code=='Escape')closeCard()});
+addEventListener('keyup',e=>keys[e.code]=0);
+let look=null;const cv=$('c');
+cv.addEventListener('pointerdown',e=>{look={id:e.pointerId,x:e.clientX,y:e.clientY};cv.setPointerCapture(e.pointerId)});
+cv.addEventListener('pointermove',e=>{if(!look||look.id!=e.pointerId)return;yaw-=(e.clientX-look.x)*.005;pitch=Math.max(.05,Math.min(1.1,pitch+(e.clientY-look.y)*.005));look.x=e.clientX;look.y=e.clientY});
+['pointerup','pointercancel'].forEach(t=>cv.addEventListener(t,()=>look=null));
+const joy=$('joy'),knob=$('knob');let jid=null;
+function jmove(e){const r=joy.getBoundingClientRect(),dx=e.clientX-(r.left+60),dy=e.clientY-(r.top+60),d=Math.min(1,Math.hypot(dx,dy)/50),a=Math.atan2(dy,dx);
+jx=Math.cos(a)*d;jy=Math.sin(a)*d;knob.style.transform='translate('+jx*40+'px,'+jy*40+'px)'}
+joy.addEventListener('pointerdown',e=>{jid=e.pointerId;joy.setPointerCapture(jid);jmove(e)});
+joy.addEventListener('pointermove',e=>{if(e.pointerId==jid)jmove(e)});
+['pointerup','pointercancel'].forEach(t=>joy.addEventListener(t,()=>{jid=null;jx=jy=0;knob.style.transform=''}));
+
+/* koleksi */
+let seen=new Set();try{seen=new Set(JSON.parse(localStorage.getItem('ketapang-seen')||'[]'))}catch(_){}
+function hud(){$('cnt').textContent=seen.size+'/'+EXHIBITS.length}hud();
+let near=null;
+function interact(){if(started&&!open&&near)show(near)}
+function show(e){open=true;$('ctag').textContent=e.room;$('ctitle').textContent=e.title;$('ctext').textContent=e.text;
+$('cimg').innerHTML=e.img?'<img alt="'+e.title+'" src="'+e.img+'">':'<div class="ph">Foto belum ditambahkan</div>';
+$('card').classList.add('on');seen.add(e.id);hud();try{localStorage.setItem('ketapang-seen',JSON.stringify([...seen]))}catch(_){}}
+function closeCard(){open=false;$('card').classList.remove('on')}
+$('cclose').onclick=closeCard;$('prompt').onclick=interact;
+$('go').onclick=()=>{started=true;$('start').classList.remove('on')};
+
+const clock=new THREE.Clock();
+const me=new THREE.Vector3(0,0,15);let face=Math.PI,phase=0;
+const hero=buildHero();scene.add(hero.g);
+const inB=(x,z)=>x>-18.3&&x<18.3&&z>-6.3&&z<6.3;
+const camOk=(x,z)=>!inB(x,z)||R.some(r=>x>r[0]+.1&&x<r[1]-.1&&z>r[2]+.1&&z<r[3]-.1);
+(function loop(){requestAnimationFrame(loop);const dt=Math.min(clock.getDelta(),.05),t=clock.elapsedTime;let moving=false;
+if(started&&!open){const f=(keys.KeyW||keys.ArrowUp?1:0)-(keys.KeyS||keys.ArrowDown?1:0)-jy,r=(keys.KeyD?1:0)-(keys.KeyA?1:0)+jx;
+if(keys.ArrowLeft)yaw+=1.8*dt;if(keys.ArrowRight)yaw-=1.8*dt;
+const mx=-Math.sin(yaw)*f+Math.cos(yaw)*r,mz=-Math.cos(yaw)*f-Math.sin(yaw)*r,len=Math.hypot(mx,mz);
+if(len>.05){const s=3.4*dt*Math.min(1,len),dx=mx/len*s,dz=mz/len*s;moving=true;
+if(ok(me.x+dx,me.z))me.x+=dx;if(ok(me.x,me.z+dz))me.z+=dz;
+const tg=Math.atan2(mx,mz),df=((tg-face+Math.PI)%(2*Math.PI)+2*Math.PI)%(2*Math.PI)-Math.PI;face+=df*Math.min(1,12*dt)}}
+phase+=moving?dt*9:0;const sw=moving?Math.sin(phase)*.7:0;
+hero.legL.rotation.x=sw;hero.legR.rotation.x=-sw;hero.armL.rotation.x=-sw;hero.armR.rotation.x=sw;
+hero.g.position.set(me.x,moving?Math.abs(Math.sin(phase))*.05:0,me.z);hero.g.rotation.y=face;
+const D=4.2,cp=Math.cos(pitch);let k=1;
+for(let n=.2;n<=1;n+=.1){if(!camOk(me.x+Math.sin(yaw)*cp*D*n,me.z+Math.cos(yaw)*cp*D*n))break;k=n}
+k=Math.max(k,.25);const cx=me.x+Math.sin(yaw)*cp*D*k,cz=me.z+Math.cos(yaw)*cp*D*k;
+let cy=1.3+Math.sin(pitch)*D*k;if(inB(cx,cz))cy=Math.min(cy,3.6);
+cam.position.set(cx,cy,cz);cam.lookAt(me.x,1.3,me.z);
+near=null;let best=2.8;if(started)EXHIBITS.forEach(e=>{const d=Math.hypot(me.x-e.x,me.z-e.z);if(d<best){best=d;near=e}});
+const pb=$('prompt');pb.style.display=near&&!open?'block':'none';if(near)pb.textContent='Lihat cerita: '+near.title;
+EXHIBITS.forEach(e=>e.mesh.rotation.y=t*.6);tugu.rotation.y=t*.2;
+$('room').textContent=me.z>6.2?'Halaman museum':me.x<-6?'Legenda Ale-Ale':me.x>6?'Kerajaan Matan':'Lobi';
+renderer.render(scene,cam)})();
+
+if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+</script></body></html>
