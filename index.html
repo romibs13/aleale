@@ -19,9 +19,7 @@ button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 #prompt{position:fixed;left:50%;bottom:max(24px,env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--gold);color:#1b1b12;border:0;border-radius:999px;padding:14px 22px;font-weight:700;display:none;max-width:90vw}
 #joy{position:fixed;left:24px;bottom:max(24px,env(safe-area-inset-bottom));width:120px;height:120px;border-radius:50%;background:rgba(230,240,238,.12);border:2px solid rgba(230,240,238,.4);display:none}
 #knob{position:absolute;left:36px;top:36px;width:48px;height:48px;border-radius:50%;background:rgba(227,179,65,.85)}
-#music{position:fixed;top:max(12px,env(safe-area-inset-top));right:12px;width:200px;display:none;background:rgba(14,47,51,.85);border:1px solid var(--gold);border-radius:8px;padding:6px}
-#music iframe{display:block;width:200px;height:113px;border-radius:4px;pointer-events:none}
-#mbtn{width:100%;margin-top:6px;background:var(--gold);color:#1b1b12;border:0;border-radius:6px;padding:7px;font-weight:700;font-size:13px}
+#mbtn{position:fixed;top:max(12px,env(safe-area-inset-top));right:12px;display:none;background:var(--gold);color:#1b1b12;border:0;border-radius:999px;padding:9px 14px;font-weight:700;font-size:13px}
 @media (pointer:coarse){#joy{display:block}#prompt{bottom:max(160px,env(safe-area-inset-bottom))}}
 .layer{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(6,22,25,.82)}
 .layer.on{display:flex}
@@ -38,7 +36,7 @@ p{line-height:1.65;margin:0 0 14px;max-width:62ch}
 <canvas id="c"></canvas>
 <div id="hud"><div id="room"></div><div>Koleksi: <b id="cnt">0/8</b></div></div>
 <button id="prompt"></button>
-<div id="music"><div id="yt"></div><button id="mbtn">Musik: nyala</button></div>
+<button id="mbtn">♪ Musik: nyala</button>
 <div id="joy"><div id="knob"></div></div>
 <div class="layer on" id="start"><div class="panel">
 <h1>Museum Virtual Ketapang</h1>
@@ -234,17 +232,14 @@ $('cimg').innerHTML=e.img?'<img alt="'+e.title+'" src="'+e.img+'">':'<div class=
 $('card').classList.add('on');seen.add(e.id);hud();try{localStorage.setItem('ketapang-seen',JSON.stringify([...seen]))}catch(_){}}
 function closeCard(){open=false;$('card').classList.remove('on')}
 $('cclose').onclick=closeCard;$('prompt').onclick=interact;
-$('go').onclick=()=>{started=true;$('start').classList.remove('on');loadYT()};
+$('go').onclick=()=>{started=true;$('start').classList.remove('on');$('mbtn').style.display='block';playMusic()};
 
-/* musik latar (YouTube) */
-const VID='BVS0Z1PdY6E';let yt=null,ytReady=false,musicOn=true,played=false;
-function mlabel(){$('mbtn').textContent=musicOn?'Musik: nyala':'Musik: mati (ketuk untuk putar)'}
-function loadYT(){if(yt||document.getElementById('ytapi'))return;const t=document.createElement('script');t.id='ytapi';t.src='https://www.youtube.com/iframe_api';document.head.appendChild(t)}
-window.onYouTubeIframeAPIReady=()=>{$('music').style.display='block';
-yt=new YT.Player('yt',{width:200,height:113,videoId:VID,playerVars:{playsinline:1,controls:0,loop:1,playlist:VID,rel:0,modestbranding:1},
-events:{onReady:()=>{ytReady=true;if(played&&musicOn)yt.playVideo()},onAutoplayBlocked:()=>{musicOn=false;mlabel()}}})};
-function playMusic(){played=true;if(ytReady&&musicOn)yt.playVideo()}
-$('mbtn').onclick=()=>{musicOn=!musicOn;mlabel();if(ytReady){musicOn?yt.playVideo():yt.pauseVideo()}};
+/* musik latar (file lokal) */
+const bgm=new Audio('musik/melayu.mp3');bgm.loop=true;bgm.volume=.5;let musicOn=true;
+function mlabel(){$('mbtn').textContent=musicOn?'♪ Musik: nyala':'♪ Musik: mati'}
+function playMusic(){if(!musicOn)return;const r=bgm.play();if(r&&r.catch)r.catch(()=>{musicOn=false;mlabel()})}
+$('mbtn').onclick=()=>{musicOn=!musicOn;mlabel();musicOn?playMusic():bgm.pause()};
+document.addEventListener('visibilitychange',()=>{if(document.hidden)bgm.pause();else if(started)playMusic()});
 const clock=new THREE.Clock();
 const me=new THREE.Vector3(0,0,15);let face=Math.PI,phase=0,dy=0,ks=1;
 const hero=buildHero();scene.add(hero.g);
@@ -273,7 +268,6 @@ near=null;let best=2.8;if(started)ALL.forEach(e=>{const d=Math.hypot(me.x-e.x,me
 const pb=$('prompt');pb.style.display=near&&!open?'block':'none';if(near)pb.textContent=(near.act?'':'Lihat cerita: ')+near.title;
 EXHIBITS.forEach(e=>e.mesh.rotation.y=t*.6);tugu.rotation.y=t*.2;
 $('room').textContent=me.y>2?'Galeri lantai 2':me.z>6.2?'Halaman museum':me.x<-6?'Legenda Ale-Ale':me.x>6?'Kerajaan Matan':'Lobi';
-if(started&&!played&&me.z<5.8)playMusic();
 renderer.render(scene,cam)})();
 
 if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
