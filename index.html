@@ -531,7 +531,7 @@ const te=document.getElementById('gardenTex');if(te){wi.onload=()=>{wt.needsUpda
 const cm=new THREE.MeshLambertMaterial({vertexColors:true,side:THREE.DoubleSide}),wm=new THREE.MeshLambertMaterial({map:wt});
 GARDENS.forEach(x=>{const g=new THREE.Group(),a=new THREE.Mesh(gc,cm),b=new THREE.Mesh(gw,wm);a.castShadow=true;g.add(a,b);g.position.set(x,0,13);g.scale.setScalar(1.3);g.rotation.y=x>0?Math.PI:0;scene.add(g)})}catch(e){}});
 /* bingkai foto di sudut ruangan: model framed_photo_of_70th_indiana_at_inaugural.glb (bagian bingkai saja, disederhanakan, tertanam) */
-addEventListener('load',()=>{try{const el=document.getElementById('frameData');if(!el)return;const geo=mkPeb(el.textContent.trim()),PW=.9258,PH=.7203,ZP=.0291,FS=1.3;
+addEventListener('load',()=>{try{const el=document.getElementById('frameData');if(!el)return;const geo=mkPeb(el.textContent.trim()),PW=.9258,PH=.7203,ZP=.0291,FS=1.5;
 const fi=new Image(),ft=new THREE.Texture(fi),te=document.getElementById('frameTex');if(te){fi.onload=()=>{ft.anisotropy=4;ft.needsUpdate=true};fi.src='data:image/jpeg;base64,'+te.textContent.trim()}
 const ROOMS=[['Lobi',-6,6,-6,6,0],['Legenda Ale-Ale',-18,-6,-6,6,0],['Kerajaan Matan',6,18,-6,6,0],['Adat Istiadat',-18,-10.8,-18,-6,0],['Kesenian',-10.8,-3.6,-18,-6,0],['Kuliner',-3.6,3.6,-18,-6,0],['Kerajinan',3.6,10.8,-18,-6,0],['Alam Ketapang',10.8,18,-18,-6,0],
 ['Galeri Lantai 2',-18,18,-6,6,1],['Tokoh dan Pahlawan',-18,-6.5,-18,-6,1],['Bahasa dan Sastra',-6.5,6.5,-18,-6,1],['Galeri Foto',6.5,18,-18,-6,1]],specs=[];
