@@ -108,6 +108,8 @@ p{line-height:1.65;margin:0 0 14px;max-width:62ch}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/js/loaders/GLTFLoader.js" onerror="void 0"></script>
+<script src="https://cdn.jsdelivr.net/npm/fflate@0.6.9/umd/index.js" onerror="void 0"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/FBXLoader.js" onerror="void 0"></script>
 <script>
 /* ===== ISI MUSEUM: ganti teks / tambah foto di sini =====
    img: alamat foto, misalnya 'foto/pohon.webp' (kosongkan jika belum ada) */
@@ -262,7 +264,18 @@ const FL=4.3,SL=0x7a6a4f,CR=0xe9e1d2;
 box(12.3,.3,12.3,-12,4.15,0,SL);box(12.3,.3,12.3,12,4.15,0,SL);
 box(12,.3,10,0,4.16,1,SL);box(1.4,.3,2,-5.3,4.16,-5,SL);box(1.5,.3,2,5.25,4.16,-5,SL);
 wx(-18,-13.2,-6,6.3);wx(-10.8,4.2,-6,6.3);wx(6,10.8,-6,6.3);wx(13.2,18,-6,6.3);lin(-12,-6,2.4,6.3,true);lin(5.1,-6,1.8,6.3,true);lin(12,-6,2.4,6.3,true);box(36.3,4,.3,0,6.3,6,W);box(.3,4,12,-18,6.3,0,W);box(.3,4,12,18,6.3,0,W);
-for(let i=0;i<36;i++){const hh=FL*(i+1)/36;box(.25,hh,1.6,-4.375+i*.25,hh/2,-4.9,i%2?0xcfc5ae:0xbfb49c)}
+{const stG=new THREE.Group(),pTG=TG;TG=stG;for(let i=0;i<36;i++){const hh=FL*(i+1)/36;box(.25,hh,1.6,-4.375+i*.25,hh/2,-4.9,i%2?0xcfc5ae:0xbfb49c)}TG=pTG;TG.add(stG);
+/* tangga dalam ruangan: model FBX (anak tangga: model/tangga-dalam.fbx, pegangan: model/tangga-dalam-pegangan.fbx), tangga kotak di atas hanya cadangan */
+if(THREE.FBXLoader){const mg=new THREE.LoadingManager();mg.setURLModifier(u=>/\.(png|jpe?g|tga)$/i.test(u)?'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==':u);const host=TG,ld=new THREE.FBXLoader(mg),get=u=>new Promise(r=>ld.load(u,r,undefined,()=>r(null)));
+Promise.all([get('model/tangga-dalam.fbx'),get('model/tangga-dalam-pegangan.fbx')]).then(([st,ra])=>{if(!st)return;
+const paint=(x,c)=>{const m=new THREE.MeshLambertMaterial({color:c,side:THREE.DoubleSide});x.traverse(k=>{if(k.isMesh){k.material=m;k.castShadow=k.receiveShadow=true}})};
+paint(st,0xb08a5e);const o=new THREE.Group();o.add(st);if(ra){paint(ra,0x6b4328);o.add(ra)}
+const w=new THREE.Group();w.add(o);w.updateMatrixWorld(true);let b=new THREE.Box3().setFromObject(st),sz=b.getSize(new THREE.Vector3());if(sz.z>sz.x){o.rotation.y=Math.PI/2;w.updateMatrixWorld(true)}
+b=new THREE.Box3().setFromObject(st);const cx=(b.min.x+b.max.x)/2,v=new THREE.Vector3();let l=0,ln=0,r=0,rn=0;
+st.traverse(c=>{if(!c.isMesh)return;const a=c.geometry.attributes.position;for(let i=0;i<a.count;i++){v.fromBufferAttribute(a,i).applyMatrix4(c.matrixWorld);if(v.x<cx){l+=v.y;ln++}else{r+=v.y;rn++}}});
+if(ln&&rn&&l/ln>r/rn){o.rotation.y+=Math.PI;w.updateMatrixWorld(true)}
+b=new THREE.Box3().setFromObject(st);sz=b.getSize(new THREE.Vector3());const c0=b.getCenter(new THREE.Vector3());
+o.position.sub(c0);w.scale.set(9/sz.x,FL/sz.y,1.6/sz.z);w.position.set(0,FL/2,-4.9);host.add(w);host.remove(stG)})}}
 box(9.4,.9,.08,0,4.75,-4,0x5a3a2a);
 s=label('Tangga ke lantai 2',2.6,.6,34);s.position.set(-4.2,1.4,-5.8);
 s=label('Galeri Lantai 2',5,.8,40);s.position.set(0,7,-5.8);
