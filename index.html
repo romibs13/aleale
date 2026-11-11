@@ -144,6 +144,14 @@ u3:['Halo! Bagian ini disiapkan untuk adat dan tradisi, tapi isinya belum ditamb
 ['u4','Tokoh dan Pahlawan','flag',-12.25,4.3],['u5','Bahasa dan Sastra','shell',0,4.3],['u6','Galeri Foto','stones',12.25,4.3]].forEach(q=>{
 EXHIBITS.push({id:q[0],room:q[1],kind:q[2],pos:[q[3],-14,q[4]],title:q[1]+' (contoh)',img:'',text:'Ruang ini disiapkan untuk '+q[1].toLowerCase()+'. Ganti teks ini dengan materinya.'});
 DIALOGS[q[0]]=['Halo! Ruang ini disiapkan untuk '+q[1].toLowerCase()+', tapi isinya belum ditambahkan.','Nanti aku akan bercerita di sini.']});
+/* Koleksi Adat Istiadat: Ritual Naik Jurongk (d1) dan Ritual Ngalu (d7). Model dibuat dari bentuk dasar dengan ornamen Dayak. */
+{const e=EXHIBITS.find(x=>x.id=='d1');Object.assign(e,{kind:'jurongk',base:false,still:true,pos:[-14.4,-15.3,0],gp:[-12.6,-14.4],wide:[[-15.1,-15.3],[-13.7,-15.3]],title:'Ritual Adat Naik Jurongk: Ungkapan Syukur',
+text:'Ritual Adat Naik Jurongk merupakan tradisi masyarakat Dayak di Kabupaten Ketapang sebagai ungkapan rasa syukur kepada Tuhan atas hasil panen padi. Dalam tradisi ini, Jurongk berarti lumbung atau tempat penyimpanan padi yang menjadi simbol kemakmuran, kebersamaan, dan ketahanan pangan masyarakat.\n\nProsesi utamanya dilakukan dengan membawa padi menggunakan ambong untuk kemudian disimpan ke dalam jurongk. Ritual ini tidak hanya mencerminkan rasa syukur atas hasil bumi, tetapi juga mengandung nilai gotong royong, penghormatan terhadap leluhur, dan kebersamaan masyarakat adat.\n\nMelalui tradisi ini, masyarakat Dayak terus menjaga warisan budaya leluhur agar tetap hidup di tengah perkembangan zaman. Naik Jurongk menjadi pengingat bahwa padi bukan sekadar sumber pangan, melainkan bagian penting dari kehidupan, identitas, dan kearifan lokal masyarakat Dayak Ketapang.'})}
+DIALOGS.d1=['Selamat datang di ruang Adat Istiadat! Lihat lumbung padi ini, namanya jurongk.','Ritual Adat Naik Jurongk adalah tradisi masyarakat Dayak di Ketapang untuk bersyukur kepada Tuhan atas hasil panen padi.','Jurongk berarti lumbung, tempat menyimpan padi. Ia menjadi simbol kemakmuran, kebersamaan, dan ketahanan pangan.','Prosesi utamanya, padi dibawa menggunakan ambong, keranjang anyaman di depan itu, lalu disimpan ke dalam jurongk.','Ritual ini mengandung nilai gotong royong, penghormatan kepada leluhur, dan kebersamaan masyarakat adat.','Naik Jurongk mengingatkan kita bahwa padi bukan sekadar makanan, tapi bagian dari kehidupan, identitas, dan kearifan lokal masyarakat Dayak Ketapang.'];
+EXHIBITS.push({id:'d7',room:'Adat Istiadat',kind:'ngalu',base:false,still:true,pos:[-15.7,-8.7,0],gp:[-13.9,-8.1],wide:[[-16.5,-8.7],[-14.9,-8.7]],title:'Ritual Adat Ngalu: Tradisi Penyambutan Tamu Masyarakat Dayak Ketapang',img:'',
+text:'Ngalu merupakan ritual adat penyambutan tamu khas masyarakat Dayak Simpakng, khususnya dari wilayah Simpang Hulu dan Simpang Dua, Kabupaten Ketapang. Tradisi ini menjadi ungkapan penghormatan, keramahtamahan, dan kebahagiaan masyarakat dalam menerima kedatangan tamu, terutama tokoh atau tamu kehormatan.\n\nDalam prosesi Ngalu, para perempuan berpakaian adat berjejer menyambut tamu dengan iringan musik tradisional seperti gendang, gamelan, dan gong. Para tamu kemudian disuguhi tuak ketan, minuman tradisional hasil fermentasi beras ketan, menggunakan wadah seperti cawan bambu atau tanduk kerbau. Dalam beberapa pelaksanaan, prosesi juga diawali dengan pancung buluh muda dan dilanjutkan dengan pembasuhan kaki serta pemberian tampung tawar sebagai bentuk penghormatan.\n\nLebih dari sekadar penyambutan, Ngalu mencerminkan nilai persaudaraan, kebersamaan, dan penghormatan terhadap setiap orang yang datang. Tradisi ini menjadi bukti bahwa bagi masyarakat Dayak, menerima tamu bukan hanya tentang membuka pintu, tetapi juga memberikan penghormatan melalui adat dan budaya yang diwariskan leluhur.'});
+DIALOGS.d7=['Halo, selamat datang! Di sini kita mengenal Ngalu, ritual adat penyambutan tamu.','Ngalu adalah tradisi khas masyarakat Dayak Simpakng, khususnya dari Simpang Hulu dan Simpang Dua, Kabupaten Ketapang.','Tradisi ini ungkapan penghormatan, keramahtamahan, dan kebahagiaan dalam menerima tamu, terutama tokoh atau tamu kehormatan.','Para perempuan berpakaian adat berjejer menyambut tamu, diiringi gendang, gamelan, dan gong seperti yang ada di sini.','Tamu lalu disuguhi tuak ketan dalam cawan bambu atau tanduk kerbau. Kadang prosesinya diawali pancung buluh muda, lalu pembasuhan kaki dan tampung tawar.','Ngalu mengajarkan bahwa menerima tamu bukan hanya membuka pintu, tetapi juga memberi penghormatan lewat adat warisan leluhur.'];
+var GN_EXTRA={'Adat Istiadat':'Pemandu Adat'};
 /* Koleksi Alam Ketapang: Enggang Gading (materi dari pembuat museum) */
 {const e=EXHIBITS.find(x=>x.id=='d5');e.kind='enggang';e.title='Enggang Gading, Maskot Kalimantan Barat';e.text='Enggang gading, atau rangkong gading bagi masyarakat Dayak, ditetapkan sebagai maskot Kalimantan Barat pada tahun 1990 dan menjadi identitas pada lambang provinsi. Bagi masyarakat Dayak, burung ini dikenal sebagai tingang, simbol “alam atas” yang ukirannya melambangkan keberanian dan keagungan.\n\nParuhnya padat berwarna oranye kemerahan, dijuluki “gading merah”, dan justru inilah yang membuatnya diburu. Rangkong juga disebut petani hutan karena menyebar biji dan membantu hutan tumbuh kembali.\n\nSejak 2015, IUCN menetapkan statusnya Kritis, satu langkah menuju kepunahan di alam liar. Pada 2013, sekitar enam ribu rangkong gading dewasa tercatat diburu di Kalimantan Barat.';
 DIALOGS.d5=["Selamat datang di ruang Alam Ketapang! Ini enggang gading, atau rangkong gading.", "Burung ini ditetapkan sebagai maskot Kalimantan Barat pada tahun 1990, dan menjadi identitas pada lambang provinsi.", "Bagi masyarakat Dayak, burung ini dikenal sebagai tingang. Ia adalah simbol “alam atas”, dan ukirannya melambangkan keberanian dan keagungan.", "Paruhnya padat berwarna oranye kemerahan, dijuluki “gading merah”. Justru inilah yang membuatnya diburu.", "Rangkong juga disebut petani hutan, karena menyebar biji dan membantu hutan tumbuh kembali.", "Sejak 2015, IUCN menetapkan statusnya Kritis, satu langkah menuju kepunahan di alam liar.", "Pada 2013, sekitar enam ribu rangkong gading dewasa tercatat diburu di Kalimantan Barat. Yuk, kita kenali dan jaga burung kebanggaan kita ini."]}
@@ -182,6 +190,12 @@ scene.add(new THREE.HemisphereLight(0xffc99a,0x3a2a20,.62));
 
 [-12,0,12].forEach(x=>{const l=new THREE.PointLight(0xfff0d0,.8,26);l.position.set(x,7.6,0);BG.add(l)});
 const MT={};const mat=c=>MT[c]||new THREE.MeshLambertMaterial({color:c});
+/* motif Dayak: pola kait/pakis melingkar (aso) */
+function dykSp(x,cx,cy,r,dir,rot){x.beginPath();for(let t=0;t<=1.001;t+=.02){const a=rot+dir*t*Math.PI*2.6,rr=r*(1-t*.82),px=cx+Math.cos(a)*rr,py=cy+Math.sin(a)*rr;t?x.lineTo(px,py):x.moveTo(px,py)}x.stroke()}
+function dykTile(x,cx,cy,s,fg,ac){x.lineCap='round';x.strokeStyle=fg;x.lineWidth=s*.075;
+[[-1,-1],[1,-1],[1,1],[-1,1]].forEach((q,i)=>{dykSp(x,cx+q[0]*s*.24,cy+q[1]*s*.24,s*.2,i%2?1:-1,Math.atan2(-q[1],-q[0]))});
+x.fillStyle=ac;x.beginPath();x.moveTo(cx,cy-s*.16);x.lineTo(cx+s*.16,cy);x.lineTo(cx,cy+s*.16);x.lineTo(cx-s*.16,cy);x.closePath();x.fill();x.fillStyle=fg;x.beginPath();x.arc(cx,cy,s*.05,0,7);x.fill()}
+function dykTex(w,h,bg,fg,ac,rx,ry){return tex(w,h,(x,W,H)=>{x.fillStyle=bg;x.fillRect(0,0,W,H);const s=Math.min(W,H);for(let i=0;i<W/s;i++)for(let j=0;j<H/s;j++)dykTile(x,s/2+i*s,s/2+j*s,s,fg,ac);x.fillStyle=ac;x.fillRect(0,0,W,3);x.fillRect(0,H-3,W,3)},rx||1,ry||1)}
 function tex(w,h,draw,rx,ry){const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');draw(x,w,h);const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(rx,ry);t.anisotropy=4;return t}
 function spk(x,w,h,n,a){for(let i=0;i<n;i++){x.fillStyle='rgba('+(Math.random()<.5?'0,0,0':'255,255,255')+','+Math.random()*a+')';x.fillRect(Math.random()*w,Math.random()*h,2+Math.random()*3,2+Math.random()*3)}}
 const tm=t=>new THREE.MeshLambertMaterial({map:t});
@@ -261,6 +275,43 @@ if(k=='drum'){g.add(lathe([[.16,0],[.28,.12],[.33,.3],[.28,.48],[.2,.55]],M.wood
 const rg=part(new THREE.TorusGeometry(.21,.015,6,20),M.gold,0,.56,0);rg.rotation.x=Math.PI/2;g.add(rg)}
 if(k=='pot'){g.add(lathe([[0,0],[.25,.05],[.38,.25],[.4,.4],[.32,.6],[.2,.72],[.22,.8]],0xb5532f));
 const bd=part(new THREE.TorusGeometry(.39,.025,6,24),M.gold,0,.35,0);bd.rotation.x=Math.PI/2;g.add(bd)}
+if(k=='jurongk'){const dm=new THREE.MeshLambertMaterial({map:dykTex(256,128,'#3a2416','#f0e6d0','#b3261e',2,1)}),
+wv=new THREE.MeshLambertMaterial({map:tex(64,64,(x,w,h)=>{x.fillStyle='#b88a4e';x.fillRect(0,0,w,h);x.fillStyle='#8a6232';for(let i=0;i<8;i++)for(let j=0;j<8;j++)if((i+j)%2)x.fillRect(i*8,j*8,8,8)},3,2)});
+g.add(part(new B(1.7,.05,1.5),0x5a4028,0,.025,0));
+[[-.42,-.32],[.42,-.32],[-.42,.32],[.42,.32]].forEach(q=>{g.add(part(new C(.045,.055,.62,8),0x4a3220,q[0],.33,q[1]),part(new C(.13,.13,.03,14),0x6b4328,q[0],.56,q[1]))});
+g.add(part(new B(1.05,.06,.85),0x6b4328,0,.62,0));
+const bd=new THREE.Mesh(new B(.95,.62,.75),dm);bd.position.y=.96;g.add(bd);
+g.add(part(new B(.26,.36,.02),0x17110d,0,.9,.385),part(new B(.98,.05,.78),0xe0a81f,0,1.27,0));
+const rs=new THREE.Shape();rs.moveTo(-.68,0);rs.lineTo(.68,0);rs.lineTo(0,.58);rs.lineTo(-.68,0);
+const rf=new THREE.Mesh(new THREE.ExtrudeGeometry(rs,{depth:1.05,bevelEnabled:false}),mat(0x6b5236));rf.position.set(0,1.28,-.525);g.add(rf);
+[-.53,.53].forEach(z=>{const gb=new THREE.Mesh(new THREE.ShapeGeometry(rs),new THREE.MeshLambertMaterial({map:dykTex(128,64,'#17110d','#e0a81f','#b3261e',2,1),side:THREE.DoubleSide}));gb.scale.setScalar(.9);gb.position.set(0,1.3,z);g.add(gb);
+[-1,1].forEach(s=>{const h=part(new THREE.ConeGeometry(.035,.3,6),0xe0a81f,s*.08,1.92,z);h.rotation.z=-s*.6;g.add(h)})});
+const ld=part(new C(.04,.045,.78,8),0x6b4328,0,.34,.62);ld.rotation.x=-.55;g.add(ld);
+for(let i=0;i<4;i++)g.add(part(new B(.12,.025,.05),0x4a3220,0,.12+i*.15,.5+i*.08));
+const am=new THREE.Group(),ab=new THREE.Mesh(new THREE.LatheGeometry([[0,0],[.09,0],[.12,.06],[.15,.32],[.16,.36]].map(p=>new THREE.Vector2(p[0],p[1])),16),wv);am.add(ab);
+for(let i=0;i<9;i++){const a=i/9*Math.PI*2,r=.07*Math.random()+.02,c=part(new THREE.ConeGeometry(.035,.22,5),0xe8c24a,Math.cos(a)*r,.42,Math.sin(a)*r);c.rotation.set(Math.random()*.4-.2,0,Math.random()*.4-.2);am.add(c)}
+const st=part(new THREE.TorusGeometry(.12,.012,5,14,Math.PI),0x17110d,0,.3,-.15);st.rotation.y=Math.PI/2;am.add(st);am.position.set(.6,.05,.5);g.add(am);
+[[-.62,.5],[-.45,.6]].forEach(q=>{const b=part(new C(.07,.05,.32,8),0xd9b24a,q[0],.2,q[1]);b.rotation.z=.25;g.add(b,part(new THREE.ConeGeometry(.08,.14,8),0xe8c24a,q[0]-.04,.42,q[1]))})}
+if(k=='ngalu'){const wv=new THREE.MeshLambertMaterial({map:tex(64,64,(x,w,h)=>{x.fillStyle='#c9a066';x.fillRect(0,0,w,h);x.strokeStyle='#8a2f25';x.lineWidth=3;for(let i=0;i<w;i+=8){x.beginPath();x.moveTo(i,0);x.lineTo(i,h);x.stroke()}x.strokeStyle='#17110d';x.lineWidth=2;for(let j=4;j<h;j+=16){x.beginPath();x.moveTo(0,j);x.lineTo(w,j);x.stroke()}},4,3)});
+const mt=new THREE.Mesh(new B(1.9,.04,1.15),wv);mt.position.y=.02;g.add(mt);
+g.add(part(new C(.035,.04,1.05,8),0x4a3220,-.88,.55,-.3),part(new C(.035,.04,1.05,8),0x4a3220,-.22,.55,-.3),part(new B(.82,.06,.06),0x6b4328,-.55,1.06,-.3));
+[-.88,-.22].forEach(x=>{const h=part(new THREE.ConeGeometry(.03,.22,6),0xe0a81f,x,1.18,-.3);g.add(h)});
+const gm=part(new C(.24,.24,.07,28),0xb8862b,-.55,.62,-.3);gm.rotation.x=Math.PI/2;g.add(gm,part(new S(.065,12,8),0xd9a63a,-.55,.62,-.25));
+const gr=part(new THREE.TorusGeometry(.18,.01,5,24),0x8a5a1a,-.55,.62,-.26);g.add(gr);
+[-.68,-.42].forEach(x=>g.add(part(new C(.006,.006,.22,4),0x17110d,x,.93,-.3)));
+const gp=part(new C(.015,.015,.4,6),M.wood,-.15,.3,-.1);gp.rotation.z=.9;g.add(gp,part(new S(.04,8,6),0xb3261e,-.3,.42,-.1));
+g.add(new THREE.Mesh(new THREE.LatheGeometry([[0,0],[.12,0],[.14,.05],[.11,.4],[.14,.6],[.14,.62]].map(p=>new THREE.Vector2(p[0],p[1])),16),new THREE.MeshLambertMaterial({map:dykTex(128,64,'#6b4328','#e0a81f','#b3261e',3,2)})));
+g.children[g.children.length-1].position.set(.25,.04,-.32);g.add(part(new C(.14,.14,.02,16),0xf0e6d0,.25,.67,-.32));
+const ds=part(new C(.06,.1,.24,10),0x4a3220,.05,.16,.22);g.add(ds,part(new C(.3,.25,.05,20),0xb3261e,.05,.3,.22),part(new THREE.TorusGeometry(.29,.015,6,24),0xe0a81f,.05,.33,.22));
+g.children[g.children.length-1].rotation.x=Math.PI/2;
+[[-.12,.14],[.02,.34],[.16,.12]].forEach(q=>{g.add(part(new C(.045,.045,.15,10),0x9bb54a,q[0],.4,q[1]),part(new C(.047,.047,.02,10),0x6f8a2f,q[0],.42,q[1]),part(new C(.038,.038,.01,10),0xf2ead0,q[0],.475,q[1]))});
+const hn=part(new THREE.TorusGeometry(.13,.03,6,14,Math.PI*.75),0x3a3228,.2,.36,.3);hn.rotation.set(0,.4,.3);g.add(hn);
+[[.72,.15],[.82,.3]].forEach((q,i)=>{const h=1.2-i*.2;g.add(part(new C(.035,.04,h,8),0x7fae3e,q[0],h/2+.04,q[1]));for(let j=1;j<4;j++)g.add(part(new C(.045,.045,.02,8),0x5f8a2a,q[0],j*h/4,q[1]));
+const lf=part(new THREE.ConeGeometry(.08,.3,4),0x3f9a4f,q[0]+.05,h+.15,q[1]);lf.rotation.z=-.5;g.add(lf)});
+const bc=part(new C(.035,.035,.35,8),0x9bb54a,.55,.07,.42);bc.rotation.z=Math.PI/2;g.add(bc);
+g.add(new THREE.Mesh(new THREE.LatheGeometry([[0,0],[.1,0],[.14,.08],[.15,.1]].map(p=>new THREE.Vector2(p[0],p[1])),16),mat(0xe9e1d2)));
+g.children[g.children.length-1].position.set(-.6,.04,.32);
+for(let i=0;i<5;i++){const l=part(new THREE.ConeGeometry(.025,.2,4),0x3f9a4f,-.6+Math.cos(i*1.3)*.04,.2,.32+Math.sin(i*1.3)*.04);l.rotation.z=Math.cos(i*1.3)*.4;l.rotation.x=Math.sin(i*1.3)*.4;g.add(l)}}
 if(k=='ring'){g.add(part(new THREE.TorusGeometry(.32,.07,12,28),M.gold,0,.5,0),part(new S(.09,10,8),0xc43a2b,0,.84,0))}
 return g}
 
@@ -340,6 +391,15 @@ box(36.3,4,.3,0,2,-18,W);box(36.3,4,.3,0,6.3,-18,W);[-18,18].forEach(x=>{wz(-18,
 BX.slice(1,5).forEach(x=>{wz(-18,-13.5,x,2);wz(-10.5,-6,x,2);lin(x,-12,3,2,false)});
 [-6.5,6.5].forEach(x=>{wz(-18,-13.5,x,6.3);wz(-10.5,-6,x,6.3);lin(x,-12,3,6.3,false)});
 box(36.4,.3,12.2,0,4.17,-12.05,SL);box(37,.32,12.2,0,-.18,-12.1,ULIN);
+/* hiasan ornamen Dayak di ruang Adat Istiadat */
+{const ob=dykTex(256,64,'#17110d','#e0a81f','#b3261e',1,1);strip(ob,7.2,.42,7.2/1.6,-14.4,3.72,-17.83);
+[[-17.83,1],[-10.97,-1]].forEach(q=>{const m=strip(ob,12,.42,12/1.6,q[0],3.72,-12);m.rotation.y=q[1]*Math.PI/2});
+const sh=tex(96,256,(x,w,h)=>{x.clearRect(0,0,w,h);x.beginPath();x.moveTo(w/2,4);x.lineTo(w-6,40);x.lineTo(w-6,h-40);x.lineTo(w/2,h-4);x.lineTo(6,h-40);x.lineTo(6,40);x.closePath();x.fillStyle='#f0e6d0';x.fill();x.lineWidth=7;x.strokeStyle='#17110d';x.stroke();
+x.save();x.clip();for(let j=0;j<3;j++)dykTile(x,w/2,52+j*76,74,'#17110d','#b3261e');x.fillStyle='#b3261e';x.fillRect(0,124,w,8);x.restore()},1,1);
+[-16.75,-12.05].forEach(x=>{const m=new THREE.Mesh(new THREE.PlaneGeometry(.55/K,1.5),new THREE.MeshLambertMaterial({map:sh,transparent:true,alphaTest:.4,side:THREE.DoubleSide}));m.position.set(x,2.15,-17.82);TG.add(m)});
+const pn=new THREE.Mesh(new THREE.PlaneGeometry(2.2/K,1.1),new THREE.MeshLambertMaterial({map:dykTex(256,128,'#3a2416','#f0e6d0','#b3261e',1,1)}));pn.position.set(-17.82,2.1,-12);pn.rotation.y=Math.PI/2;TG.add(pn);
+const pf=new THREE.Mesh(new THREE.PlaneGeometry(2.36/K,1.26),mat(0xe0a81f));pf.position.set(-17.835,2.1,-12);pf.rotation.y=Math.PI/2;TG.add(pf);
+[[-17.7,-17.7],[-11.1,-17.7]].forEach(q=>pillar(q[0],2,q[1],.32,4))}
 UPN.forEach((n,i)=>{s=label(n,3.2,.7,34);s.position.set([-12.25,0,12.25][i],7.3,-17.8)});
 [-1,1].forEach(g=>{const m=box(36.8,.3,sl+.6,0,9.8,-12+g*3.1,RW);m.rotation.x=g*ang});box(36.9,.22,.3,0,11.4,-12,GD);
 [-18.4,18.4].forEach(x=>{const m=new THREE.Mesh(new THREE.ShapeGeometry(gsh),new THREE.MeshLambertMaterial({color:0xecc049,side:THREE.DoubleSide}));m.position.set(x,8.3,-12);m.rotation.y=Math.PI/2;TG.add(m)});
@@ -772,7 +832,7 @@ const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(
 EXHIBITS.forEach((e,i)=>{const c=GC[e.room]||Object.values(GC)[i%3],cxr=e.lx<-6?-12:e.lx>6?12:0;
 e.gx=MX(e.pos?e.lx+1.5:e.lx+(e.lx<cxr?1.5:-1.5));e.gz=MZ(e.lz+(e.lz<0?.9:-.9));if(e.gp){e.gx=MX(e.gp[0]);e.gz=MZ(e.gp[1])}
 const gd=buildHero(c[0],c[1],c[2],c[3]);gd.g.position.set(e.gx,e.y,e.gz);e.gf=Math.atan2(e.x-e.gx,e.z-e.gz);gd.g.rotation.y=e.gf;scene.add(gd.g);
-const b=bubbleSprite();b.position.set(0,2.3,0);gd.g.add(b);e.gd=gd;e.bub=b;e.guideName=GN[e.room]||'Pemandu';obstacles.push([e.gx,e.gz,e.y])});
+const b=bubbleSprite();b.position.set(0,2.3,0);gd.g.add(b);e.gd=gd;e.bub=b;e.guideName=GN[e.room]||GN_EXTRA[e.room]||'Pemandu';obstacles.push([e.gx,e.gz,e.y])});
 const STAIRS=[{x:MX(-4.2),z:MZ(-3.2),y:RH,tol:.8,title:'Naik ke lantai 2',act:()=>{me.set(MX(5.1),FL+RH,MZ(-4.8));dy=FL+RH;face=Math.PI/2}},
 {x:MX(5.1),z:MZ(-3.2),y:FL+RH,tol:.8,title:'Turun ke lantai 1',act:()=>{me.set(MX(-5),RH,MZ(-3.4));dy=RH;face=-Math.PI/2}}];
 const ALL=EXHIBITS.concat(STAIRS);
