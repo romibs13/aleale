@@ -108,7 +108,7 @@ p{line-height:1.65;margin:0 0 14px;max-width:62ch}
 <button class="btn" id="cclose">Tutup</button></div></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/js/loaders/GLTFLoader.js" onerror="void 0"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js" onerror="void 0"></script>
 <script>
 /* ===== ISI MUSEUM: ganti teks / tambah foto di sini =====
    img: alamat foto, misalnya 'foto/pohon.webp' (kosongkan jika belum ada) */
@@ -147,6 +147,14 @@ DIALOGS[q[0]]=['Halo! Ruang ini disiapkan untuk '+q[1].toLowerCase()+', tapi isi
 /* Koleksi Alam Ketapang: Enggang Gading (materi dari pembuat museum) */
 {const e=EXHIBITS.find(x=>x.id=='d5');e.kind='enggang';e.title='Enggang Gading, Maskot Kalimantan Barat';e.text='Enggang gading, atau rangkong gading bagi masyarakat Dayak, ditetapkan sebagai maskot Kalimantan Barat pada tahun 1990 dan menjadi identitas pada lambang provinsi. Bagi masyarakat Dayak, burung ini dikenal sebagai tingang, simbol “alam atas” yang ukirannya melambangkan keberanian dan keagungan.\n\nParuhnya padat berwarna oranye kemerahan, dijuluki “gading merah”, dan justru inilah yang membuatnya diburu. Rangkong juga disebut petani hutan karena menyebar biji dan membantu hutan tumbuh kembali.\n\nSejak 2015, IUCN menetapkan statusnya Kritis, satu langkah menuju kepunahan di alam liar. Pada 2013, sekitar enam ribu rangkong gading dewasa tercatat diburu di Kalimantan Barat.';
 DIALOGS.d5=["Selamat datang di ruang Alam Ketapang! Ini enggang gading, atau rangkong gading.", "Burung ini ditetapkan sebagai maskot Kalimantan Barat pada tahun 1990, dan menjadi identitas pada lambang provinsi.", "Bagi masyarakat Dayak, burung ini dikenal sebagai tingang. Ia adalah simbol “alam atas”, dan ukirannya melambangkan keberanian dan keagungan.", "Paruhnya padat berwarna oranye kemerahan, dijuluki “gading merah”. Justru inilah yang membuatnya diburu.", "Rangkong juga disebut petani hutan, karena menyebar biji dan membantu hutan tumbuh kembali.", "Sejak 2015, IUCN menetapkan statusnya Kritis, satu langkah menuju kepunahan di alam liar.", "Pada 2013, sekitar enam ribu rangkong gading dewasa tercatat diburu di Kalimantan Barat. Yuk, kita kenali dan jaga burung kebanggaan kita ini."]}
+/* Koleksi Kerajinan: Anyaman Pandan (model/bakul_anyaman.glb) dan Batik Pelangi (model/batik_rak.glb).
+   size = ukuran model, still = tidak berputar, base:false = tanpa alas, gp = posisi pemandu, wide = titik penghalang tambahan */
+{const e=EXHIBITS.find(x=>x.id=='d4');Object.assign(e,{kind:'pot',glb:'model/bakul_anyaman.glb',size:1.5,pos:[9.8,-7.1,0],gp:[8.4,-7.5],title:'Anyaman Pandan Khas Ketapang',
+text:'Anyaman pandan merupakan salah satu kerajinan tradisional masyarakat Desa Sungai Bakau, Kabupaten Ketapang. Dengan memanfaatkan daun pandan berduri yang tumbuh di sekitar lingkungan mereka, masyarakat mengolahnya menjadi berbagai produk kerajinan seperti tikar, tas, dan keranjang.\n\nProses pembuatannya membutuhkan ketelitian dan keterampilan tangan, mulai dari pengolahan daun hingga menyusunnya menjadi anyaman yang indah dan bernilai guna. Kerajinan ini bukan sekadar produk rumah tangga, tetapi juga mencerminkan kearifan lokal masyarakat dalam memanfaatkan kekayaan alam serta menjaga keterampilan yang diwariskan secara turun-temurun.'})}
+DIALOGS.d4=['Selamat datang di ruang Kerajinan! Lihat bakul ini, ini anyaman pandan khas Ketapang.','Anyaman pandan adalah kerajinan tradisional masyarakat Desa Sungai Bakau, Kabupaten Ketapang.','Mereka memanfaatkan daun pandan berduri yang tumbuh di sekitar lingkungan, lalu mengolahnya menjadi tikar, tas, dan keranjang.','Pembuatannya butuh ketelitian dan keterampilan tangan, mulai dari mengolah daun sampai menyusunnya menjadi anyaman yang indah.','Kerajinan ini mencerminkan kearifan lokal dalam memanfaatkan alam, sekaligus keterampilan yang diwariskan turun-temurun.'];
+EXHIBITS.push({id:'d6',room:'Kerajinan',kind:'flag',glb:'model/batik_rak.glb',size:3.4,still:true,base:false,pos:[7.2,-16.6,0],gp:[9.2,-15.6],wide:[[6.3,-16.6],[8.1,-16.6]],title:'Batik Pelangi Khas Ketapang',img:'',
+text:'Kain Pelangi merupakan salah satu warisan tekstil tradisional Kabupaten Ketapang yang memiliki hubungan erat dengan sejarah Kerajaan Matan. Dahulu, kain ini dikenal sebagai bagian dari tradisi perempuan bangsawan di lingkungan keraton.\n\nKeistimewaannya terletak pada teknik pewarnaan tradisional yang disebut melangi, serta ragam motif yang terinspirasi dari alam dan lingkungan sekitar. Proses pembuatannya membutuhkan ketelitian dan kesabaran, sehingga setiap kain memiliki nilai seni dan budaya tersendiri.\n\nKini, Kain Pelangi terus dilestarikan sebagai bagian dari identitas budaya Ketapang. Lebih dari sekadar kain, setiap motif dan warna menyimpan cerita tentang sejarah, tradisi, dan keterampilan leluhur yang patut dijaga oleh generasi mendatang.'});
+DIALOGS.d6=['Halo! Kain-kain berwarna di rak ini adalah Kain Pelangi, batik khas Ketapang.','Kain ini punya hubungan erat dengan sejarah Kerajaan Matan. Dahulu, kain ini bagian dari tradisi perempuan bangsawan di lingkungan keraton.','Keistimewaannya ada pada teknik pewarnaan tradisional yang disebut melangi, dengan motif yang terinspirasi dari alam sekitar.','Membuatnya butuh ketelitian dan kesabaran, jadi setiap kain punya nilai seni dan budaya tersendiri.','Kini Kain Pelangi terus dilestarikan sebagai identitas budaya Ketapang. Setiap motif dan warnanya menyimpan cerita tentang sejarah dan keterampilan leluhur.'];
 /* Bingkai foto: 48 bingkai, 4 per ruang (nomor 1-48). Isi PHOTOS[nomor]='foto/nama.webp' untuk memasang foto; kosong = tempat foto bernomor.
    Urutan ruang: 1-4 Lobi, 5-8 Legenda Ale-Ale, 9-12 Kerajaan Matan, 13-16 Adat Istiadat, 17-20 Kesenian, 21-24 Kuliner, 25-28 Kerajinan, 29-32 Alam Ketapang,
    33-36 Galeri Lantai 2, 37-40 Tokoh dan Pahlawan, 41-44 Bahasa dan Sastra, 45-48 Galeri Foto.
@@ -259,9 +267,10 @@ return g}
 const spots=[[-3.5,-3],[3.5,-3],[-3.5,3],[3.5,3]];
 const obstacles=[[MX(-12),MZ(0),RH,3.1]];
 EXHIBITS.forEach((e,i)=>{const cx=i<4?-12:12,p=spots[i%4],q=e.pos||[cx+p[0],p[1],0],lx=q[0],lz=q[1],x=MX(lx),z=MZ(lz),y=q[2];e.lx=lx;e.lz=lz;e.x=x;e.z=z;e.y=y+RH;obstacles.push([x,z,y+RH]);
-scene.add(part(new THREE.CylinderGeometry(.6,.7,.5,12),0xcfc5ae,x,y+RH+.25,z));
-const m=model(e.kind);m.position.set(x,y+RH+.5,z);m.scale.setScalar(1.1);scene.add(m);e.mesh=m;
-if(e.glb&&THREE.GLTFLoader)new THREE.GLTFLoader().load(e.glb,r=>{const o=r.scene,sz=new THREE.Box3().setFromObject(o).getSize(new THREE.Vector3());o.scale.setScalar(1.6/Math.max(sz.x,sz.y,sz.z));o.position.y=-new THREE.Box3().setFromObject(o).min.y;m.clear();m.add(o)},undefined,()=>{})});
+if(e.base!==false)scene.add(part(new THREE.CylinderGeometry(.6,.7,.5,12),0xcfc5ae,x,y+RH+.25,z));
+const m=model(e.kind);m.position.set(x,y+RH+(e.base===false?0:.5),z);m.scale.setScalar(1.1);if(e.rot)m.rotation.y=e.rot;scene.add(m);e.mesh=m;
+(e.wide||[]).forEach(w=>obstacles.push([MX(w[0]),MZ(w[1]),y+RH,w[2]||.9]));
+if(e.glb&&THREE.GLTFLoader)new THREE.GLTFLoader().load(e.glb,r=>{const o=r.scene,sz=new THREE.Box3().setFromObject(o).getSize(new THREE.Vector3());o.scale.setScalar((e.size||1.6)/Math.max(sz.x,sz.y,sz.z));o.position.y=-new THREE.Box3().setFromObject(o).min.y;m.clear();m.add(o)},undefined,()=>{})});
 
 /* area yang boleh dilalui */
 /* halaman luar */
@@ -761,7 +770,7 @@ function bubbleSprite(){const c=document.createElement('canvas');c.width=c.heigh
 x.beginPath();x.moveTo(46,92);x.lineTo(50,120);x.lineTo(76,94);x.closePath();x.fill();x.fillStyle='#8a2f25';x.font='bold 70px Georgia,serif';x.textAlign='center';x.textBaseline='middle';x.fillText('!',64,58);
 const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c)}));sp.scale.set(.7,.7,1);return sp}
 EXHIBITS.forEach((e,i)=>{const c=GC[e.room]||Object.values(GC)[i%3],cxr=e.lx<-6?-12:e.lx>6?12:0;
-e.gx=MX(e.pos?e.lx+1.5:e.lx+(e.lx<cxr?1.5:-1.5));e.gz=MZ(e.lz+(e.lz<0?.9:-.9));
+e.gx=MX(e.pos?e.lx+1.5:e.lx+(e.lx<cxr?1.5:-1.5));e.gz=MZ(e.lz+(e.lz<0?.9:-.9));if(e.gp){e.gx=MX(e.gp[0]);e.gz=MZ(e.gp[1])}
 const gd=buildHero(c[0],c[1],c[2],c[3]);gd.g.position.set(e.gx,e.y,e.gz);e.gf=Math.atan2(e.x-e.gx,e.z-e.gz);gd.g.rotation.y=e.gf;scene.add(gd.g);
 const b=bubbleSprite();b.position.set(0,2.3,0);gd.g.add(b);e.gd=gd;e.bub=b;e.guideName=GN[e.room]||'Pemandu';obstacles.push([e.gx,e.gz,e.y])});
 const STAIRS=[{x:MX(-4.2),z:MZ(-3.2),y:RH,tol:.8,title:'Naik ke lantai 2',act:()=>{me.set(MX(5.1),FL+RH,MZ(-4.8));dy=FL+RH;face=Math.PI/2}},
@@ -794,7 +803,7 @@ cam.position.set(cx,cy,cz);cam.lookAt(me.x,dy+1.3,me.z);
 if(!started){const an=Math.sin(t*.12)*.8;cam.position.set(Math.sin(an)*50,12+Math.sin(t*.2)*2,-4+Math.cos(an)*50);cam.lookAt(0,6,-6);hero.g.visible=false}
 near=null;let best=2.8;if(started)ALL.forEach(e=>{const d=Math.hypot(me.x-e.x,me.z-e.z);if(d<best&&Math.abs(me.y-e.y)<(e.tol||2.5)){best=d;near=e}});
 const pb=$('prompt');pb.style.display=near&&!open?'block':'none';if(near)pb.textContent=(near.act?'':'Bicara dengan pemandu: ')+near.title;
-EXHIBITS.forEach(e=>{e.mesh.rotation.y=t*.6;const tx=near===e?me.x:e.x,tz=near===e?me.z:e.z,tg=Math.atan2(tx-e.gx,tz-e.gz),d=((tg-e.gf+Math.PI)%(2*Math.PI)+2*Math.PI)%(2*Math.PI)-Math.PI;
+EXHIBITS.forEach(e=>{if(!e.still)e.mesh.rotation.y=t*.6;const tx=near===e?me.x:e.x,tz=near===e?me.z:e.z,tg=Math.atan2(tx-e.gx,tz-e.gz),d=((tg-e.gf+Math.PI)%(2*Math.PI)+2*Math.PI)%(2*Math.PI)-Math.PI;
 e.gf+=d*Math.min(1,6*dt);e.gd.g.rotation.y=e.gf;anim(e.gd,t+e.gx,0,0,dlgOpen&&dE===e?2:(near===e&&started&&!dlgOpen?1:0),dt);e.bub.visible=!(dlgOpen&&dE===e);e.bub.position.y=2.3+Math.sin(t*3+e.gx)*.06});tugu.rotation.y=t*.2;WIND.forEach(f=>f(t));
 $('room').textContent=rn();
 renderer.render(scene,cam)})();
