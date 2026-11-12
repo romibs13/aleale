@@ -63,6 +63,30 @@ p{line-height:1.65;margin:0 0 14px;max-width:62ch}
 .panel img{width:100%;border-radius:10px;margin-bottom:14px}
 .btn{background:var(--gold);color:#1b1b12;border:0;border-radius:8px;padding:12px 20px;font-weight:700}
 .small{font-size:13px;color:var(--silver)}
+#lb{position:fixed;inset:0;z-index:25;display:none;background:rgba(4,14,16,.95);touch-action:none;overflow:hidden}
+#lb.on{display:block}
+#lbimg{position:absolute;left:50%;top:50%;max-width:94vw;max-height:78vh;transform:translate(-50%,-50%);border-radius:6px;box-shadow:0 10px 40px rgba(0,0,0,.6);cursor:zoom-in;-webkit-user-drag:none;user-select:none}
+#lb.zoomed #lbimg{cursor:grab}
+#lbbar{position:absolute;right:12px;top:max(12px,env(safe-area-inset-top));display:flex;gap:8px;z-index:2}
+#lbbar button{min-width:44px;background:rgba(14,47,51,.9);color:var(--text);border:1px solid var(--gold);border-radius:999px;padding:9px 14px;font-weight:700}
+#lbbar #lbx{background:var(--gold);color:#1b1b12;border:0}
+#lbcap{position:absolute;left:0;right:0;bottom:max(14px,env(safe-area-inset-bottom));text-align:center;color:var(--text);font-size:15px;padding:0 16px;pointer-events:none}
+#lbcap small{display:block;color:var(--silver);font-size:12px;margin-top:4px}
+.zoomable{cursor:zoom-in}
+.zhint{font-size:12px;color:var(--silver);margin:-8px 0 12px}
+#mapbtn{position:fixed;top:calc(max(12px,env(safe-area-inset-top)) + 88px);right:12px;display:none;background:rgba(14,47,51,.85);color:var(--text);border:1px solid var(--gold);border-radius:999px;padding:9px 14px;font-weight:700;font-size:13px}
+#mini{position:fixed;right:12px;bottom:max(12px,env(safe-area-inset-bottom));width:170px;height:150px;display:none;border:1px solid var(--gold);border-radius:10px;background:rgba(10,35,38,.88);cursor:pointer;padding:0}
+#mini canvas{position:static;width:100%;height:100%;display:block;border-radius:10px}
+#mini span{position:absolute;left:6px;top:4px;font-size:11px;color:var(--gold);font-weight:700;pointer-events:none}
+body.ig #mapbtn,body.ig #mini{display:block}
+body.ig.dlgon #mini,body.ig.minioff #mini{display:none}
+#map .panel{max-width:820px}
+#mapcv{position:static;width:100%;height:auto;aspect-ratio:40/33;display:block;border-radius:10px;background:#0a2326;margin:10px 0}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tabs .b2.on{background:var(--gold);color:#1b1b12;border-color:var(--gold);font-weight:700}
+.lgd{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--silver);margin-bottom:12px}
+.lgd i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+@media (pointer:coarse){#mini{width:130px;height:115px;bottom:max(24px,env(safe-area-inset-bottom))}}
 </style></head><body>
 <div id="loading"><div class="ldbox"><div class="orn"></div><h1>Museum Virtual Ketapang</h1><p class="sub">Rumah panggung Melayu berpadu motif Dayak</p>
 <div class="bar"><i id="ldfill"></i></div><div class="small" id="ldmsg" style="margin-top:8px">Memuat museum… 0%</div><div class="tip" id="ldtip"></div></div></div>
@@ -76,7 +100,7 @@ p{line-height:1.65;margin:0 0 14px;max-width:62ch}
 <div id="joy"><div id="knob"></div></div>
 <button id="pbtn">☰ Menu</button>
 <div class="layer" id="menu"><div class="mcol"><div class="orn"></div><h1>Museum Virtual Ketapang</h1><p class="sub">Jelajahi sejarah dan budaya Ketapang</p>
-<div class="small" id="ver" style="margin:-10px 0 14px">Versi 46</div>
+<div class="small" id="ver" style="margin:-10px 0 14px">Versi 47</div>
 <button class="mb prim" id="mPlay">▶ Mulai</button><button class="mb" id="mHow">Cara bermain</button><button class="mb" id="mAbout">Tentang</button><button class="mb" id="mSet">Pengaturan</button></div></div>
 <div class="layer" id="start"><div class="panel"><h2>Siapa namamu?</h2><p>Kami ingin menyapamu sebelum kamu masuk ke museum.</p>
 <label class="fld">Namamu<input id="inNama" maxlength="20" autocomplete="name" placeholder="mis. Siti"></label>
@@ -88,7 +112,7 @@ p{line-height:1.65;margin:0 0 14px;max-width:62ch}
 <div class="layer" id="how"><div class="panel"><h2>Cara bermain</h2>
 <p><b>Komputer</b><br>W A S D atau panah untuk berjalan. Tahan Shift untuk berlari. Seret mouse untuk memutar kamera. E atau Spasi untuk bicara dengan pemandu dan melanjutkan percakapan.</p>
 <p><b>HP</b><br>Joystick di kiri bawah untuk berjalan (dorong penuh untuk berlari). Geser layar untuk memutar kamera. Ketuk tombol di bawah layar untuk bicara dengan pemandu.</p>
-<p><b>Tips</b><br>Dekati pemandu yang bertanda “!”. Naik tangga di lobi untuk ke galeri lantai 2. Nyalakan suara agar pemandu bisa bercerita.</p>
+<p><b>Tips</b><br>Dekati pemandu yang bertanda “!”. Naik tangga di lobi untuk ke galeri lantai 2. Ketuk atau klik foto di dinding untuk memperbesarnya. Buka <b>🗺 Peta</b> (atau tekan M) untuk melihat denah ruangan dan posisimu sekarang. Nyalakan suara agar pemandu bisa bercerita.</p>
 <button class="btn back">Kembali</button></div></div>
 <div class="layer" id="about"><div class="panel"><h2>Tentang museum</h2>
 <p>Museum Virtual Ketapang adalah museum 3D yang bisa dijelajahi lewat browser, untuk mengenal sejarah dan budaya Ketapang, Kalimantan Barat.</p>
@@ -103,6 +127,15 @@ p{line-height:1.65;margin:0 0 14px;max-width:62ch}
 <div class="row"><span>Bayangan karakter</span><button class="b2" id="sShadow"></button></div>
 <div class="row"><span>Nama, asal, dan progres</span><button class="b2" id="sClear">Hapus</button></div>
 <button class="btn back">Kembali</button></div></div>
+<button id="mapbtn" aria-label="Buka peta museum">🗺 Peta</button>
+<button id="mini" aria-label="Peta mini, ketuk untuk memperbesar"><span id="minilbl">Lantai 1</span><canvas id="minicv"></canvas></button>
+<div class="layer" id="map"><div class="panel"><h2>Denah museum</h2>
+<p class="small" id="mapwhere" style="margin:0 0 10px"></p>
+<div class="tabs"><button class="b2" id="mapF1">Lantai 1</button><button class="b2" id="mapF2">Lantai 2</button><button class="b2" id="mapMini" style="margin-left:auto"></button></div>
+<canvas id="mapcv"></canvas>
+<div class="lgd"><span><i style="background:#ff5a4a;border-radius:2px"></i>Posisimu (panah = arah hadap)</span><span><i style="background:#e3b341"></i>Pemandu / koleksi</span><span><i style="background:#7fd6c8;border-radius:2px"></i>Tangga</span><span><i style="background:#cfd8dc;border-radius:2px"></i>Foto</span></div>
+<button class="btn" id="mapclose">Tutup</button></div></div>
+<div id="lb" role="dialog" aria-label="Foto diperbesar"><img id="lbimg" alt="" draggable="false"><div id="lbbar"><button id="lbout" aria-label="Perkecil">−</button><button id="lbin" aria-label="Perbesar">+</button><button id="lbx">Tutup ✕</button></div><div id="lbcap"></div></div>
 <div class="layer" id="card"><div class="panel">
 <div class="tag" id="ctag"></div><h2 id="ctitle"></h2><div id="cimg"></div><p id="ctext"></p>
 <button class="btn" id="cclose">Tutup</button></div></div>
@@ -203,7 +236,7 @@ const PHOTOS={
 };
 /* ===== akhir isi ===== */
 
-const $=id=>document.getElementById(id);
+const $=id=>document.getElementById(id);const PHOTO_HITS=[],PHOTO_SPOTS=[];
 const renderer=new THREE.WebGLRenderer({canvas:$('c'),antialias:true});
 renderer.setPixelRatio(Math.min(devicePixelRatio,2));
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x8fcfdc);scene.fog=new THREE.Fog(0x8fcfdc,38,135);
@@ -826,7 +859,8 @@ specs.forEach((f,i)=>{d.position.set(f.x,f.y,f.z);d.rotation.set(0,f.ry,0);d.sca
 const k=document.createElement('canvas');k.width=256;k.height=199;const x=k.getContext('2d'),g=x.createLinearGradient(0,0,256,199);g.addColorStop(0,'#d9c9a3');g.addColorStop(1,'#b9a87f');x.fillStyle=g;x.fillRect(0,0,256,199);x.strokeStyle='rgba(90,70,40,.5)';x.lineWidth=3;x.strokeRect(10,10,236,179);
 x.fillStyle='#5b4528';x.textAlign='center';x.font='bold 40px Georgia,serif';x.fillText('Foto '+f.n,128,95);x.font='17px Georgia,serif';x.fillText(f.room,128,128);x.font='13px Georgia,serif';x.fillText('tempat foto',128,152);
 const mat=new THREE.MeshLambertMaterial({map:new THREE.CanvasTexture(k),emissive:0x2a2a2a}),ph=new THREE.Mesh(pg,mat);
-if(PHOTOS[f.n])loader.load(PHOTOS[f.n],t=>{t.anisotropy=4;mat.map=t;mat.needsUpdate=true});
+if(PHOTOS[f.n]){loader.load(PHOTOS[f.n],t=>{t.anisotropy=4;mat.map=t;mat.needsUpdate=true});const pi={src:PHOTOS[f.n],room:f.room,n:f.n,floor:f.y>RH+3?1:0,lx:f.x/K,lz:Z0+(f.z-Z0)/K};ph.userData.photo=pi;PHOTO_HITS.push(ph);PHOTO_SPOTS.push(pi);
+const sg=f.ry>0?1:-1;ALL.push({x:f.x+sg*1.1,z:f.z,y:f.y-2,tol:1.5,title:'🔍 Lihat foto '+f.n+' ('+f.room+')',act:()=>openLB(pi.src,'Foto '+f.n,f.room)})}
 const gr=new THREE.Group();gr.position.set(f.x,f.y,f.z);gr.rotation.y=f.ry;gr.scale.setScalar(FS);ph.position.set(0,0,ZP);gr.add(ph);scene.add(gr)});
 fm.instanceMatrix.needsUpdate=true;fm.frustumCulled=false;scene.add(fm)}catch(e){}});
 /* kupu-kupu: model mohamed_hassan-butterfly-4479.glb (disederhanakan: badan + dua sayap yang mengepak), tertanam */
@@ -934,7 +968,7 @@ if(obstacles.some(o=>Math.abs((o[2]||0)-h)<2&&Math.hypot(x-o[0],z-o[1])<(o[3]||.
 
 /* kontrol */
 let yaw=0,pitch=.3,open=false,started=false;const keys={};let jx=0,jy=0;
-addEventListener('keydown',e=>{keys[e.code]=1;if(e.code=='KeyE'||e.code=='Space'||e.code=='Enter'){if(dlgOpen)dlgNext();else if(e.code=='KeyE')interact()}if(e.code=='Escape'){closeCard();closeDlg()}});
+addEventListener('keydown',e=>{keys[e.code]=1;if(lbOn()&&e.code!='Escape')return;if(e.code=='KeyM'&&started&&!e.repeat&&!(document.activeElement&&document.activeElement.tagName=='INPUT')){if($('map').classList.contains('on'))closeMap();else if(!open)openMap();return}if(e.code=='KeyE'||e.code=='Space'||e.code=='Enter'){if(dlgOpen)dlgNext();else if(e.code=='KeyE')interact()}if(e.code=='Escape'){if(lbOn()){closeLB();return}if($('map').classList.contains('on')){closeMap();return}closeCard();closeDlg()}});
 addEventListener('keyup',e=>keys[e.code]=0);
 let look=null;const cv=$('c');
 cv.addEventListener('pointerdown',e=>{look={id:e.pointerId,x:e.clientX,y:e.clientY};cv.setPointerCapture(e.pointerId)});
@@ -953,7 +987,8 @@ function hud(){$('cnt').textContent=seen.size+'/'+EXHIBITS.length}hud();
 let near=null;
 function interact(){if(started&&!open&&near){if(near.act)near.act();else talk(near)}}
 function show(e){open=true;$('ctag').textContent=e.room;$('ctitle').textContent=e.title;$('ctext').textContent=e.text;
-$('cimg').innerHTML=e.img?'<img alt="'+e.title+'" src="'+e.img+'">':'<div class="ph">Foto belum ditambahkan</div>';
+$('cimg').innerHTML=e.img?'<img class="zoomable" alt="" src="'+e.img+'"><div class="zhint">Ketuk foto untuk memperbesar</div>':'<div class="ph">Foto belum ditambahkan</div>';
+if(e.img){const im=$('cimg').querySelector('img');im.alt=e.title;im.onclick=()=>openLB(e.img,e.title,e.room)}
 $('card').classList.add('on');seen.add(e.id);hud();try{localStorage.setItem('ketapang-seen',JSON.stringify([...seen]))}catch(_){}}
 function closeCard(){open=false;$('card').classList.remove('on')}
 $('cclose').onclick=closeCard;$('prompt').onclick=interact;
@@ -996,12 +1031,12 @@ function typeLine(){const t=dLines[dPage];let i=0;clearInterval(dTimer);$('dtext
 dTimer=setInterval(()=>{i++;$('dtext').textContent=t.slice(0,i);if(i>=t.length)clearInterval(dTimer)},22);
 const last=dPage==dLines.length-1;$('dnext').textContent=last?'Selesai':'Lanjut ▶';$('dcard').style.display=last&&dE?'inline-block':'none';speak(t)}
 const greeted=new Set();
-function say(name,lines,e){dE=e;dLines=lines;dPage=0;dlgOpen=true;open=true;$('dname').textContent=name;$('dlg').style.display='block';typeLine()}
+function say(name,lines,e){dE=e;dLines=lines;dPage=0;dlgOpen=true;open=true;document.body.classList.add('dlgon');$('dname').textContent=name;$('dlg').style.display='block';typeLine()}
 function talk(e){const L=(DIALOGS[e.id]||[e.text]).slice(),gn=e.guideName||'Pemandu';
 if(PL.nama&&!greeted.has(gn)){greeted.add(gn);L.unshift('Halo, '+PL.nama+'! Aku '+gn+'. Senang bertemu denganmu.')}
 seen.add(e.id);hud();try{localStorage.setItem('ketapang-seen',JSON.stringify([...seen]))}catch(_){}say(gn,L,e)}
 function dlgNext(){const t=dLines[dPage];if($('dtext').textContent.length<t.length){clearInterval(dTimer);$('dtext').textContent=t;return}if(dPage<dLines.length-1){dPage++;typeLine()}else closeDlg()}
-function closeDlg(){if(!dlgOpen)return;clearInterval(dTimer);if('speechSynthesis' in window)speechSynthesis.cancel();bgm.volume=MV;dlgOpen=false;open=false;$('dlg').style.display='none'}
+function closeDlg(){if(!dlgOpen)return;clearInterval(dTimer);if('speechSynthesis' in window)speechSynthesis.cancel();bgm.volume=MV;dlgOpen=false;open=false;document.body.classList.remove('dlgon');$('dlg').style.display='none'}
 $('dnext').onclick=dlgNext;
 $('dcard').onclick=()=>{const e=dE;closeDlg();show(e)};
 $('dvoice').onclick=()=>{voiceOn=!voiceOn;$('dvoice').textContent=voiceOn?'🔊 Suara':'🔇 Suara';if(voiceOn&&dlgOpen)speak(dLines[dPage]);else if('speechSynthesis' in window)speechSynthesis.cancel();saveSet();updSet()};
@@ -1068,6 +1103,79 @@ EXHIBITS.forEach(e=>{if(!e.still)e.mesh.rotation.y=t*.6;if(e.mesh.userData.anim)
 e.gf+=d*Math.min(1,6*dt);e.gd.g.rotation.y=e.gf;anim(e.gd,t+e.gx,0,0,dlgOpen&&dE===e?2:(near===e&&started&&!dlgOpen?1:0),dt);e.bub.visible=!(dlgOpen&&dE===e);e.bub.position.y=2.3+Math.sin(t*3+e.gx)*.06});tugu.rotation.y=t*.2;WIND.forEach(f=>f(t));
 $('room').textContent=rn();
 renderer.render(scene,cam)})();
+
+/* ===== foto diperbesar (lightbox) ===== */
+const lb=$('lb'),lbImg=$('lbimg'),lbP=new Map();let lbS=1,lbX=0,lbY=0,lbPrevOpen=false,lbPinch=null,lbDrag=null,lbMoved=false;
+function lbOn(){return lb.classList.contains('on')}
+function lbApply(){lbS=Math.max(1,Math.min(5,lbS));if(lbS<1.02){lbS=1;lbX=lbY=0}else{const mx=Math.max(0,(lbImg.offsetWidth*lbS-innerWidth)/2+40),my=Math.max(0,(lbImg.offsetHeight*lbS-innerHeight)/2+40);lbX=Math.max(-mx,Math.min(mx,lbX));lbY=Math.max(-my,Math.min(my,lbY))}
+lbImg.style.transform='translate(-50%,-50%) translate('+lbX+'px,'+lbY+'px) scale('+lbS+')';lb.classList.toggle('zoomed',lbS>1)}
+function lbZoom(f,cx,cy){const o=lbS;lbS=Math.max(1,Math.min(5,lbS*f));if(cx!=null&&lbS!=o){const k=lbS/o;lbX-=(cx-innerWidth/2-lbX)*(k-1);lbY-=(cy-innerHeight/2-lbY)*(k-1)}lbApply()}
+function openLB(src,title,room){if(lbOn())return;lbPrevOpen=open;open=true;lbS=1;lbX=lbY=0;lbApply();lbImg.src=src;lbImg.alt=title||'Foto';
+$('lbcap').innerHTML='';const b=document.createElement('b');b.textContent=title||'';const sm=document.createElement('small');sm.textContent=(room?room+' · ':'')+'Ketuk foto, cubit, gulir mouse, atau tombol + untuk memperbesar. Geser untuk melihat bagian lain.';$('lbcap').append(b,sm);
+lb.classList.add('on');for(const k in keys)keys[k]=0;$('lbx').focus()}
+function closeLB(){if(!lbOn())return;lb.classList.remove('on');lbP.clear();lbPinch=lbDrag=null;open=lbPrevOpen}
+$('lbx').onclick=closeLB;$('lbin').onclick=()=>lbZoom(1.5);$('lbout').onclick=()=>lbZoom(1/1.5);
+lb.addEventListener('wheel',e=>{e.preventDefault();lbZoom(e.deltaY<0?1.2:1/1.2,e.clientX,e.clientY)},{passive:false});
+lb.addEventListener('pointerdown',e=>{if(e.target.closest('#lbbar'))return;lbP.set(e.pointerId,{x:e.clientX,y:e.clientY});lb.setPointerCapture(e.pointerId);
+if(lbP.size==2){const [p,q]=[...lbP.values()];lbPinch={d:Math.hypot(p.x-q.x,p.y-q.y),s:lbS};lbDrag=null;lbMoved=true}else{lbMoved=false;lbDrag={x:e.clientX,y:e.clientY,tx:lbX,ty:lbY,onImg:e.target===lbImg}}});
+lb.addEventListener('pointermove',e=>{if(!lbP.has(e.pointerId))return;lbP.set(e.pointerId,{x:e.clientX,y:e.clientY});
+if(lbPinch&&lbP.size==2){const [p,q]=[...lbP.values()];lbS=lbPinch.s*Math.hypot(p.x-q.x,p.y-q.y)/Math.max(1,lbPinch.d);lbApply()}
+else if(lbDrag){const dx=e.clientX-lbDrag.x,dy=e.clientY-lbDrag.y;if(Math.hypot(dx,dy)>6)lbMoved=true;if(lbS>1){lbX=lbDrag.tx+dx;lbY=lbDrag.ty+dy;lbApply()}}});
+const lbUp=e=>{if(!lbP.has(e.pointerId))return;lbP.delete(e.pointerId);
+if(lbDrag&&!lbMoved){if(lbDrag.onImg){if(lbS>1){lbS=1;lbApply()}else lbZoom(2.5,e.clientX,e.clientY)}else if(lbS==1)closeLB()}
+if(lbP.size<2)lbPinch=null;if(lbP.size==0)lbDrag=null};
+lb.addEventListener('pointerup',lbUp);lb.addEventListener('pointercancel',lbUp);
+addEventListener('resize',()=>{if(lbOn())lbApply()});
+/* klik / ketuk bingkai foto di dinding */
+{const rc=new THREE.Raycaster(),v2=new THREE.Vector2();let tap=null;rc.far=12;
+const hit=e=>{v2.set(e.clientX/innerWidth*2-1,-(e.clientY/innerHeight)*2+1);rc.setFromCamera(v2,cam);return rc.intersectObjects(PHOTO_HITS,false)[0]};
+cv.addEventListener('pointerdown',e=>{tap={x:e.clientX,y:e.clientY,t:performance.now()}});
+cv.addEventListener('pointerup',e=>{if(!tap||!started||open)return;const ok=Math.hypot(e.clientX-tap.x,e.clientY-tap.y)<8&&performance.now()-tap.t<500;tap=null;if(!ok||!PHOTO_HITS.length)return;
+const h=hit(e);if(h){const p=h.object.userData.photo;openLB(p.src,'Foto '+p.n,p.room)}});
+cv.addEventListener('pointermove',e=>{if(e.pointerType!='mouse'||look||!started||open||!PHOTO_HITS.length)return;cv.style.cursor=hit(e)?'zoom-in':''})}
+
+/* ===== peta / denah museum ===== */
+const MAPR=[
+[0,'Lobi',-6,6,-6,6],[0,'Legenda Ale-Ale',-18,-6,-6,6],[0,'Kerajaan Matan',6,18,-6,6],
+...DNN.map((n,i)=>[0,n,BX[i],BX[i+1],-18,-6]),
+[1,'Galeri Lantai 2',-18,18,-6,6],[1,UPN[0],-18,-6.5,-18,-6],[1,UPN[1],-6.5,6.5,-18,-6],[1,UPN[2],6.5,18,-18,-6]];
+const MB={x0:-20,x1:20,z0:-20,z1:13};let mapFloor=0,miniOn=true;try{miniOn=localStorage.getItem('ketapang-mini')!=='0'}catch(_){}
+const toL=(x,z)=>[x/K,Z0+(z-Z0)/K],myFloor=()=>me.y>RH+2?1:0;
+function fitCv(c){const r=c.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2),w=Math.max(1,Math.round(r.width*d)),h=Math.max(1,Math.round(r.height*d));if(c.width!=w||c.height!=h){c.width=w;c.height=h}return d}
+function drawMap(c,floor,full){const d=fitCv(c),x=c.getContext('2d'),W=c.width,H=c.height;x.setTransform(1,0,0,1,0,0);x.clearRect(0,0,W,H);
+const [plx,plz]=toL(me.x,me.z),pf=myFloor(),cur=(rn()||'').toLowerCase();
+let bx0=MB.x0,bx1=MB.x1,bz0=MB.z0,bz1=MB.z1;
+if(!full){const hw=13,hh=hw*H/W;bx0=plx-hw;bx1=plx+hw;bz0=plz-hh;bz1=plz+hh}
+const s=Math.min(W/(bx1-bx0),H/(bz1-bz0)),ox=(W-(bx1-bx0)*s)/2-bx0*s,oz=(H-(bz1-bz0)*s)/2-bz0*s,X=v=>ox+v*s,Z=v=>oz+v*s;
+x.fillStyle='#0a2326';x.fillRect(0,0,W,H);
+if(floor==0){x.fillStyle='#2e5a3a';x.fillRect(X(-30),Z(8.1),(60)*s,(20)*s);x.fillStyle='#8d6b4a';x.fillRect(X(-6),Z(6),12*s,2.1*s);x.fillStyle='#9a7650';x.fillRect(X(-1.7),Z(8.1),3.4*s,2*s)}
+const fs=Math.max(9,Math.min(15,s*.62))*(full?1:.9);
+MAPR.filter(r=>r[0]==floor).forEach(r=>{const here=pf==floor&&r[1].toLowerCase()==cur;x.fillStyle=here?'rgba(227,179,65,.45)':(r[1]=='Lobi'||r[1]=='Galeri Lantai 2'?'#24525a':'#1d4a50');
+x.fillRect(X(r[2]),Z(r[4]),(r[3]-r[2])*s,(r[5]-r[4])*s);x.strokeStyle=here?'#ffd66b':'#e3b341';x.lineWidth=(here?3:1.5)*d;x.strokeRect(X(r[2]),Z(r[4]),(r[3]-r[2])*s,(r[5]-r[4])*s);
+if(full||s>6){x.fillStyle=here?'#fff6d8':'#e6f0ee';x.font=(here?'bold ':'')+fs*d/(full?1:1)+'px system-ui,sans-serif';x.textAlign='center';x.textBaseline='middle';
+const cx=X((r[2]+r[3])/2),cz=Z((r[4]+r[5])/2)-(full?fs*d*.9:0),maxw=(r[3]-r[2])*s-6*d,ws=r[1].split(' ');let lines=[],ln='';ws.forEach(w=>{const t=ln?ln+' '+w:w;if(x.measureText(t).width>maxw&&ln){lines.push(ln);ln=w}else ln=t});lines.push(ln);
+lines.forEach((l,i)=>x.fillText(l,cx,cz+(i-(lines.length-1)/2)*fs*d*1.15))}});
+if(floor==0&&full){x.fillStyle='#e6f0ee';x.font=fs*d+'px system-ui,sans-serif';x.textAlign='center';x.fillText('Teras',X(0),Z(7.05));x.fillStyle='#cfe8cf';x.fillText('Halaman museum · pintu masuk ↑',X(0),Z(10.8))}
+const dot=(lx,lz,col,r,sq)=>{x.fillStyle=col;x.strokeStyle='#0a2326';x.lineWidth=1.5*d;x.beginPath();if(sq)x.rect(X(lx)-r*d,Z(lz)-r*d,2*r*d,2*r*d);else x.arc(X(lx),Z(lz),r*d,0,7);x.fill();x.stroke()};
+PHOTO_SPOTS.filter(p=>p.floor==floor).forEach(p=>dot(p.lx,p.lz,'#cfd8dc',full?3.5:2.5,1));
+EXHIBITS.forEach(e=>{if((e.y>RH+2?1:0)==floor&&e.lx!=null)dot(e.lx,e.lz,'#e3b341',full?5:3.5)});
+STAIRS.forEach((t,i)=>{if((t.y>RH+2?1:0)!=floor)return;const [a,b]=toL(t.x,t.z);dot(a,b,'#7fd6c8',full?6:4,1);if(full){x.fillStyle='#7fd6c8';x.font='bold '+(fs*.85)*d+'px system-ui,sans-serif';x.textAlign='center';x.fillText(i?'Tangga turun':'Tangga naik',X(a),Z(b)+12*d+fs*d*.4)}});
+if(pf==floor){const px=Math.max(bx0+.5,Math.min(bx1-.5,plx)),pz=Math.max(bz0+.5,Math.min(bz1-.5,plz)),a=Math.atan2(Math.sin(face),Math.cos(face)),R=(full?11:8)*d,cx=X(px),cz=Z(pz),sx=Math.sin(face),sz=Math.cos(face);
+const pul=(performance.now()%1400)/1400;x.strokeStyle='rgba(255,90,74,'+(1-pul)+')';x.lineWidth=2*d;x.beginPath();x.arc(cx,cz,R*(1+pul*1.2),0,7);x.stroke();
+x.save();x.translate(cx,cz);x.rotate(Math.atan2(sz,sx)-Math.PI/2);x.fillStyle='#ff5a4a';x.strokeStyle='#fff';x.lineWidth=2*d;x.beginPath();x.moveTo(0,R);x.lineTo(R*.75,-R*.7);x.lineTo(0,-R*.3);x.lineTo(-R*.75,-R*.7);x.closePath();x.fill();x.stroke();x.restore();
+if(full){x.fillStyle='#fff';x.font='bold '+fs*d+'px system-ui,sans-serif';x.textAlign='center';x.fillText(PL.nama?PL.nama:'Kamu',cx,cz-R-8*d)}}
+else if(full){x.fillStyle='rgba(230,240,238,.85)';x.font=fs*d+'px system-ui,sans-serif';x.textAlign='center';x.fillText('Kamu sedang berada di lantai '+(pf+1),W/2,H-12*d)}}
+function mapUI(){$('mapF1').classList.toggle('on',mapFloor==0);$('mapF2').classList.toggle('on',mapFloor==1);$('mapMini').textContent=miniOn?'Sembunyikan peta mini':'Tampilkan peta mini';
+$('mapwhere').textContent='Kamu sekarang di: '+rn()+' (lantai '+(myFloor()+1)+')';document.body.classList.toggle('minioff',!miniOn)}
+let mapPrevOpen=false;
+function openMap(){if(!started||lbOn())return;mapPrevOpen=open;open=true;mapFloor=myFloor();$('map').classList.add('on');for(const k in keys)keys[k]=0;mapUI();drawMap($('mapcv'),mapFloor,true)}
+function closeMap(){if(!$('map').classList.contains('on'))return;$('map').classList.remove('on');open=mapPrevOpen}
+$('mapbtn').onclick=()=>{if(!open)openMap()};$('mini').onclick=()=>{if(!open)openMap()};$('mapclose').onclick=closeMap;
+$('mapF1').onclick=()=>{mapFloor=0;mapUI()};$('mapF2').onclick=()=>{mapFloor=1;mapUI()};
+$('mapMini').onclick=()=>{miniOn=!miniOn;try{localStorage.setItem('ketapang-mini',miniOn?'1':'0')}catch(_){}mapUI()};
+mapUI();
+setInterval(()=>{if(!started)return;if($('map').classList.contains('on')){drawMap($('mapcv'),mapFloor,true);$('mapwhere').textContent='Kamu sekarang di: '+rn()+' (lantai '+(myFloor()+1)+')'}
+else if(miniOn&&!document.body.classList.contains('dlgon')){const f=myFloor();$('minilbl').textContent='Lantai '+(f+1)+' · '+rn();drawMap($('minicv'),f,false)}},100);
 
 /* menu, pengaturan, loading */
 let inGame=false,pauseMenu=false;
