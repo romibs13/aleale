@@ -756,6 +756,39 @@ const pf=new THREE.Mesh(new THREE.PlaneGeometry(2.36/K,1.26),mat(0xe0a81f));pf.p
 UPN.forEach((n,i)=>{s=label(n,3.2,.7,34);s.position.set([-12.25,0,12.25][i],7.3,-17.8)});
 [-1,1].forEach(g=>{const m=box(36.8,.3,sl+.6,0,9.8,-12+g*3.1,RW);m.rotation.x=g*ang});box(36.9,.22,.3,0,11.4,-12,GD);
 [-18.4,18.4].forEach(x=>{const m=new THREE.Mesh(new THREE.ShapeGeometry(gsh),gabM);m.position.set(x,8.3,-12);m.rotation.y=Math.PI/2;TG.add(m)});
+/* Kain lantai dekoratif terinspirasi geometri Dayak dan pucuk rebung Melayu. */
+{
+function wovenFloorTexture(dayak){return tex(512,768,(c,w,h)=>{
+const gold='#d7b56d',base=dayak?'#652d29':'#24483e',ink=dayak?'#251e19':'#18382f';
+c.fillStyle=base;c.fillRect(0,0,w,h);
+c.fillStyle=ink;c.fillRect(14,14,w-28,h-28);
+c.strokeStyle=gold;c.lineWidth=4;c.strokeRect(22,22,w-44,h-44);c.strokeRect(48,48,w-96,h-96);
+c.fillStyle=base;c.fillRect(64,64,w-128,h-128);
+const diamond=(x,y,r)=>{c.beginPath();c.moveTo(x,y-r);c.lineTo(x+r,y);c.lineTo(x,y+r);c.lineTo(x-r,y);c.closePath();c.stroke()};
+c.strokeStyle=gold;c.lineWidth=3;
+for(let y=96;y<h-64;y+=96)for(let x=112;x<w-64;x+=96){
+if(dayak){diamond(x,y,34);diamond(x,y,19);c.fillStyle=gold;c.fillRect(x-4,y-4,8,8);
+[-1,1].forEach(side=>{c.beginPath();c.moveTo(x+side*12,y-22);c.lineTo(x+side*34,y-42);c.lineTo(x+side*42,y-34);c.stroke()});
+}else{c.beginPath();c.moveTo(x-30,y+32);c.lineTo(x,y-34);c.lineTo(x+30,y+32);c.closePath();c.stroke();c.beginPath();c.moveTo(x,y+24);c.lineTo(x,y-12);c.moveTo(x-13,y+16);c.lineTo(x,y);c.lineTo(x+13,y+16);c.stroke()}
+}
+c.fillStyle=gold;for(let y=40;y<h-30;y+=24){c.fillRect(30,y,5,9);c.fillRect(w-35,y,5,9)}
+for(let x=64;x<w-48;x+=16){c.fillRect(x,8,2,10);c.fillRect(x,h-18,2,10)}
+/* Benang tipis memberi kesan tenunan tanpa menambah geometri. */
+c.fillStyle='rgba(240,218,171,.07)';for(let y=0;y<h;y+=4)c.fillRect(0,y,w,1);
+c.fillStyle='rgba(25,18,14,.12)';for(let x=0;x<w;x+=4)c.fillRect(x,0,1,h);
+},1,1)}
+const dayak=new THREE.MeshLambertMaterial({map:wovenFloorTexture(true)}),
+melayu=new THREE.MeshLambertMaterial({map:wovenFloorTexture(false)});
+function floorCloth(x,z,w,d,material,angle=0,level=FL){
+const m=new THREE.Mesh(new THREE.PlaneGeometry(w,d),material);
+m.rotation.set(-Math.PI/2,0,angle);m.position.set(x,level+.04,z);m.receiveShadow=true;TG.add(m);
+}
+/* Karpet Melayu di tengah lobi lantai satu, di depan area tangga. */
+floorCloth(0,1,4,6,melayu,0,0);
+/* Galeri depan dan ruang belakang; seluruh bidang berada di atas lantai padat. */
+floorCloth(-11.8,0,4.6,6.4,dayak);floorCloth(0,1.2,3.6,5.4,melayu);floorCloth(11.8,0,4.6,6.4,melayu);
+floorCloth(-12.25,-12,4.2,6.2,dayak);floorCloth(0,-12,4.2,6.2,melayu);floorCloth(12.25,-12,4.2,6.2,dayak);
+}
 /* Ornamen galeri lantai dua: panel dinding, pot tanaman, dan kursi. */
 {
 const brass=new THREE.MeshPhongMaterial({color:0xc69b50,shininess:45}),
