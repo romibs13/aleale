@@ -174,7 +174,7 @@ u3:['Halo! Bagian ini disiapkan untuk adat dan tradisi, tapi isinya belum ditamb
 };
 /* Ruang tambahan: 5 di lantai 1 (belakang) dan 3 di lantai 2. Ganti judul/teks sesuai materi. */
 [['d1','Adat Istiadat','ring',-14.4,0],['d2','Kesenian','drum',-7.2,0],['d3','Kuliner','pot',0,0],['d4','Kerajinan','axe',7.2,0],['d5','Alam Ketapang','tree',14.4,0],
-['u4','Tokoh dan Pahlawan','flag',-12.25,4.3],['u5','Bahasa dan Sastra','shell',0,4.3],['u6','Galeri Foto','stones',12.25,4.3]].forEach(q=>{
+['u4','Tokoh dan Pahlawan','flag',-12.25,4.3],['u5','Sejarah dan Budaya','shell',0,4.3],['u6','Galeri Foto','stones',12.25,4.3]].forEach(q=>{
 EXHIBITS.push({id:q[0],room:q[1],kind:q[2],pos:[q[3],-14,q[4]],title:q[1]+' (contoh)',img:'',text:'Ruang ini disiapkan untuk '+q[1].toLowerCase()+'. Ganti teks ini dengan materinya.'});
 DIALOGS[q[0]]=['Halo! Ruang ini disiapkan untuk '+q[1].toLowerCase()+', tapi isinya belum ditambahkan.','Nanti aku akan bercerita di sini.']});
 /* Koleksi Adat Istiadat: Ritual Naik Jurongk (d1) dan Ritual Ngalu (d7). Model dibuat dari bentuk dasar dengan ornamen Dayak. */
@@ -246,7 +246,7 @@ text:'Panembahan Gusti Muhammad Saunan merupakan salah satu tokoh penting dalam 
 DIALOGS.u10=['Tugu dengan figur berpeci dan selempang ini mengenang Panembahan Gusti Muhammad Saunan. Figur simbolis ini mengajak kita mengingat kepemimpinan dan perjalanan sejarah Kerajaan Matan.','Gusti Muhammad Saunan dikenal sebagai penguasa terakhir Kerajaan Matan di Ketapang, saat pengaruh kolonial Belanda makin kuat di Kalimantan Barat.','Ia diangkat menjadi Panembahan pada tahun 1922. Ia pemimpin yang berpendidikan dan berpikiran modern untuk zamannya.','Di bawah kepemimpinannya, Istana Muliakerta direnovasi dengan sentuhan arsitektur Eropa.','Di dalam keraton tersimpan singgasana, foto keluarga kerajaan, kain tenun, batik kuno, dan peninggalan Kesultanan Tanjungpura.','Masa pemerintahannya berakhir di masa kelam pendudukan Jepang. Pada Peristiwa Mandor, banyak tokoh kerajaan, pemimpin masyarakat, dan kaum intelektual ditangkap dan dibunuh.','Gusti Muhammad Saunan dilaporkan termasuk korban tragedi itu pada 1944.','Hingga kini, Keraton Matan di Desa Mulia Kerta, Kecamatan Benua Kayong, menjadi tempat penting untuk mengenang perjalanan panjang kerajaan ini.'];
 /* Bingkai foto: 48 bingkai, 4 per ruang (nomor 1-48). Isi PHOTOS[nomor]='foto/nama.webp' untuk memasang foto; kosong = tempat foto bernomor.
    Urutan ruang: 1-4 Lobi, 5-8 Legenda Ale-Ale, 9-12 Kerajaan Matan, 13-16 Adat Istiadat, 17-20 Kesenian, 21-24 Kuliner, 25-28 Kerajinan, 29-32 Alam Ketapang,
-   33-36 Galeri Lantai 2, 37-40 Tokoh dan Pahlawan, 41-44 Bahasa dan Sastra, 45-48 Galeri Foto.
+   33-36 Galeri Lantai 2, 37-40 Tokoh dan Pahlawan, 41-44 Sejarah dan Budaya, 45-48 Galeri Foto.
    Urutan sudut tiap ruang: 1 dinding kiri-belakang, 2 dinding kiri-depan, 3 dinding kanan-belakang, 4 dinding kanan-depan. Rasio foto paling pas 1.29 : 1 (lebar : tinggi). */
 const PHOTOS={
      5:'foto/tugu2.jpg',
@@ -738,7 +738,7 @@ box(12.4,.3,.3,0,4.35,7.9,ULIN);strip(band,12.4,.4,6.2,0,4.35,8.06);
 [-5.5,-3.9,3.9,5.5].forEach(x=>{pillar(x,2.225,7.7,.5,4.45);obstacles.push([MX(x),MZ(7.7),RH])});
 [-2.5,2.5].forEach(x=>{statue(x,7.6);obstacles.push([MX(x),MZ(7.6),RH])});
 /* perluasan belakang: 5 ruang bawah + 3 ruang atas */
-const BX=[-18,-10.8,-3.6,3.6,10.8,18],DNN=['Adat Istiadat','Kesenian','Kuliner','Kerajinan','Alam Ketapang'],UPN=['Tokoh dan Pahlawan','Bahasa dan Sastra','Galeri Foto'],FLM=[0x6d5a3c,0x2f5a4a,0x5a3a2a,0x6d5a3c,0x2f5a4a];
+const BX=[-18,-10.8,-3.6,3.6,10.8,18],DNN=['Adat Istiadat','Kesenian','Kuliner','Kerajinan','Alam Ketapang'],UPN=['Tokoh dan Pahlawan','Sejarah dan Budaya','Galeri Foto'],FLM=[0x6d5a3c,0x2f5a4a,0x5a3a2a,0x6d5a3c,0x2f5a4a];
 for(let i=0;i<5;i++){const cx=(BX[i]+BX[i+1])/2,m=new THREE.Mesh(new THREE.PlaneGeometry(7.2,12),mat(FLM[i]));m.rotation.x=-Math.PI/2;m.position.set(cx,0,-12);m.receiveShadow=true;TG.add(m);s=label(DNN[i],3.2,.7,38);s.position.set(cx,3,-17.8)}
 box(36.3,4,.3,0,2,-18,W);box(36.3,4,.3,0,6.3,-18,W);[-18,18].forEach(x=>{wz(-18,-6,x,2);wz(-18,-6,x,6.3)});
 BX.slice(1,5).forEach(x=>{wz(-18,-13.5,x,2);wz(-10.5,-6,x,2);lin(x,-12,3,2,false)});
@@ -1021,7 +1021,7 @@ GARDENS.forEach(x=>{const g=new THREE.Group(),a=new THREE.Mesh(gc,cm),b=new THRE
 addEventListener('load',()=>{try{const el=document.getElementById('frameData');if(!el)return;const geo=mkPeb(el.textContent.trim()),PW=.9258,PH=.7203,ZP=.0291,FS=1.5;
 const fi=new Image(),ft=new THREE.Texture(fi),te=document.getElementById('frameTex');if(te){fi.onload=()=>{ft.anisotropy=4;ft.needsUpdate=true};fi.src='data:image/jpeg;base64,'+te.textContent.trim()}
 const ROOMS=[['Lobi',-6,6,-6,6,0],['Legenda Ale-Ale',-18,-6,-6,6,0],['Kerajaan Matan',6,18,-6,6,0],['Adat Istiadat',-18,-10.8,-18,-6,0],['Kesenian',-10.8,-3.6,-18,-6,0],['Kuliner',-3.6,3.6,-18,-6,0],['Kerajinan',3.6,10.8,-18,-6,0],['Alam Ketapang',10.8,18,-18,-6,0],
-['Galeri Lantai 2',-18,18,-6,6,1],['Tokoh dan Pahlawan',-18,-6.5,-18,-6,1],['Bahasa dan Sastra',-6.5,6.5,-18,-6,1],['Galeri Foto',6.5,18,-18,-6,1]],specs=[];
+['Galeri Lantai 2',-18,18,-6,6,1],['Tokoh dan Pahlawan',-18,-6.5,-18,-6,1],['Sejarah dan Budaya',-6.5,6.5,-18,-6,1],['Galeri Foto',6.5,18,-18,-6,1]],specs=[];
 ROOMS.forEach(r=>{[[r[1],r[3]+2.2,1],[r[1],r[4]-2.2,1],[r[2],r[3]+2.2,-1],[r[2],r[4]-2.2,-1]].forEach(c=>specs.push({n:specs.length+1,room:r[0],x:MX(c[0])+c[2]*.22,z:MZ(c[1]),y:RH+r[5]*FL+2,ry:c[2]>0?Math.PI/2:-Math.PI/2}))});
 const fm=new THREE.InstancedMesh(geo,new THREE.MeshLambertMaterial({map:ft,side:THREE.DoubleSide}),specs.length),d=new THREE.Object3D(),pg=new THREE.PlaneGeometry(PW,PH),loader=new THREE.TextureLoader();
 specs.forEach((f,i)=>{d.position.set(f.x,f.y,f.z);d.rotation.set(0,f.ry,0);d.scale.setScalar(FS);d.updateMatrix();fm.setMatrixAt(i,d.matrix);
