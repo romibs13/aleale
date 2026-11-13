@@ -865,9 +865,40 @@ if(e.glb&&THREE.GLTFLoader)new THREE.GLTFLoader().load(e.glb,r=>{const o=r.scene
 
 /* area yang boleh dilalui */
 /* halaman luar */
-const gr=part(new THREE.PlaneGeometry(400,400),0x4f8a4a,0,-.02,0);gr.rotation.x=-Math.PI/2;scene.add(gr);
-const pz=part(new THREE.PlaneGeometry(22,9),0x8b8576,0,.01,11);pz.rotation.x=-Math.PI/2;scene.add(pz);
-const pt=part(new THREE.PlaneGeometry(3.2,16),0x8b8574,0,.02,14);pt.rotation.x=-Math.PI/2;scene.add(pt);gr.receiveShadow=pz.receiveShadow=pt.receiveShadow=true;
+/* Tekstur tanah berumput: tile 4 meter, noise periodik tanpa garis sambungan. */
+const groundSurface=(()=>{
+const size=512,k=document.createElement('canvas'),h=document.createElement('canvas');
+k.width=k.height=h.width=h.height=size;
+const c=k.getContext('2d'),hc=h.getContext('2d'),pixels=c.createImageData(size,size),height=hc.createImageData(size,size);
+let seed=72419;const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296};
+const grids=[8,16,32,64].map(n=>({n,v:Float32Array.from({length:n*n},random)}));
+function noise(x,y,g){const u=x/size*g.n,v=y/size*g.n,ix=Math.floor(u),iy=Math.floor(v),fx=u-ix,fy=v-iy,s=fx*fx*(3-2*fx),t=fy*fy*(3-2*fy),at=(a,b)=>g.v[(b%g.n)*g.n+a%g.n];return (at(ix,iy)*(1-s)+at(ix+1,iy)*s)*(1-t)+(at(ix,iy+1)*(1-s)+at(ix+1,iy+1)*s)*t}
+for(let y=0;y<size;y++)for(let x=0;x<size;x++){
+const i=(y*size+x)*4,patch=noise(x,y,grids[0])*.65+noise(x,y,grids[1])*.35,
+detail=noise(x,y,grids[2])*.6+noise(x,y,grids[3])*.4,grain=(random()-.5)*22,soil=Math.max(0,(patch-.48)*3);
+pixels.data[i]=65+patch*34+soil*32+detail*12+grain;
+pixels.data[i+1]=83+patch*32-soil*17+detail*15+grain;
+pixels.data[i+2]=39+patch*19+soil*12+detail*9+grain*.7;
+pixels.data[i+3]=255;
+const relief=95+detail*65+grain*2; height.data[i]=height.data[i+1]=height.data[i+2]=relief;height.data[i+3]=255;
+}
+c.putImageData(pixels,0,0);hc.putImageData(height,0,0);
+/* Detail dibungkus di tepi agar pengulangan tekstur tetap mulus. */
+for(let i=0;i<6500;i++){
+const x=random()*size,y=random()*size,stone=i%19===0,r=stone?1+random()*1.5:.35+random()*.6;
+c.strokeStyle=['#7d8c4f','#536735','#98a065','#465b32'][i%4];c.fillStyle=stone?'#9b9478':'#5a5138';c.lineWidth=.5+random()*.6;
+const dx=(random()-.5)*4,dy=1+random()*4;
+for(const ox of [-size,0,size])for(const oy of [-size,0,size]){
+if(stone){c.beginPath();c.ellipse(x+ox,y+oy,r,r*.65,.4,0,Math.PI*2);c.fill()}
+else{c.beginPath();c.moveTo(x+ox,y+oy);c.lineTo(x+ox+dx,y+oy-dy);c.stroke()}
+}
+}
+function map(canvas){const t=new THREE.CanvasTexture(canvas);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(100,100);t.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());return t}
+return new THREE.MeshStandardMaterial({map:map(k),bumpMap:map(h),bumpScale:.025,roughness:1,metalness:0});
+})();
+const gr=new THREE.Mesh(new THREE.PlaneGeometry(400,400),groundSurface);gr.position.y=-.02;gr.rotation.x=-Math.PI/2;scene.add(gr);
+/* Sela paving memakai tanah halaman yang sama agar tekstur tersambung. */
+gr.receiveShadow=true;
 const FL=4.3,SL=0x7a6a4f,CR=0xe9e1d2;
 /* Papan kayu lantai dua dan teras depan: skala serat dan sambungan konsisten. */
 const floorWood=tm(tex(512,1024,(c,w,h)=>{
@@ -1142,7 +1173,7 @@ s=label('Museum Virtual Ketapang',4.2,.8,30);s.position.set(0,4.15,28.68);
 [-1,1].forEach(g=>{const h=part(new THREE.ConeGeometry(.12,1,6),GD,g*3.15,4.5,28.4);h.rotation.z=-g*.55;scene.add(h);
 const lf=new THREE.Group(),pl=new THREE.Mesh(new THREE.PlaneGeometry(2.2,1.7),new THREE.MeshBasicMaterial({map:wTs,transparent:true,alphaTest:.4,side:THREE.DoubleSide}));pl.position.set(-g*1.15,.95,0);lf.add(pl);
 lf.add(part(new THREE.BoxGeometry(2.3,.1,.08),ULIN,-g*1.15,.1,0));lf.position.set(g*2.4,0,28.4);lf.rotation.y=-g*1.3;scene.add(lf);ob(g*2.1,26.9,.5)});
-{const pt2=part(new THREE.PlaneGeometry(3.2,9),0x8b8575,0,.02,26.5);pt2.rotation.x=-Math.PI/2;pt2.receiveShadow=true;scene.add(pt2)}
+
 TG=BG;
 /*FX*/
 {const gt=c=>{const k=document.createElement('canvas');k.width=k.height=128;const x=k.getContext('2d'),g=x.createRadialGradient(64,64,0,64,64,64);g.addColorStop(0,'rgba('+c+',1)');g.addColorStop(.25,'rgba('+c+',.45)');g.addColorStop(1,'rgba('+c+',0)');x.fillStyle=g;x.fillRect(0,0,128,128);return new THREE.CanvasTexture(k)},GT={};
