@@ -803,8 +803,8 @@ const gr=part(new THREE.PlaneGeometry(400,400),0x4f8a4a,0,-.02,0);gr.rotation.x=
 const pz=part(new THREE.PlaneGeometry(22,9),0x8b8576,0,.01,11);pz.rotation.x=-Math.PI/2;scene.add(pz);
 const pt=part(new THREE.PlaneGeometry(3.2,16),0x8b8574,0,.02,14);pt.rotation.x=-Math.PI/2;scene.add(pt);gr.receiveShadow=pz.receiveShadow=pt.receiveShadow=true;
 const FL=4.3,SL=0x7a6a4f,CR=0xe9e1d2;
-/* Papan kayu lantai dua: skala serat dan sambungan konsisten antarruang. */
-const upperWood=tm(tex(512,1024,(c,w,h)=>{
+/* Papan kayu lantai dua dan teras depan: skala serat dan sambungan konsisten. */
+const floorWood=tm(tex(512,1024,(c,w,h)=>{
 c.fillStyle='#392619';c.fillRect(0,0,w,h);
 const colors=['#805634','#895e3b','#765032','#926440','#825735','#795131','#8c603d','#845936'];
 for(let i=0;i<8;i++){
@@ -821,16 +821,16 @@ const joint=i%2?256:768;c.fillStyle='#422c1d';c.fillRect(x+2,joint,60,3);
 c.fillStyle='rgba(39,26,17,.6)';[x+10,x+54].forEach(px=>[joint-9,joint+11].forEach(y=>{c.beginPath();c.arc(px,y,1.5,0,Math.PI*2);c.fill()}));
 }
 },1,1));
-function upperFloor(w,h,d,x,y,z){
-const m=box(w,h,d,x,y,z,SL),uv=m.geometry.attributes.uv,p=m.geometry.attributes.position,n=m.geometry.attributes.normal;
+function woodFloor(w,h,d,x,y,z,side=SL){
+const m=box(w,h,d,x,y,z,side),uv=m.geometry.attributes.uv,p=m.geometry.attributes.position,n=m.geometry.attributes.normal;
 for(let i=0;i<p.count;i++)if(n.getY(i)>.5)uv.setXY(i,(p.getX(i)+x)/2,(p.getZ(i)+z)/4);
 uv.needsUpdate=true;
 // Tekstur hanya pada sisi atas; ketebalan lantai tetap menggunakan material balok asli.
-m.material=[mat(SL),mat(SL),upperWood,mat(SL),mat(SL),mat(SL)];m.receiveShadow=true;return m;
+m.material=[mat(side),mat(side),floorWood,mat(side),mat(side),mat(side)];m.receiveShadow=true;return m;
 }
 
-upperFloor(12.3,.3,12.3,-12,4.15,0);upperFloor(12.3,.3,12.3,12,4.15,0);
-upperFloor(12,.3,10,0,4.16,1);upperFloor(1.4,.3,2,-5.3,4.16,-5);upperFloor(1.5,.3,2,5.25,4.16,-5);
+woodFloor(12.3,.3,12.3,-12,4.15,0);woodFloor(12.3,.3,12.3,12,4.15,0);
+woodFloor(12,.3,10,0,4.16,1);woodFloor(1.4,.3,2,-5.3,4.16,-5);woodFloor(1.5,.3,2,5.25,4.16,-5);
 wx(-18,-13.2,-6,6.3);wx(-10.8,4.2,-6,6.3);wx(6,10.8,-6,6.3);wx(13.2,18,-6,6.3);lin(-12,-6,2.4,6.3,true);lin(5.1,-6,1.8,6.3,true);lin(12,-6,2.4,6.3,true);box(36.3,4,.3,0,6.3,6,W);box(.3,4,12,-18,6.3,0,W);box(.3,4,12,18,6.3,0,W);
 /* tangga kayu ulin ala rumah adat: anak tangga papan, ibu tangga berukir, pagar jeruji kayu & tiang berkepala emas */
 {const UL=0x6b4328,GO=0xe0a81f,TR=0x7a4a26,RS=0x3a2212,SG=0x4a2c18;
@@ -893,7 +893,7 @@ strip(band,36.6,.5,18.3,0,4.15,6.22);
 const arch=(r,c,t)=>{const m=new THREE.Mesh(new THREE.TorusGeometry(r,t,8,28,Math.PI),mat(c));m.position.set(0,3.0,6.22);TG.add(m)};arch(1.55,0x1f4d3a,.14);arch(1.28,GD,.07);
 [-18.15,18.15].forEach(x=>pillar(x,4.15,6,.8,8.3));[-1.75,1.75].forEach(x=>pillar(x,2,6.2,.4,4));
 /* teras panggung */
-box(12.4,.3,1.9,0,-.17,7.1,ULIN);box(37,.32,12.6,0,-.18,0,ULIN);
+woodFloor(12.4,.3,1.9,0,-.17,7.1,ULIN);box(37,.32,12.6,0,-.18,0,ULIN);
 const pr=box(12.6,.2,2.6,0,5.0,7.0,RW);pr.rotation.x=Math.atan2(1.2,1.8);
 box(12.4,.3,.3,0,4.35,7.9,ULIN);strip(band,12.4,.4,6.2,0,4.35,8.06);
 [-5.5,-3.9,3.9,5.5].forEach(x=>{pillar(x,2.225,7.7,.5,4.45);obstacles.push([MX(x),MZ(7.7),RH])});
@@ -904,7 +904,7 @@ for(let i=0;i<5;i++){const cx=(BX[i]+BX[i+1])/2,m=new THREE.Mesh(new THREE.Plane
 box(36.3,4,.3,0,2,-18,W);box(36.3,4,.3,0,6.3,-18,W);[-18,18].forEach(x=>{wz(-18,-6,x,2);wz(-18,-6,x,6.3)});
 BX.slice(1,5).forEach(x=>{wz(-18,-13.5,x,2);wz(-10.5,-6,x,2);lin(x,-12,3,2,false)});
 [-6.5,6.5].forEach(x=>{wz(-18,-13.5,x,6.3);wz(-10.5,-6,x,6.3);lin(x,-12,3,6.3,false)});
-upperFloor(36.4,.3,12.2,0,4.17,-12.05);box(37,.32,12.2,0,-.18,-12.1,ULIN);
+woodFloor(36.4,.3,12.2,0,4.17,-12.05);box(37,.32,12.2,0,-.18,-12.1,ULIN);
 /* hiasan ornamen Dayak di ruang Adat Istiadat */
 {const ob=dykTex(256,64,'#17110d','#e0a81f','#b3261e',1,1);strip(ob,7.2,.42,7.2/1.6,-14.4,3.72,-17.83);
 [[-17.83,1],[-10.97,-1]].forEach(q=>{const m=strip(ob,12,.42,12/1.6,q[0],3.72,-12);m.rotation.y=q[1]*Math.PI/2});
