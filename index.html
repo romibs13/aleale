@@ -1097,9 +1097,28 @@ function bench(x,z,ry){const g=new THREE.Group(),b=(w,h,d,c,px,py,pz)=>{g.add(pa
 g.position.set(x,0,z);g.rotation.y=ry;scene.add(g);ob(x,z,1.1)}
 bench(-7.5,9.8,Math.PI/2);bench(7.5,9.8,-Math.PI/2);
 const GARDENS=[];[-8.5,8.5].forEach(x=>{GARDENS.push(x);ob(x,13,1.8)});
+/* kain umbul-umbul: tenunan, motif pakis, dan kelim dijahit */
+const bannerWeave=tex(128,128,(x,w,h)=>{x.fillStyle='#999999';x.fillRect(0,0,w,h);
+for(let i=0;i<w;i+=4){x.fillStyle='rgba(255,255,255,.22)';x.fillRect(i,0,1,h);x.fillStyle='rgba(0,0,0,.18)';x.fillRect(0,i,w,1)}
+for(let y=0;y<h;y+=4)for(let i=0;i<w;i+=4){x.fillStyle=(i+y)%8?'#aaaaaa':'#888888';x.fillRect(i,y,2,1)}},2,8);
+const bannerMaterials=[0xe0a81f,0xb3261e,0x1f7a4a].map(color=>{
+const map=tex(256,1024,(x,w,h)=>{x.fillStyle='#ffffff';x.fillRect(0,0,w,h);
+/* ornamen senada dengan ukiran museum, tetap memperlihatkan warna kain */
+x.globalAlpha=.23;for(let y=150;y<900;y+=200)dykTile(x,w/2,y,146,'#644520','#fff0c5');x.globalAlpha=1;
+x.strokeStyle='rgba(80,50,20,.24)';x.lineWidth=8;x.strokeRect(12,12,w-24,h-24);
+x.strokeStyle='rgba(255,245,214,.65)';x.lineWidth=2;x.setLineDash([5,5]);x.strokeRect(18,18,w-36,h-36);x.setLineDash([]);
+/* serat warna halus tanpa mengotori warna dasar */
+for(let i=0;i<w;i+=3){x.fillStyle=i%2?'rgba(70,45,20,.045)':'rgba(255,255,255,.1)';x.fillRect(i,0,1,h)}
+for(let y=0;y<h;y+=3){x.fillStyle='rgba(90,65,30,.045)';x.fillRect(0,y,w,1)}},1,1);
+return new THREE.MeshPhongMaterial({color,map,bumpMap:bannerWeave,bumpScale:.009,specular:0x30291e,shininess:7,side:THREE.DoubleSide})});
 [10.5,13.5,16.5,19.5].forEach((z,j)=>[-2.9,2.9].forEach((x,i)=>{scene.add(part(new THREE.CylinderGeometry(.05,.06,3.6,6),0x2b2b33,x,1.8,z));
-const bg=new THREE.PlaneGeometry(.5,2);bg.translate(0,-1,0);const bn=new THREE.Mesh(bg,new THREE.MeshLambertMaterial({color:[0xe0a81f,0xb3261e,0x1f7a4a][(i+j)%3],side:THREE.DoubleSide}));bn.position.set(x,3.5,z);scene.add(bn);ob(x,z,.4);
-const p=rnd()*6;WIND.push(t=>{bn.rotation.y=Math.sin(t*2+p)*.4;bn.rotation.z=Math.sin(t*1.7+p)*.08})}));
+const bg=new THREE.PlaneGeometry(.5,2,12,28);bg.translate(0,-1,0);const bn=new THREE.Mesh(bg,bannerMaterials[(i+j)%3]);bn.position.set(x,3.5,z);bn.castShadow=true;bn.receiveShadow=true;scene.add(bn);ob(x,z,.4);
+const phase=rnd()*6,vertices=bg.attributes.position,rest=new Float32Array(vertices.array);
+const flutter=t=>{for(let k=0;k<vertices.count;k++){const u=rest[k*3],v=rest[k*3+1],drop=-v/2;
+/* bagian atas terikat; gelombang membesar menuju ujung kain */
+vertices.setZ(k,drop*(Math.sin(drop*8-t*2.2+phase)*.09+Math.sin(u*19+drop*12-t*3+phase)*.025));
+vertices.setY(k,v+drop*drop*.025*Math.sin(u*13-t*2+phase))}
+vertices.needsUpdate=true;bg.computeVertexNormals();bn.rotation.y=Math.sin(t*.9+phase)*.16};flutter(0);WIND.push(flutter)}));
 /* awan: cincin di sekeliling, dekat cakrawala supaya terlihat */
 for(let i=0;i<14;i++){const g=new THREE.Group(),n=4+Math.floor(rnd()*3);
 for(let k=0;k<n;k++){const m=new THREE.Mesh(new THREE.SphereGeometry(3+rnd()*3.5,12,9),new THREE.MeshBasicMaterial({color:[0xf6b88c,0xf2a67c,0xf8c9a0,0xe8a0a0][Math.floor(rnd()*4)],fog:false}));m.position.set((k-n/2)*4.6+rnd()*2,rnd()*2.4,(rnd()-.5)*4);m.scale.y=.5;g.add(m)}
