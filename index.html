@@ -1371,6 +1371,36 @@ let o=32;const q=new Uint16Array(u.buffer,o,nV*3);o+=nV*6;const uq=new Uint16Arr
 const pos=new Float32Array(nV*3),nor=new Float32Array(nV*3),uv=new Float32Array(nV*2),col=new Float32Array(nV*3);
 for(let i=0;i<nV*3;i++){pos[i]=mn[i%3]+q[i]/65535*rg[i%3];nor[i]=nq[i]/127;col[i]=cg[(i/3)|0]/255}for(let i=0;i<nV*2;i++)uv[i]=uq[i]/65535;
 const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(pos,3));g.setAttribute('normal',new THREE.BufferAttribute(nor,3));g.setAttribute('uv',new THREE.BufferAttribute(uv,2));g.setAttribute('color',new THREE.BufferAttribute(col,3));g.setIndex(new THREE.BufferAttribute(ix,1));return g}
+/* Angin di GPU: pangkal tetap tertanam, tajuk melentur, daun bergetar halus.
+   Batang dan daun memakai waktu/fase yang sama agar tetap menyatu. */
+const treeWindTime={value:0};
+WIND.push(t=>{treeWindTime.value=t});
+function outdoorTreeWind(material,height,leaves){
+material.onBeforeCompile=shader=>{
+shader.uniforms.treeWindTime=treeWindTime;
+shader.vertexShader='uniform float treeWindTime;\n'+shader.vertexShader;
+shader.vertexShader=shader.vertexShader.replace('#include <begin_vertex>',`#include <begin_vertex>
+vec2 treeOrigin=vec2(0.0);
+#ifdef USE_INSTANCING
+  treeOrigin=instanceMatrix[3].xz;
+#endif
+float treePhase=dot(treeOrigin,vec2(0.17,0.23));
+float treeHeight=clamp(position.y / ${height.toFixed(6)},0.0,1.0);
+float treeBend=treeHeight*treeHeight;
+float treeGust=0.7+0.3*sin(treeWindTime*0.37-treePhase*0.4);
+float treeSway=sin(treeWindTime*0.85+treePhase)
+              +0.28*sin(treeWindTime*1.63+treePhase*1.7);
+transformed.x+=${height.toFixed(6)}*0.018*treeBend*treeGust*treeSway;
+transformed.z+=${height.toFixed(6)}*0.009*treeBend*treeGust
+              *sin(treeWindTime*0.71+treePhase+0.8);
+${leaves?`float leafFlutter=sin(treeWindTime*3.7+treePhase+position.x*1.8+position.z*1.3);
+transformed.x+=0.035*treeBend*leafFlutter;
+transformed.y+=0.018*treeBend*sin(treeWindTime*4.3+treePhase+position.z*2.1);`:''}
+`);
+};
+material.customProgramCacheKey=()=> 'outdoor-tree-wind-'+height+'-'+leaves;
+return material;
+}
 addEventListener('load',()=>{try{const el=document.getElementById('treeData');if(!el)return;const gs=el.textContent.trim().split('|').map(mkTree),BV=[11.3218, 10.4523, 14.2195];
 const bt=(()=>{const k=document.createElement('canvas');k.width=k.height=128;const x=k.getContext('2d');x.fillStyle='#6a4a33';x.fillRect(0,0,128,128);
 for(let i=0;i<70;i++){const px=Math.random()*128,py=Math.random()*128,w=2+Math.random()*4,h=20+Math.random()*60;x.fillStyle=Math.random()<.5?'rgba(40,25,15,.35)':'rgba(160,120,85,.28)';for(const dx of[0,-128])for(const dy of[0,-128])x.fillRect(px+dx,py+dy,w,h)}
@@ -1379,7 +1409,7 @@ const li=new Image(),lt=new THREE.Texture(li),lm=new THREE.MeshLambertMaterial({
 const le=document.getElementById('bushTexB');if(le){li.onload=()=>{lt.anisotropy=4;lt.needsUpdate=true;leafEls.forEach(m=>m.visible=true)};li.src='data:image/png;base64,'+le.textContent.trim()}
 const d=new THREE.Object3D(),c=new THREE.Color(),TN=[0xffffff,0xeaf5d8,0xd8ecc0,0xf5f0d0],BN=[0xffffff,0xe8d8c8,0xf2e6d8];
 for(let t=0;t<3;t++){const L=TREES.filter(q=>q[3]==t),n=L.length;if(!n)continue;const tx=bt.clone();tx.needsUpdate=true;tx.repeat.set(1,BV[t]);
-const bm=new THREE.InstancedMesh(gs[t*2],new THREE.MeshLambertMaterial({map:tx,vertexColors:true}),n),lv=new THREE.InstancedMesh(gs[t*2+1],lm,n);lv.visible=!le;leafEls.push(lv);
+const bm=new THREE.InstancedMesh(gs[t*2],outdoorTreeWind(new THREE.MeshLambertMaterial({map:tx,vertexColors:true}),BV[t],false),n),lv=new THREE.InstancedMesh(gs[t*2+1],outdoorTreeWind(lm.clone(),BV[t],true),n);lv.visible=!le;leafEls.push(lv);
 L.forEach((q,i)=>{const ry=rnd()*6.28,k=q[2]*(.9+rnd()*.2),ky=k*(.95+rnd()*.15);TT.push([q[0],q[1],ry,k,ky]);d.position.set(q[0],0,q[1]);d.rotation.set(0,ry,0);d.scale.set(k,ky,k);d.updateMatrix();bm.setMatrixAt(i,d.matrix);lv.setMatrixAt(i,d.matrix);bm.setColorAt(i,c.set(BN[Math.floor(rnd()*3)]));lv.setColorAt(i,c.set(TN[Math.floor(rnd()*4)]))});
 [bm,lv].forEach(im=>{im.count=n;im.instanceMatrix.needsUpdate=true;if(im.instanceColor)im.instanceColor.needsUpdate=true;im.frustumCulled=false;scene.add(im)})}}catch(e){}});
 /* pakis: kartu silang bertekstur buatan */
