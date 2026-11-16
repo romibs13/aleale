@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#092623">
+<title>Kayuh di Sungai Pawan · Bekesah Sejarah</title>
+<style>
+:root{color-scheme:dark;--ink:#092623;--cream:#fff5dc;--gold:#e6b44c}*{box-sizing:border-box}body{margin:0;overflow:hidden;background:var(--ink);color:var(--cream);font:15px/1.6 Georgia,serif}button{font:600 14px/1.3 Verdana,sans-serif;cursor:pointer;touch-action:manipulation}button:focus-visible{outline:3px solid var(--cream);outline-offset:4px}#river{position:fixed;inset:0;touch-action:none}canvas{display:block;width:100%;height:100%}.hud{position:fixed;inset:max(14px,env(safe-area-inset-top)) 72px auto 14px;display:flex;gap:8px;align-items:center;pointer-events:none}.stat,#pause{border:1px solid #e6b44c77;background:#092623e8;border-radius:12px;padding:8px 13px}.stat small{display:block;font:9px/1.5 Verdana,sans-serif;text-transform:uppercase;letter-spacing:.15em;color:var(--gold)}.stat strong{font:20px Georgia,serif}#pause{margin-left:auto;color:var(--cream);pointer-events:auto;min-height:44px;padding:8px 12px}.veil{position:fixed;inset:0;display:grid;place-items:center;padding:70px 20px 24px;background:linear-gradient(0deg,#092623ed,#09262333)}[hidden]{display:none!important}.card{width:min(440px,100%);background:#092623ed;border:1px solid #e6b44c88;padding:clamp(22px,5vw,40px);border-radius:4px 32px 4px 32px;box-shadow:0 24px 80px #09262366}.eyebrow{font:10px Verdana,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}h1{font-weight:400;font-size:clamp(32px,7vw,48px);line-height:1.08;margin:18px 0}h1 em{color:var(--gold);font-weight:400}p{color:#e1e6d6;margin:14px 0 20px}.rule{height:1px;width:52px;background:var(--gold);margin:20px 0}.primary,.secondary{display:block;width:100%;min-height:48px;border:1px solid var(--gold);border-radius:7px;padding:13px 18px;margin-top:12px;background:var(--gold);color:var(--ink)}.secondary{background:transparent;color:var(--cream)}.hint{font:11px/1.7 Verdana,sans-serif;opacity:.8;margin-top:18px}.controls{position:fixed;bottom:max(18px,env(safe-area-inset-bottom));left:18px;right:18px;display:flex;justify-content:space-between;pointer-events:none}.controls button{pointer-events:auto;width:64px;height:52px;border:1px solid #e6b44c99;border-radius:16px;background:#092623cf;color:var(--cream);font-size:25px}#feedback{position:fixed;top:95px;left:0;right:0;text-align:center;color:var(--gold);pointer-events:none;font:18px Georgia,serif}#standalone-close{position:fixed;right:14px;top:14px;width:44px;height:44px;border:1px solid var(--gold);border-radius:50%;background:var(--ink);color:var(--cream);font-size:24px}@media(max-height:540px){.card{padding:16px 24px}.card h1{font-size:29px;margin:8px 0}.card p{margin:8px 0}.rule{margin:10px 0}.hint{margin-top:8px}.veil{padding-top:64px}.controls button{height:44px}}
+</style>
+</head>
+<body>
+<div id="river" aria-label="Lintasan sungai tiga jalur"></div>
+<div class="hud"><div class="stat"><small>Jarak</small><strong id="distance">0</strong> m</div><div class="stat"><small>Artefak</small><strong id="items">0</strong></div><button id="pause" aria-label="Jeda permainan" disabled>Ⅱ</button></div>
+<div id="feedback" role="status" aria-live="polite"></div>
+<div class="controls" hidden><button id="left" aria-label="Pindah jalur kiri">←</button><button id="right" aria-label="Pindah jalur kanan">→</button></div>
+<div class="veil" id="overlay"><section class="card" aria-labelledby="title"><span class="eyebrow">Bekesah Sejarah / Ketapang</span><h1 id="title">Kayuh di<br><em>Sungai Pawan</em></h1><div class="rule"></div><p id="description">Susuri tepian hutan dan rumah panggung. Kumpulkan artefak emas, hindari kayu hanyut, batu, dan eceng gondok.</p><button class="primary" id="start" disabled>Menyiapkan sungai…</button><button class="secondary" id="back">Kembali ke Cerita</button><div class="hint" id="instructions">← → atau A / D untuk berpindah jalur.<br>Di ponsel: usap, ketuk sisi layar, atau gunakan tombol panah. Arus makin cepat seiring jarak.<br>Ilustrasi permainan, bukan peta Sungai Pawan.</div></section></div>
+<button id="standalone-close" aria-label="Tutup game">×</button>
+<script type="module">
+// Game ini mandiri: semua model prosedural; hanya Three.js dimuat dari CDN.
+const $ = id => document.getElementById(id);
+const embedded = window.parent !== window;
+$('standalone-close').hidden = embedded;
+function returnToStory() {
+  if (embedded) parent.postMessage({type:'pawan:close'}, location.origin);
+  else location.href = './';
+}
+$('back').onclick = $('standalone-close').onclick = returnToStory;
+// Hook integrasi: tambahkan logika database/unlock Anda di sini atau dengarkan
+// event window "pawan:gameover" dan "pawan:artifact" di aplikasi induk.
+function onGameOver(finalScore, collectedItems) { /* Callback skor akhir (meter) dan jumlah artefak. */ }
+function onArtifactCollected(totalItems) { /* Callback setiap artefak terkumpul. */ }
+function notify(type, detail) { if (embedded) parent.postMessage({type, detail}, location.origin); }
+let THREE;
+try {
+  THREE = await import('https://unpkg.com/three@0.160.0/build/three.module.js');
+  init();
+} catch (error) {
+  $('title').textContent = 'Sungai belum siap';
+  $('description').textContent = 'Grafis 3D gagal dimuat. Periksa koneksi internet dan dukungan WebGL pada browser Anda, lalu coba lagi.';
+  $('start').textContent = 'Coba muat lagi'; $('start').disabled = false;
+  $('start').onclick = () => location.reload();
+}
+function init() {
+// 1. Setup Scene — resolusi dibatasi demi kinerja perangkat mobile.
+const scene = new THREE.Scene(); scene.background = new THREE.Color('#9acdd5');
+scene.fog = new THREE.Fog('#d3dfbf', 40, 105);
+const renderer = new THREE.WebGLRenderer({antialias:devicePixelRatio < 2, powerPreference:'low-power'});
+renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+$('river').append(renderer.domElement);
+const camera = new THREE.PerspectiveCamera(58, 1, .1, 140);
+scene.add(new THREE.HemisphereLight(0xfff2d4,0x3a5743,2.2));
+const sun = new THREE.DirectionalLight(0xffd391,2.3);sun.position.set(-12,22,10);scene.add(sun);
+const materials = new Map(), geometries = [];
+function material(color){if(!materials.has(color)) materials.set(color,new THREE.MeshLambertMaterial({color,flatShading:true}));return materials.get(color);}
+const box = new THREE.BoxGeometry(1,1,1), sphere = new THREE.IcosahedronGeometry(1,0), cylinder = new THREE.CylinderGeometry(1,1,1,7), cone = new THREE.ConeGeometry(1,1,6);
+geometries.push(box,sphere,cylinder,cone);
+function mesh(parent,geo,color,x,y,z,sx=1,sy=1,sz=1){const m=new THREE.Mesh(geo,material(color));m.position.set(x,y,z);m.scale.set(sx,sy,sz);parent.add(m);return m;}
+// Langit prosedural: gradasi atmosfer, matahari hangat, awan low-poly.
+const skyGeo = new THREE.SphereGeometry(115,24,12);geometries.push(skyGeo);
+const skyMat = new THREE.ShaderMaterial({
+  side:THREE.BackSide,depthWrite:false,
+  vertexShader:`varying vec3 vSky;void main(){vSky=position;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
+  fragmentShader:`varying vec3 vSky;void main(){float h=smoothstep(-0.04,0.55,normalize(vSky).y);vec3 color=mix(vec3(0.87,0.88,0.72),vec3(0.34,0.66,0.79),h);gl_FragColor=vec4(color,1.0);}`
+});
+scene.add(new THREE.Mesh(skyGeo,skyMat));
+const sunMat=new THREE.MeshBasicMaterial({color:'#ffe4a0',fog:false});
+const sunDisc=new THREE.Mesh(sphere,sunMat);sunDisc.position.set(-15,12,-85);sunDisc.scale.setScalar(3.4);scene.add(sunDisc);
+const clouds=[];
+for(let i=0;i<7;i++){
+  const cloud=new THREE.Group();cloud.position.set(-43+i*14,9+(i%3)*2,-65-(i%2)*13);
+  for(let j=0;j<4;j++)mesh(cloud,sphere,'#fff1d5',(j-1.5)*2.5,Math.sin(j*2)*.4,0,3.2,1.1+(j%2)*.5,1.5);
+  scene.add(cloud);clouds.push(cloud);
+}
+// 2. Pembuatan Perahu — lambung terbuka, bangku, pendayung dan dayung kayu.
+const boat = new THREE.Group(); scene.add(boat); boat.position.z=5;
+const hull = new THREE.Shape(); hull.moveTo(0,-1.9);hull.lineTo(.62,-.95);hull.lineTo(.66,1.1);hull.lineTo(0,1.8);hull.lineTo(-.66,1.1);hull.lineTo(-.62,-.95);hull.closePath();
+const hullGeo = new THREE.ExtrudeGeometry(hull,{depth:.22,bevelEnabled:false});geometries.push(hullGeo);
+const bottom = new THREE.Mesh(hullGeo,material('#704026'));bottom.rotation.x=-Math.PI/2;bottom.position.y=.1;boat.add(bottom);
+for(const side of [-1,1]){mesh(boat,box,'#aa6b35',side*.57,.48,0,.12,.5,2.45);const tip=mesh(boat,box,'#c69350',side*.31,.45,-1.35,.1,.4,1.05);tip.rotation.y=side*.6;}
+for(const z of [-.8,.65])mesh(boat,box,'#d3a364',0,.56,z,1.08,.12,.32);
+mesh(boat,box,'#eed9a5',0,.99,.4,.55,.65,.36);
+mesh(boat,sphere,'#bd8053',0,1.55,.34,.24,.28,.23);
+mesh(boat,cone,'#e3b968',0,1.83,.34,.48,.23,.48);
+mesh(boat,box,'#384f49',0,.68,.03,.5,.2,.6);
+const paddle=new THREE.Group();paddle.position.set(.42,1.18,.3);boat.add(paddle);
+mesh(paddle,box,'#87522e',.38,-.48,0,.065,1.7,.065).rotation.z=.45;
+mesh(paddle,box,'#d6a25e',.72,-1.1,0,.26,.55,.09).rotation.z=.45;
+mesh(boat,box,'#bd8053',.39,1.16,.36,.5,.14,.14).rotation.z=-.35;
+// 3. Generator Lingkungan Sungai — segmen tepi didaur ulang, tanpa aset eksternal.
+const waterGeo=new THREE.PlaneGeometry(19,150,14,65);waterGeo.rotateX(-Math.PI/2);geometries.push(waterGeo);
+// Tekstur lokal: kilauan kecil dan riak arus yang berulang.
+const waterCanvas=document.createElement('canvas');waterCanvas.width=waterCanvas.height=256;
+const waterCtx=waterCanvas.getContext('2d');
+waterCtx.fillStyle='#687e56';waterCtx.fillRect(0,0,256,256);
+for(let i=0;i<65;i++){
+  const x=Math.random()*256,y=Math.random()*256,length=7+Math.random()*26;
+  waterCtx.strokeStyle=i%3===0?'#a5b88a':'#7f986b';waterCtx.lineWidth=i%3===0?1.5:1;
+  // Ulangi tepi agar sambungan tekstur tetap halus.
+  for(const offset of [-256,0,256]){waterCtx.beginPath();waterCtx.moveTo(x+offset,y);waterCtx.quadraticCurveTo(x+offset+length*.5,y+3,x+offset+length,y);waterCtx.stroke();}
+}
+const waterTexture=new THREE.CanvasTexture(waterCanvas);waterTexture.wrapS=waterTexture.wrapT=THREE.RepeatWrapping;
+waterTexture.repeat.set(3,22);waterTexture.colorSpace=THREE.SRGBColorSpace;
+const waterMat=new THREE.MeshPhongMaterial({map:waterTexture,color:'#d5d6a3',specular:'#d2dabb',shininess:65});
+const water=new THREE.Mesh(waterGeo,waterMat);water.position.z=-48;scene.add(water);
+// Geometri riak bersama untuk jejak air yang melebar di belakang sampan.
+const wakeGeo=new THREE.TorusGeometry(1,.018,3,20,Math.PI*.9);wakeGeo.rotateX(-Math.PI/2);geometries.push(wakeGeo);
+const wakes=[];
+for(let i=0;i<12;i++){
+  const mat=new THREE.MeshBasicMaterial({color:'#e1e5bc',transparent:true,opacity:0,depthWrite:false});
+  const wake=new THREE.Mesh(wakeGeo,mat);wake.userData.age=i/12;wake.position.set(0,.14,7);scene.add(wake);wakes.push(wake);
+}
+const waterBase=Float32Array.from(waterGeo.attributes.position.array);
+const banks=[];
+for(let i=0;i<12;i++){
+  const segment=new THREE.Group();segment.position.z=15-i*10;scene.add(segment);banks.push(segment);
+  for(const side of [-1,1]){
+    mesh(segment,box,'#718547',side*15,-.24,0,11,.5,10.1);
+    for(let j=0;j<3;j++){
+      const x=side*(10.5+Math.random()*5),z=(j-1)*3.3;
+      mesh(segment,cylinder,'#745336',x,1.6,z,.18,3.3,.18);
+      mesh(segment,sphere,j%2?'#426e3c':'#315e3e',x,4,z,1.8,2.2,1.7);
+      if(j===0){ // Rumpun nipah rendah di tepi air.
+        for(let k=0;k<5;k++){const leaf=mesh(segment,sphere,'#678d43',side*9.6,.7,z,.18,.12,1.3);leaf.rotation.y=k*Math.PI/2.5;leaf.rotation.z=.25;}
+      }
+    }
+    if(i%3===0){
+      const x=side*11;
+      for(const dx of [-.85,.85])for(const dz of [-.9,.9])mesh(segment,box,'#62472e',x+dx,.8,dz,.12,1.8,.12);
+      mesh(segment,box,'#b18a55',x,1.9,0,2,1.3,2.3);
+      const roof=mesh(segment,cone,'#75432e',x,3.05,0,1.8,1.1,1.9);roof.rotation.y=Math.PI/4;
+      mesh(segment,box,'#304d40',x-side*1.02,1.9,0,.03,.75,.55);
+      mesh(segment,box,'#a47b4d',side*9.2,.45,0,2.2,.16,1.3);
+    }
+  }
+}
+// Pool objek tetap: setiap baris selalu menyisakan jalur aman.
+const lanes=[-3.3,0,3.3], rows=[], particles=[];
+function makeObject(kind){
+  const g=new THREE.Group();g.userData.kind=kind;
+  if(kind==='coin'){
+    const c=mesh(g,cylinder,'#e6b44c',0,.9,0,.43,.13,.43);c.rotation.x=Math.PI/2;
+    mesh(g,box,'#fff1ad',0,.9,.09,.13,.47,.04);
+  }else if(kind==='log'){
+    const m=mesh(g,cylinder,'#825335',0,.25,0,.4,2.05,.4);m.rotation.z=Math.PI/2;
+    const ring=mesh(g,cylinder,'#c99b63',1.04,.25,0,.3,.025,.3);ring.rotation.z=Math.PI/2;
+  }else if(kind==='rock') mesh(g,sphere,'#818578',0,.25,0,.85,.75,.8);
+  else for(let i=0;i<6;i++){mesh(g,sphere,'#4c7942',Math.sin(i*2)*.65,.22,Math.cos(i*2)*.5,.45,.2,.4);mesh(g,cone,'#b095c5',Math.sin(i*2)*.65,.52,Math.cos(i*2)*.5,.09,.35,.09);}
+  return g;
+}
+for(let i=0;i<9;i++){
+  const g=new THREE.Group();scene.add(g);
+  const objects=['coin','coin','log','rock','plant'].map(kind=>{const o=makeObject(kind);g.add(o);return o;});
+  rows.push({g,objects});
+}
+function placeRow(row,z){
+  row.g.position.z=z;
+  row.objects.forEach(o=>o.visible=false);
+  const safe=Math.floor(Math.random()*3),blocked=(safe+1+Math.floor(Math.random()*2))%3;
+  const hazard=row.objects[2+Math.floor(Math.random()*3)];hazard.visible=true;hazard.position.set(lanes[blocked],0,0);
+  row.objects[0].visible=true;row.objects[0].position.set(lanes[safe],0,0);
+  if(Math.random()>.5){row.objects[1].visible=true;row.objects[1].position.set(lanes[safe],0,-2.5);}
+}
+for(let i=0;i<18;i++){const p=mesh(scene,sphere,'#ffe49a',0,-10,0,.07,.07,.07);p.visible=false;particles.push(p);}
+// 4. Kontrol — satu gerakan = satu jalur, juga pada layar portrait.
+let state='ready',lane=1,distance=0,items=0,speed=9,last=0,time=0,raf=0,audio;
+function move(dir){if(state==='running')lane=THREE.MathUtils.clamp(lane+dir,0,2);}
+$('left').onclick=()=>move(-1);$('right').onclick=()=>move(1);
+let pointer=null;
+$('river').addEventListener('pointerdown',e=>{if(!e.isPrimary)return;pointer={id:e.pointerId,x:e.clientX,y:e.clientY};$('river').setPointerCapture(e.pointerId);});
+$('river').addEventListener('pointerup',e=>{if(!pointer||e.pointerId!==pointer.id)return;const dx=e.clientX-pointer.x,dy=e.clientY-pointer.y;pointer=null;if(Math.abs(dx)>25&&Math.abs(dx)>Math.abs(dy))move(Math.sign(dx));else if(Math.hypot(dx,dy)<20)move(e.clientX<innerWidth/2?-1:1);});
+$('river').addEventListener('pointercancel',()=>pointer=null);
+addEventListener('keydown',e=>{
+  if(['ArrowLeft','ArrowRight','KeyA','KeyD','Escape','KeyP','Space'].includes(e.code))e.preventDefault();
+  if(e.code==='Escape'){if(state==='running')pause();else returnToStory();}
+  if(e.repeat)return;
+  if(e.code==='ArrowLeft'||e.code==='KeyA')move(-1);
+  if(e.code==='ArrowRight'||e.code==='KeyD')move(1);
+  if(e.code==='KeyP'||(e.code==='Space'&&e.target.tagName!=='BUTTON')){if(state==='running')pause();else if(state==='paused')resume();}
+});
+function panel(title,description,label,action){$('overlay').hidden=false;$('title').innerHTML=title;$('description').textContent=description;$('start').textContent=label;$('start').onclick=action;$('start').focus();}
+function pause(){if(state!=='running')return;state='paused';$('pause').disabled=true;$('pause').setAttribute('aria-label','Permainan dijeda');$('feedback').textContent='';panel('Sejenak<br><em>di tepian</em>','Perjalananmu menunggu. Lanjutkan saat siap mendayung kembali.','Lanjut Mendayung',resume);}
+function resume(){state='running';last=0;$('overlay').hidden=true;$('pause').disabled=false;$('pause').setAttribute('aria-label','Jeda permainan');renderer.domElement.focus();}
+$('pause').onclick=pause;
+document.addEventListener('visibilitychange',()=>{if(document.hidden)pause();last=0;});
+window.addEventListener('blur',pause);
+function start(){
+  distance=items=0;speed=9;lane=1;boat.position.x=0;time=0;
+  rows.forEach((r,i)=>placeRow(r,-16-i*12));particles.forEach(p=>p.visible=false);
+  wakes.forEach((w,i)=>{w.userData.age=i/12;w.position.set(0,.14,6.5);w.material.opacity=0;});
+  $('distance').textContent='0';$('items').textContent='0';$('feedback').textContent='';
+  document.querySelector('.controls').hidden=false;
+  try{audio ||= new (window.AudioContext||window.webkitAudioContext)();audio.resume().catch(()=>{});}catch{}
+  resume();
+}
+function sound(){if(!audio||audio.state!=='running')return;const osc=audio.createOscillator(),gain=audio.createGain();osc.connect(gain);gain.connect(audio.destination);osc.frequency.setValueAtTime(660,audio.currentTime);osc.frequency.exponentialRampToValueAtTime(1050,audio.currentTime+.13);gain.gain.setValueAtTime(.045,audio.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audio.currentTime+.2);osc.start();osc.stop(audio.currentTime+.2);}
+function finish(){
+  state='over';$('pause').disabled=true;document.querySelector('.controls').hidden=true;
+  const score=Math.floor(distance);
+  panel('Perjalanan<br><em>yang berkesah</em>',`Sampan menyentuh rintangan. Kamu menempuh ${score} meter dan mengumpulkan ${items} artefak. Ayo jelajahi sungai sekali lagi!`,'Main Lagi',start);
+  try{onGameOver(score,items);}catch(e){console.warn('Callback game over gagal.');}
+  notify('pawan:gameover',{finalScore:score,collectedItems:items});
+}
+// 5. Deteksi Tabrakan — rentang z tersapu agar objek tidak lolos pada frame lambat.
+function updateRows(dt){
+  for(const row of rows){
+    const oldZ=row.g.position.z;row.g.position.z+=speed*dt;
+    for(const o of row.objects){
+      if(!o.visible)continue;
+      if(o.userData.kind==='coin')o.rotation.y+=dt*2;
+      const z=row.g.position.z+o.position.z,prev=oldZ+o.position.z;
+      const isCoin=o.userData.kind==='coin';
+      if(prev<6.25&&z>3.75&&Math.abs(boat.position.x-o.position.x)<(isCoin?.85:1.12)){
+        if(!isCoin){finish();return;}
+        o.visible=false;items++;$('items').textContent=items;sound();
+        for(const p of particles){p.visible=true;p.position.set(boat.position.x,.9,5);p.userData.life=.55;p.userData.v=new THREE.Vector3((Math.random()-.5)*4,2+Math.random()*2,(Math.random()-.5)*4);}
+        try{onArtifactCollected(items);}catch(e){console.warn('Callback artefak gagal.');}
+        notify('pawan:artifact',{totalItems:items});
+      }
+    }
+    if(row.g.position.z>15){const farthest=Math.min(...rows.map(r=>r.g.position.z));placeRow(row,farthest-12);}
+  }
+}
+// 6. Game Loop — delta time, pool objek, gelombang vertex dan bobbing sampan.
+function tick(now){
+  raf=requestAnimationFrame(tick);
+  const dt=last?Math.min((now-last)/1000,.05):0;last=now;
+  if(state==='running'){
+    time+=dt;speed=Math.min(23,9+distance/180);distance+=speed*dt;
+    $('distance').textContent=Math.floor(distance);
+    const delta=lanes[lane]-boat.position.x;boat.position.x+=delta*(1-Math.exp(-11*dt));
+    boat.rotation.z=THREE.MathUtils.lerp(boat.rotation.z,-delta*.12,1-Math.exp(-8*dt));
+    boat.rotation.y=delta*.06;boat.position.y=Math.sin(time*3)*.065;
+    paddle.rotation.x=Math.sin(time*7)*.55;paddle.rotation.z=Math.cos(time*7)*.14;
+    for(const bank of banks){bank.position.z+=speed*dt;if(bank.position.z>25)bank.position.z-=120;}
+    waterTexture.offset.y-=speed*dt*.012;
+    waterTexture.offset.x=Math.sin(time*.22)*.025;
+    for(const cloud of clouds){cloud.position.x+=dt*.18;if(cloud.position.x>58)cloud.position.x=-58;}
+    for(const wake of wakes){
+      wake.userData.age+=dt*.65;
+      if(wake.userData.age>=1){wake.userData.age%=1;wake.position.set(boat.position.x,.14,6.5);}
+      const age=wake.userData.age;wake.position.z+=speed*dt*.5;
+      wake.scale.set(0.45+age*1.8,1,.35+age*1.4);wake.material.opacity=(1-age)*.45;
+      wake.position.y=.14+Math.sin(time*3+age*5)*.025;
+    }
+    const positions=waterGeo.attributes.position;
+    for(let i=0;i<positions.count;i++){const x=waterBase[i*3],z=waterBase[i*3+2];positions.setY(i,Math.sin(z*.65+time*3+x*.6)*.08+Math.cos(x*1.6-z*.3+time*1.8)*.035);}
+    positions.needsUpdate=true;waterGeo.computeVertexNormals();
+    updateRows(dt);
+    for(const p of particles)if(p.visible){p.userData.life-=dt;p.visible=p.userData.life>0;p.position.addScaledVector(p.userData.v,dt);p.userData.v.y-=6*dt;}
+  }
+  renderer.render(scene,camera);
+}
+function resize(){const w=innerWidth,h=innerHeight;renderer.setSize(w,h);camera.aspect=w/h;camera.position.set(0,w/h<.8?9:7,w/h<.8?15:14);camera.lookAt(0,1,-14);camera.updateProjectionMatrix();}
+addEventListener('resize',resize);resize();
+rows.forEach((r,i)=>placeRow(r,-16-i*12));
+renderer.domElement.tabIndex=0;
+$('start').disabled=false;$('start').textContent='Mulai Mendayung';$('start').onclick=start;
+raf=requestAnimationFrame(tick);
+renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();pause();panel('Grafis terhenti','Muat ulang game untuk menyiapkan sungai kembali.','Muat Ulang',()=>location.reload());});
+addEventListener('pagehide',()=>{cancelAnimationFrame(raf);geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());waterTexture.dispose();waterMat.dispose();skyMat.dispose();sunMat.dispose();wakes.forEach(w=>w.material.dispose());renderer.dispose();audio?.close();},{once:true});
+}
+</script>
+</body>
+</html>
