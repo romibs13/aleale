@@ -14,7 +14,7 @@
 :root{--ink:#0e2f33;--gold:#e3b341;--silver:#cfd8dc;--text:#e6f0ee}
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;overflow:hidden;background:var(--ink);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;touch-action:none;-webkit-user-select:none;user-select:none}
-canvas{position:fixed;inset:0;width:100%;height:100%;display:block}
+#c{position:fixed;inset:0;width:100%;height:100%;display:block}
 button{font:inherit;cursor:pointer}
 button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 #hud{position:fixed;top:max(12px,env(safe-area-inset-top));left:12px;background:rgba(14,47,51,.8);border:1px solid var(--gold);border-radius:8px;padding:8px 12px;font-size:14px;line-height:1.4}
@@ -99,7 +99,7 @@ body.ig.dlgon #mini,body.ig.minioff #mini{display:none}
 <div id="hud"><div id="who" class="small"></div><div id="room"></div><div>Koleksi: <b id="cnt">0/8</b></div></div>
 <button id="prompt"></button>
 <button id="mbtn">♪ Musik: nyala</button>
-<div id="dlg"><div id="dname"></div><div id="dtext"></div><div id="dbtns"><button class="b2" id="dvoice">🔊 Suara</button><button class="btn" id="dplay" style="display:none" onclick="openBatikGame()">Coba membatik</button><button class="btn" id="dgamelan" style="display:none" onclick="openGamelanGame()">Mainkan alat musik</button><button class="btn" id="dpawan" style="display:none">Lomba sampan</button><button class="b2" id="dcard">Lihat kartu</button><button class="btn" id="dnext">Lanjut ▶</button></div></div>
+<div id="dlg"><div id="dname"></div><div id="dtext"></div><div id="dbtns"><button class="b2" id="dvoice">🔊 Suara</button><button class="btn" id="dplay" style="display:none" onclick="openBatikGame()">Mulai Membatik</button><button class="btn" id="dgamelan" style="display:none" onclick="openGamelanGame()">Mainkan alat musik</button><button class="btn" id="dpawan" style="display:none">Lomba sampan</button><button class="b2" id="dcard">Lihat kartu</button><button class="btn" id="dnext">Lanjut ▶</button></div></div>
 <div id="joy"><div id="knob"></div></div>
 <button id="pbtn">☰ Menu</button>
 <div class="layer" id="menu"><div class="mcol"><div class="orn"></div><h1>Bekesah Sejarah Museum Virtual Ketapang</h1><p class="sub">Jelajahi sejarah dan budaya Ketapang</p>
@@ -139,7 +139,7 @@ body.ig.dlgon #mini,body.ig.minioff #mini{display:none}
 <div id="lb" role="dialog" aria-label="Foto diperbesar"><img id="lbimg" alt="" draggable="false"><div id="lbbar"><button id="lbout" aria-label="Perkecil">−</button><button id="lbin" aria-label="Perbesar">+</button><button id="lbx">Tutup ✕</button></div><div id="lbcap"></div></div>
 <div class="layer" id="card"><div class="panel">
 <div class="tag" id="ctag"></div><h2 id="ctitle"></h2><div id="cimg"></div><p id="ctext"></p>
-<button class="btn" id="cplay" style="display:none" onclick="openBatikGame()">Main simulasi membatik</button>
+<button class="btn" id="cplay" style="display:none" onclick="openBatikGame()">Mulai Membatik</button>
 <button class="btn" id="cgamelan" style="display:none" onclick="openGamelanGame()">Mainkan alat musik</button>
 <button class="btn" id="cpawan" style="display:none">Lomba sampan</button>
 <button class="btn" id="cclose">Tutup</button></div></div>
@@ -1783,12 +1783,12 @@ const f=vs.find(v=>/gadis|damayanti|google.*indonesia|female|perempuan|wanita/i.
 if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
 function speak(t){if(!('speechSynthesis' in window))return;speechSynthesis.cancel();if(!voiceOn)return;const u=new SpeechSynthesisUtterance(t);u.lang='id-ID';u.rate=.95;
 if(!VOICE)pickVoice();if(VOICE)u.voice=VOICE;u.pitch=FEM?1:1.2;u.onstart=()=>{bgm.volume=.15};u.onend=u.onerror=()=>{bgm.volume=MV};speechSynthesis.speak(u)}
-function typeLine(){const t=dLines[dPage];let i=0;clearInterval(dTimer);$('dtext').textContent='';
+function typeLine(){const last=dPage==dLines.length-1;const t=dLines[dPage];let i=0;clearInterval(dTimer);$('dtext').textContent='';
 dTimer=setInterval(()=>{i++;$('dtext').textContent=t.slice(0,i);if(i>=t.length)clearInterval(dTimer)},22);
-$('dplay').style.display=dE&&dE.id==='d6'?'inline-block':'none';
+$('dplay').style.display=last&&dE&&dE.id==='d6'?'inline-block':'none';
 $('dgamelan').style.display=dE&&dE.id==='d8'?'inline-block':'none';
-$('dpawan').style.display=dE&&['u3','l3'].includes(dE.id)?'inline-block':'none';$('dpawan').onclick=()=>openPawanGame(dE.id);
-const last=dPage==dLines.length-1;$('dnext').textContent=last?'Selesai':'Lanjut ▶';$('dcard').style.display=last&&dE?'inline-block':'none';speak(t)}
+$('dpawan').style.display=last&&dE&&['u3','l3'].includes(dE.id)?'inline-block':'none';$('dpawan').onclick=()=>openPawanGame(dE.id);
+$('dnext').textContent=last?'Selesai':'Lanjut ▶';$('dcard').style.display=last&&dE?'inline-block':'none';speak(t)}
 const greeted=new Set();
 function say(name,lines,e){dE=e;dLines=lines;dPage=0;dlgOpen=true;open=true;document.body.classList.add('dlgon');$('dname').textContent=name;$('dlg').style.display='block';typeLine()}
 function talk(e){const L=(DIALOGS[e.id]||[e.text]).slice(),gn=e.guideName||'Pemandu';
@@ -1839,7 +1839,7 @@ const CRECT=[[-5.75,5.75,-5.75,5.75],[-17.75,-6.25,-5.75,5.75],[6.25,17.75,-5.75
 [-10.8,-3.6,3.6,10.8].forEach(x=>CRECT.push([x-.4,x+.4,-13.3,-10.7]));CRECT.push([-15.8,-13,-6.4,-5.6],[13,15.8,-6.4,-5.6]);
 CRECT.forEach(r=>{r[0]=MX(r[0]);r[1]=MX(r[1]);r[2]=MZ(r[2]);r[3]=MZ(r[3])});
 const camOk=(x,z)=>!inB(x,z)||(me.y>RH+2?(x>MX(-17.8)&&x<MX(17.8)&&z>MZ(-17.8)&&z<MZ(5.8)):CRECT.some(r=>x>r[0]&&x<r[1]&&z>r[2]&&z<r[3]));
-(function loop(){requestAnimationFrame(loop);const dt=Math.min(clock.getDelta(),.05),t=clock.elapsedTime;let moving=false;
+(function loop(){requestAnimationFrame(loop);const dt=Math.min(clock.getDelta(),.05),t=clock.elapsedTime;if(document.getElementById('pawan-game')?.open||document.getElementById('batik-game')?.open)return;let moving=false;
 let target=0;
 if(started&&!open){const f=(keys.KeyW||keys.ArrowUp?1:0)-(keys.KeyS||keys.ArrowDown?1:0)-jy,r=(keys.KeyD?1:0)-(keys.KeyA?1:0)+jx;
 if(keys.ArrowLeft)yaw+=1.8*dt;if(keys.ArrowRight)yaw-=1.8*dt;
