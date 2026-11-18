@@ -2562,87 +2562,333 @@ const TOON=(()=>{const t=new THREE.DataTexture(Uint8Array.from([110,190,255]),3,
 let playerCloth;
 function playerTextures(){
 if(playerCloth)return playerCloth;
-const make=draw=>{const c=document.createElement('canvas');c.width=c.height=512;draw(c.getContext('2d'));const t=new THREE.CanvasTexture(c);t.anisotropy=Math.min(4,renderer.capabilities.getMaxAnisotropy());return t};
-const vest=make(x=>{x.fillStyle='#201e24';x.fillRect(0,0,512,512);x.strokeStyle='#d3a342';x.lineWidth=7;
-for(let row=0;row<4;row++)for(let col=0;col<4;col++){const cx=64+col*128,cy=64+row*128;
-for(let s=0;s<4;s++){x.save();x.translate(cx,cy);x.rotate(s*Math.PI/2);x.beginPath();x.moveTo(0,0);x.bezierCurveTo(48,-48,62,22,26,27);x.bezierCurveTo(8,28,12,9,23,14);x.stroke();x.restore()}
-x.fillStyle=row%2?'#b95475':'#648851';x.beginPath();x.ellipse(cx,cy,8,16,.65,0,Math.PI*2);x.fill()}
-x.strokeStyle='#e7bc62';x.lineWidth=9;x.strokeRect(6,6,500,500)});
-const songket=make(x=>{x.fillStyle='#d35c32';x.fillRect(0,0,512,512);for(let j=-1;j<9;j++){x.fillStyle=j%2?'#efb99a':'#e88c9f';x.beginPath();for(let i=0;i<=16;i++){const px=i*32,py=j*70+(i%2?30:0);if(!i)x.moveTo(px,py);else x.lineTo(px,py)}for(let i=16;i>=0;i--)x.lineTo(i*32,j*70+(i%2?30:0)+20);x.closePath();x.fill()}x.strokeStyle='#e7be60';x.lineWidth=6;x.strokeRect(3,3,506,506)});
-const band=make(x=>{x.fillStyle='#77212e';x.fillRect(0,0,512,512);x.strokeStyle='#e5b15a';x.lineWidth=10;for(let i=-1;i<6;i++){x.beginPath();x.moveTo(i*128,256);x.lineTo(i*128+64,90);x.lineTo(i*128+128,256);x.lineTo(i*128+64,422);x.closePath();x.stroke()}x.fillStyle='#d14843';x.fillRect(0,0,512,35);x.fillRect(0,477,512,35)});
-return playerCloth={vest,songket,band};
+const make=(draw,w=512,h=512)=>{const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);const t=new THREE.CanvasTexture(c);t.anisotropy=Math.min(4,renderer.capabilities.getMaxAnisotropy());return t};
+/* 1. Rompi Sangkarut Dayak: dasar hitam pekat dengan sulaman sulur Aso emas, magenta, dan hijau */
+const vest=make((x,w,h)=>{
+x.fillStyle='#18161b';x.fillRect(0,0,w,h);
+const scroll=(cx,cy,sc,flip)=>{
+x.save();x.translate(cx,cy);x.scale(flip?-sc:sc,sc);
+x.strokeStyle='#ecc052';x.lineWidth=10;x.lineCap='round';
+x.beginPath();x.moveTo(0,-55);x.bezierCurveTo(45,-55,58,-10,22,8);x.bezierCurveTo(-5,20,-10,52,24,58);x.bezierCurveTo(48,62,56,36,36,28);x.stroke();
+x.strokeStyle='#df4c7a';x.lineWidth=7;
+x.beginPath();x.moveTo(12,-28);x.bezierCurveTo(52,-20,52,25,16,28);x.stroke();
+x.fillStyle='#68994c';x.beginPath();x.ellipse(8,0,8,16,.4,0,7);x.fill();
+x.fillStyle='#df4c7a';x.beginPath();x.arc(32,-32,7,0,7);x.arc(32,42,7,0,7);x.fill();
+x.restore()};
+[[128,150,.95],[384,150,.95],[128,350,.95],[384,350,.95]].forEach(([cx,cy,sc])=>{scroll(cx-26,cy,sc,false);scroll(cx+26,cy,sc,true)});
+/* Gelombang sulur emas di tepi bawah rompi */
+x.strokeStyle='#ecc052';x.lineWidth=8;
+for(let i=0;i<8;i++){const px=32+i*64;x.beginPath();x.arc(px,472,22,Math.PI,0);x.stroke();x.fillStyle='#df4c7a';x.beginPath();x.arc(px,476,6,0,7);x.fill()}
+x.strokeStyle='#f0c965';x.lineWidth=12;x.strokeRect(6,6,w-12,h-12);
+});
+/* 2. Cawat (Apron) Lancip Depan & Belakang Dayak: motif X-sulur Aso simetris berbingkai manik emas */
+const apron=make((x,w,h)=>{
+x.fillStyle='#161419';x.fillRect(0,0,w,h);
+x.strokeStyle='#ecc052';x.lineWidth=14;x.lineCap='round';
+for(const sx of[-1,1])for(const sy of[-1,1]){
+x.save();x.translate(w/2,h*.48);x.scale(sx,sy);
+x.beginPath();x.moveTo(10,10);x.bezierCurveTo(18,95,95,125,115,65);x.bezierCurveTo(128,25,82,12,72,42);x.stroke();
+x.strokeStyle='#f5d98e';x.lineWidth=5;x.stroke();
+x.restore();
 }
+x.fillStyle='#df4c7a';x.beginPath();x.arc(w/2,h*.48,22,0,7);x.fill();
+x.fillStyle='#68994c';for(let a=0;a<4;a++){x.save();x.translate(w/2,h*.48);x.rotate(a*Math.PI/2+.78);x.beginPath();x.ellipse(0,38,9,20,0,0,7);x.fill();x.restore()}
+x.fillStyle='#ecc052';x.beginPath();x.arc(w/2,h*.48,10,0,7);x.fill();
+});
+/* 3. Kain Sarung Songket / Pelangi Melayu: garis-garis gelombang berundak diagonal oranye-salem-krem */
+const songket=make((x,w,h)=>{
+x.fillStyle='#e25224';x.fillRect(0,0,w,h);
+const cols=['#f59b6e','#e86482','#fce0b0','#d94720','#f2824b'];
+for(let row=-4;row<16;row++){
+x.fillStyle=cols[(row+16)%cols.length];
+x.beginPath();
+for(let i=0;i<=32;i++){
+const px=i*16,step=Math.floor(i/2)*14+(i%2)*6,py=row*42-step;
+i?x.lineTo(px,py):x.moveTo(px,py);
+}
+for(let i=32;i>=0;i--){
+const px=i*16,step=Math.floor(i/2)*14+(i%2)*6,py=row*42-step+22;
+x.lineTo(px,py);
+}
+x.closePath();x.fill();
+}
+/* Efek lipatan wiru halus vertikal */
+for(let i=0;i<w;i+=16){x.fillStyle=i%32?'rgba(255,245,220,.08)':'rgba(60,15,5,.10)';x.fillRect(i,0,8,h)}
+});
+/* 4. Selendang Kain Pelangi Melayu: motif ikat lidah api / pucuk rebung vertikal oranye, merah muda & emas */
+const shawl=make((x,w,h)=>{
+x.fillStyle='#eb5b28';x.fillRect(0,0,w,h);
+const bands=['#f47892','#f8a46c','#fbd89e','#d9431d','#f06c3b'];
+for(let col=0;col<8;col++){
+const cx=col*64+32;
+for(let k=3;k>=0;k--){
+x.fillStyle=bands[(col+k)%bands.length];
+const bw=10+k*7;
+x.beginPath();x.moveTo(cx-bw,0);
+for(let y=0;y<=h;y+=32)x.lineTo(cx-bw+(y%64?6:-6),y);
+for(let y=h;y>=0;y-=32)x.lineTo(cx+bw+(y%64?-6:6),y);
+x.closePath();x.fill();
+}}
+});
+/* 5. Ikat Kepala Lavung Dayak: tenun merah marun & hitam dengan deretan belah ketupat emas */
+const band=make((x,w,h)=>{
+x.fillStyle='#241519';x.fillRect(0,0,w,h);
+x.fillStyle='#c4282c';x.fillRect(0,0,w,58);x.fillRect(0,h-58,w,58);
+for(let i=0;i<4;i++){
+const cx=i*128+64,cy=h/2;
+x.fillStyle='#9e2028';x.beginPath();x.moveTo(cx-58,cy);x.lineTo(cx,72);x.lineTo(cx+58,cy);x.lineTo(cx,h-72);x.closePath();x.fill();
+x.strokeStyle='#ecc052';x.lineWidth=12;x.stroke();
+x.strokeStyle='#f7e4b4';x.lineWidth=5;x.beginPath();x.moveTo(cx-32,cy);x.lineTo(cx,115);x.lineTo(cx+32,cy);x.lineTo(cx,h-115);x.closePath();x.stroke();
+x.fillStyle='#ecc052';x.beginPath();x.arc(cx,cy,14,0,7);x.fill();
+}
+},512,256);
+/* 6. Bulu Burung Enggang (Tingang) Belang Putih-Hitam khas Putra Dayak */
+const hornbill=make((x,w,h)=>{
+x.clearRect(0,0,w,h);
+x.save();x.beginPath();
+x.moveTo(w/2,h-8);
+x.bezierCurveTo(w*.12,h*.72,w*.08,h*.24,w/2,10);
+x.bezierCurveTo(w*.92,h*.24,w*.88,h*.72,w/2,h-8);
+x.closePath();x.clip();
+const g=x.createLinearGradient(0,h,0,0);
+g.addColorStop(0,'#e8dec8');g.addColorStop(.36,'#f7f2e6');
+g.addColorStop(.40,'#3b3735');g.addColorStop(.52,'#282523');
+g.addColorStop(.57,'#f7f2e6');g.addColorStop(.68,'#f7f2e6');
+g.addColorStop(.73,'#383432');g.addColorStop(.85,'#242120');
+g.addColorStop(.90,'#f5efe2');g.addColorStop(1,'#ffffff');
+x.fillStyle=g;x.fillRect(0,0,w,h);
+/* Serat-serat halus bulu burung */
+x.strokeStyle='rgba(60,50,40,.18)';x.lineWidth=1.5;
+for(let y=16;y<h-16;y+=6){
+for(const s of[-1,1]){x.beginPath();x.moveTo(w/2,y+10);x.lineTo(w/2+s*w*.45,y-8);x.stroke()}
+}
+/* Batang tengah bulu (rachis) */
+x.strokeStyle='#d8cbb0';x.lineWidth=5;x.beginPath();x.moveTo(w/2,h-4);x.lineTo(w/2,14);x.stroke();
+x.restore();
+},128,256);
+return playerCloth={vest,apron,songket,shawl,band,hornbill};
+}
+
 function buildPlayer(st){
-const female=st==='melayu',g=new THREE.Group(),Cy=THREE.CylinderGeometry,Sp=THREE.SphereGeometry,textures=playerTextures();
-const mat=(color,roughness=.72,metalness=0,map=null)=>new THREE.MeshStandardMaterial({color,roughness,metalness,map});
-const skin=mat(0xdca17c,.84),hair=mat(0x242126),gold=mat(0xd9ae4c,.46,.48),cloth=mat(0xe5b74d,.85),dark=mat(0x26242b),red=mat(0xa62d37),ivory=mat(0xf1e6cb);
-const motif=mat(0xffffff,.86,0,female?textures.songket:textures.vest),band=mat(0xffffff,.85,0,textures.band);
+const female=st==='melayu',g=new THREE.Group(),Cy=THREE.CylinderGeometry,Sp=THREE.SphereGeometry,B=THREE.BoxGeometry,textures=playerTextures();
+const mat=(color,roughness=.68,metalness=0,map=null,extra={})=>new THREE.MeshStandardMaterial({color,roughness,metalness,map,...extra});
+const skin=mat(female?0xe8b290:0xd99c72,.74,.02),hair=mat(0x1e1c21,.78,.04),gold=mat(0xe5b84b,.34,.55),goldBright=mat(0xf5cd64,.28,.65);
+const tunicGold=mat(0xdfb044,.58,.12),hijabGold=mat(0xe4b64e,.68,.06),yellowSkirt=mat(0xebbd34,.72,.04);
+const dark=mat(0x1c1a20,.78,.03),brownWrap=mat(0x3b2a20,.78,.03),red=mat(0xb8292f,.68,.04),ivory=mat(0xf5ecda,.55,.04);
+const vestMat=mat(0xffffff,.76,0,textures.vest),apronMat=mat(0xffffff,.76,0,textures.apron,{side:THREE.DoubleSide});
+const songketMat=mat(0xffffff,.74,0,textures.songket),shawlMat=mat(0xffffff,.72,0,textures.shawl,{side:THREE.DoubleSide});
+const bandMat=mat(0xffffff,.75,0,textures.band),featherMat=mat(0xffffff,.6,0,textures.hornbill,{transparent:true,alphaTest:.15,side:THREE.DoubleSide});
+
 const mesh=(geo,m,x=0,y=0,z=0,par=g)=>{const o=new THREE.Mesh(geo,m);o.position.set(x,y,z);par.add(o);return o};
 const pivot=(x,y,z,par=g)=>{const o=new THREE.Group();o.position.set(x,y,z);par.add(o);return o};
-const ball=(r,m,x,y,z,sx=1,sy=1,sz=1,par=g)=>{const o=mesh(new Sp(r,24,16),m,x,y,z,par);o.scale.set(sx,sy,sz);return o};
-const tube=(points,r,m,par)=>mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(...p))),32,r,6,false),m,0,0,0,par);
-const torso=pivot(0,.86,0),head=pivot(0,.79,0,torso),hat=pivot(0,.22,0,head);
-mesh(new Cy(.225,.18,.53,32),female?cloth:skin,0,.30,0,torso).scale.z=.69;
-mesh(new Cy(.185,.19,.16,24),dark,0,.01,0,torso).scale.z=.75;
-mesh(new Cy(.065,.08,.16,16),skin,0,.62,0,torso);
-if(female){
-mesh(new Cy(.21,.28,.55,32),cloth,0,.03,0,torso).scale.z=.72;
-mesh(new Cy(.27,.29,.47,32),motif,0,.34,0).scale.z=.72;
-// The scarf wraps across the back, leaving the gold front of the tunic visible.
-const wrap=mesh(new Cy(.256,.245,.36,32,1,true,Math.PI/2,Math.PI),motif,0,.39,0,torso);wrap.scale.z=.76;
-for(const s of [-1,1]){const panel=mesh(new THREE.BoxGeometry(.105,.54,.018),motif,s*.17,.24,.163,torso);panel.rotation.z=-s*.13}
-}else{
-mesh(new Cy(.234,.195,.52,32,1,true),motif,0,.30,0,torso).scale.z=.73;
-// Open vest lapels and gold piping on the front.
-mesh(new THREE.PlaneGeometry(.075,.46),skin,0,.32,.173,torso);
-for(const s of [-1,1])tube([[s*.032,.56,.177],[s*.05,.35,.18],[s*.06,.06,.15]],.008,gold,torso);
-mesh(new Cy(.199,.199,.055,24),red,0,.045,0,torso).scale.z=.75;
-const apron=mesh(new THREE.BoxGeometry(.22,.44,.028),motif,0,-.12,.153,torso);
-for(const s of [-1,1]){const flap=mesh(new THREE.BoxGeometry(.10,.42,.018),cloth,s*.19,-.1,-.02,torso);flap.rotation.z=s*.12}
+const ball=(r,m,x,y,z,sx=1,sy=1,sz=1,par=g)=>{const o=mesh(new Sp(r,24,18),m,x,y,z,par);o.scale.set(sx,sy,sz);return o};
+const tube=(points,r,m,par=g,seg=28,rad=8)=>mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(...p))),seg,r,rad,false),m,0,0,0,par);
+/* Fungsi pembuat jambul rambut meruncing / bulu meruncing melengkung */
+const taperedLock=(points,r0,m,par=g,sx=1,sz=1)=>{
+const curve=new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(...p))),geo=new THREE.TubeGeometry(curve,14,r0,8,false),pos=geo.attributes.position,v=new THREE.Vector3();
+for(let i=0;i<pos.count;i++){
+const t=Math.min(1,Math.floor(i/9)/14),cPt=curve.getPointAt(t),f=Math.sin(t*Math.PI*.85)*(1-t*.75)+.18*(1-t);
+v.fromBufferAttribute(pos,i).sub(cPt);v.x*=f*sx;v.y*=f;v.z*=f*sz;v.add(cPt);pos.setXYZ(i,v.x,v.y,v.z);
 }
-// Sculpted jaw and soft skin tones retain the stylized proportions.
-const faceGeo=new Sp(.265,40,32),fp=faceGeo.attributes.position,colors=[];
+geo.computeVertexNormals();return mesh(geo,m,0,0,0,par);
+};
+
+const torso=pivot(0,.84,0),head=pivot(0,.76,0,torso),hat=pivot(0,.22,0,head),extraAnim=[];
+/* Leher halus */
+mesh(new Cy(.064,.078,.16,18),skin,0,.60,0,torso);
+
+if(female){
+/* ============================================================================
+   PUTRI MELAYU (Sesuai Gambar Referensi 1: Baju Kurung Satin Emas Utuh Tanpa Celah, Selendang Pelangi, Kain Songket, Kalung Susun 3, & Hijab 7 Sunting Daun Emas)
+   ============================================================================ */
+/* 1. Kain Sarung Songket Panjang Utuh dari Pinggang hingga Mata Kaki (Tertutup Rapat Tanpa Tembus Kaki) */
+const skirtPiv=pivot(0,.78,0,g);
+const skirt=mesh(new Cy(.192,.218,.64,32),songketMat,0,-.32,0,skirtPiv);skirt.scale.z=.76;
+/* Lipatan Wiru Vertikal di Bagian Depan Sarung */
+mesh(new B(.088,.635,.024),songketMat,-.012,-.32,.155,skirtPiv);
+mesh(new Cy(.219,.219,.022,32),gold,0,-.63,0,skirtPiv).scale.z=.76;
+extraAnim.push((t,ws,ph)=>{
+skirtPiv.rotation.x=Math.sin(ph)*.04*ws;
+skirtPiv.rotation.z=Math.cos(ph)*.025*ws;
+});
+
+/* 2. Baju Kurung Satin Emas Utuh & Rapat (Tanpa Celah/Bolong di Perut maupun Samping) */
+/* Inti badan dalam agar tidak pernah ada celah saat membungkuk/bergerak */
+mesh(new Cy(.195,.202,.52,28),tunicGold,0,.18,0,torso).scale.z=.69;
+/* Bagian atas dada & pinggang Baju Kurung */
+mesh(new Cy(.216,.192,.38,32),tunicGold,0,.35,0,torso).scale.z=.71;
+/* Bagian bawah Baju Kurung utuh melingkar penuh hingga lutut */
+const hem=mesh(new Cy(.192,.238,.46,32),tunicGold,0,-.03,0,torso);hem.scale.z=.74;
+const border=mesh(new Cy(.239,.241,.024,32),gold,0,-.25,0,torso);border.scale.z=.74;
+/* Aksen belahan samping (side slit trim) di sisi kiri & kanan bawah baju kurung */
+for(const s of[-1,1]){
+mesh(new B(.016,.22,.035),gold,s*.222,-.14,0,torso).rotation.z=-s*.09;
+}
+/* Kerah V-Neck Baju Kurung */
+mesh(new B(.035,.08,.02),skin,0,.51,.146,torso);
+
+/* 3. Kalung Emas Bulan Sabit / Dokoh Susun Tiga di Dada (Terlihat Jelas di Depan Baju Kurung) */
+[[.16,.07,.020,.44],[.20,.12,.026,.37],[.24,.17,.034,.29]].forEach(([w,drop,pR,y0],idx)=>{
+const pts=[];
+for(let i=0;i<=12;i++){
+const u=i/12,a=u*Math.PI;
+pts.push([Math.cos(a)*w*.52,.51-Math.sin(a)*drop,.152+Math.sin(a)*.032+idx*.005]);
+}
+tube(pts,.005,goldBright,torso,20,6);
+/* Bandul Dokoh Bulan Sabit Berukir Filigri Emas */
+const pend=pivot(0,y0,.185+idx*.006,torso);
+ball(pR,goldBright,0,0,0,1.48,.96,.28,pend);
+ball(pR*.65,gold,0,.008,.006,1.3,.75,.25,pend);
+for(let b=-3;b<=3;b++)ball(.005,goldBright,b*pR*.32,-pR*.78+Math.abs(b)*.003,.005,1,1,1,pend);
+});
+
+/* 4. Selendang Kain Pelangi Menyampir di Bahu, Melingkari Lengan, & Menjuntai Melengkung di Punggung (BACK View) */
+for(const s of[-1,1]){
+/* Sampiran selendang di atas bahu */
+const shCap=ball(.112,shawlMat,s*.192,.46,-.01,1.05,1.12,1.22,torso);shCap.rotation.z=-s*.25;
+/* Panel depan selendang yang jatuh rapi di kiri & kanan dada (tanpa menutup kalung di tengah) */
+const pGeo=new B(.118,.58,.024,4,12,2),pp=pGeo.attributes.position;
+for(let i=0;i<pp.count;i++){
+const py=pp.getY(i),px=pp.getX(i),t=(.29-py)/.58;
+pp.setX(i,px*(1+t*.16)-s*t*.012);
+pp.setZ(i,pp.getZ(i)+Math.sin(t*Math.PI)*.016);
+}
+pGeo.computeVertexNormals();
+const frontPanel=mesh(pGeo,shawlMat,s*.162,.16,.168,torso);
+frontPanel.rotation.set(-.03,s*.10,-s*.04);
+}
+/* Lengkungan lipatan selendang berlapis di punggung belakang (Sesuai BACK View Referensi) */
+for(let f=0;f<4;f++){
+const dy=f*.032,dz=-.155-f*.012;
+tube([[-.23,.38-dy*.4,-.02],[-.17,.22-dy,dz],[0,.14-dy*1.1,dz-.025],[.17,.22-dy,dz],[.23,.38-dy*.4,-.02]],.038-f*.004,shawlMat,torso,28,10);
+}
+const backDrape=mesh(new Cy(.252,.222,.28,32,4,true,Math.PI*.58,Math.PI*.84),shawlMat,0,.28,-.02,torso);
+backDrape.scale.z=.78;
+
+}else{
+/* ============================================================================
+   PUTRA DAYAK (Sesuai Gambar Referensi 2: Rompi Sangkarut Sulur Aso, Kalung Taring, Cawat Lancip Depan-Belakang, & Kain Samping Kuning)
+   ============================================================================ */
+/* Dada bidang & Rompi Adat Dayak Berukir Aso */
+mesh(new Cy(.215,.180,.50,32),skin,0,.30,0,torso).scale.z=.68;
+const vMesh=mesh(new Cy(.226,.192,.49,32,1,true),vestMat,0,.30,0,torso);vMesh.scale.z=.71;
+/* Belahan dada V-neck terbuka & lis emas tepi rompi */
+mesh(new THREE.PlaneGeometry(.082,.42),skin,0,.32,.156,torso);
+for(const s of[-1,1]){
+tube([[s*.075,.54,.145],[s*.042,.34,.166],[s*.048,.10,.152],[s*.14,.06,.115]],.0085,gold,torso,20,6);
+const armHole=mesh(new THREE.TorusGeometry(.105,.008,8,20),gold,s*.21,.41,0,torso);armHole.rotation.y=Math.PI/2;
+}
+tube([[-.18,.06,-.125],[0,.055,-.145],[.18,.06,-.125]],.008,gold,torso,16,6);
+
+/* Kalung Manik-Manik & Deretan Taring Babi Hutan Menyebar (Sesuai Gambar Referensi 2) */
+for(let row=0;row<2;row++){
+const N=15;
+for(let i=0;i<N;i++){
+const u=i/(N-1),a=(.08+u*.84)*Math.PI,rx=.105+row*.022,ry=.13+row*.035;
+const bx=Math.cos(a)*rx,by=.54-Math.sin(a)*ry,bz=.148+Math.sin(a)*.028;
+ball(.011,i%3===0?red:i%2?gold:mat(0x6e472b),bx,by,bz,1,1,1,torso);
+if(row===1){
+const tooth=taperedLock([[0,0,0],[0,-.028,.008],[0,-.055,-.004]],.0095,ivory,torso);
+tooth.position.set(bx,by-.005,bz+.008);
+tooth.rotation.z=(u-.5)*1.45;
+}}
+}
+/* Dua Taring Besar Melengkung & Manik Merah di Tengah Dada */
+for(const s of[-1,1]){
+ball(.014,red,s*.018,.35,.182,1,1,1,torso);
+taperedLock([[s*.012,.34,.182],[s*.036,.28,.186],[s*.018,.23,.176]],.013,ivory,torso);
+}
+
+/* Sabuk Pinggang Merah, Kain Kuning Samping/Belakang, & Cawat Hitam Lancip Depan-Belakang */
+mesh(new Cy(.192,.195,.07,28),red,0,.04,0,torso).scale.z=.73;
+/* Kain kuning keemasan di sisi kiri, kanan, dan belakang */
+const ySkirt=mesh(new Cy(.192,.235,.43,28,1,true,Math.PI*.18,Math.PI*1.64),yellowSkirt,0,-.18,0,torso);
+ySkirt.scale.z=.74;
+for(const s of[-1,1]){
+const sFlap=mesh(new B(.08,.42,.22),yellowSkirt,s*.165,-.18,-.01,torso);sFlap.rotation.z=-s*.09;
+}
+/* Cawat (Apron) Hitam Berujung Lancip Segitiga di DEPAN dan BELAKANG (Sesuai FRONT & BACK View Referensi) */
+const makePointedApron=(zPos,rotY)=>{
+const apGrp=pivot(0,.02,zPos,torso);apGrp.rotation.y=rotY;
+const sh=new THREE.Shape();
+sh.moveTo(-.105,0);sh.lineTo(.105,0);sh.lineTo(.115,-.34);sh.lineTo(0,-.45);sh.lineTo(-.115,-.34);sh.closePath();
+const geo=new THREE.ExtrudeGeometry(sh,{depth:.014,bevelEnabled:false});
+/* Pemetaan UV agar tekstur sulur Aso tepat di tengah cawat */
+const uv=geo.attributes.uv,pos=geo.attributes.position;
+for(let i=0;i<pos.count;i++)uv.setXY(i,(pos.getX(i)+.12)/.24,(pos.getY(i)+.46)/.46);
+uv.needsUpdate=true;
+mesh(geo,apronMat,0,0,-.007,apGrp);
+tube([[-.105,0,.008],[-.115,-.34,.008],[0,-.45,.008],[.115,-.34,.008],[.105,0,.008]],.007,gold,apGrp,20,6);
+return apGrp;
+};
+makePointedApron(.148,0);
+makePointedApron(-.148,Math.PI);
+}
+
+/* ============================================================================
+   WAJAH & KEPALA PIXAR-STYLE (Pipi Halus, Mata Ekspresif Berkilau, Alis & Senyum Ramah)
+   ============================================================================ */
+const faceGeo=new Sp(.268,44,36),fp=faceGeo.attributes.position,colors=[];
 for(let i=0;i<fp.count;i++){
 let x=fp.getX(i),y=fp.getY(i),z=fp.getZ(i);
-const jaw=Math.max(0,Math.min(1,(-y-.025)/.24));x*=1-.17*jaw;
-const cheek=Math.exp(-Math.pow((Math.abs(x)-.145)/.065,2)-Math.pow((y+.055)/.065,2))*Math.max(0,z/.265);
-z+=cheek*.007;fp.setXYZ(i,x,y,z);
-colors.push(1,.985-cheek*.075,.97-cheek*.08);
+const jaw=Math.max(0,Math.min(1,(-y-.015)/.25));
+x*=1-.14*jaw;
+/* Pipi chubby lembut khas animasi 3D modern */
+const cheek=Math.exp(-Math.pow((Math.abs(x)-.135)/.075,2)-Math.pow((y+.045)/.070,2))*Math.max(0,z/.268);
+const chin=Math.exp(-Math.pow(x/.065,2)-Math.pow((y+.21)/.055,2))*Math.max(0,z/.268);
+z+=cheek*.014+chin*.008;
+fp.setXYZ(i,x,y,z);
+const blush=cheek*(female?.11:.07);
+colors.push(1,.98-blush,.96-blush*1.2);
 }
 faceGeo.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));faceGeo.computeVertexNormals();
 const faceSkin=skin.clone();faceSkin.vertexColors=true;
-const face=mesh(faceGeo,faceSkin,0,0,0,head);face.name='player-face';face.scale.set(1,1.10,.91);
-const browMat=mat(0x382a26,.9),lip=mat(0xb87567,.76),eyeWhite=mat(0xf2e8dc,.43),iris=mat(0x65432e,.44),pupil=mat(0x201d20,.3);
-for(const s of [-1,1]){
-ball(.043,skin,s*.251,-.014,-.005,.83,1.16,.62,head);
-ball(.024,mat(0xc98c74),s*.261,-.014,.016,.52,1,.34,head);
-tube([[s*.047,.105,.216],[s*.100,.122,.215],[s*.155,.106,.192]],.008,browMat,head);
+const face=mesh(faceGeo,faceSkin,0,0,0,head);face.name='player-face';face.scale.set(1.02,1.06,.93);
+
+const browMat=mat(0x281c18,.82),lip=mat(female?0xd46a62:0xc2705c,.62),eyeWhite=mat(0xfaf5ee,.25),iris=mat(0x5a3219,.22),pupil=mat(0x141012,.12),gleam=new THREE.MeshBasicMaterial({color:0xffffff});
+for(const s of[-1,1]){
+if(!female){
+/* Telinga Putra Dayak */
+ball(.046,skin,s*.256,-.012,-.005,.82,1.15,.62,head);
+ball(.025,mat(0xc48264),s*.264,-.012,.014,.5,1,.35,head);
 }
-// A shallow bridge and nostril wings blend the nose into the face.
-ball(.027,skin,0,.012,.229,.64,1.65,.65,head);
-ball(.026,skin,0,-.036,.251,.9,.72,.83,head);
-for(const s of [-1,1]){
-ball(.016,skin,s*.023,-.043,.241,1,.64,.69,head);
-ball(.006,mat(0xb47a60),s*.017,-.050,.253,1,.38,.45,head);
+/* Alis mata melengkung ekspresif (lebih tebal & tegas untuk Putra Dayak, anggun untuk Putri Melayu) */
+tube([[s*.042,.108,.224],[s*.102,.128,.220],[s*.162,.108,.194]],female?.0085:.0135,browMat,head,16,8);
 }
+/* Hidung mungil bervolume halus */
+ball(.024,skin,0,.010,.236,.62,1.45,.62,head);
+ball(.029,skin,0,-.032,.256,.96,.74,.86,head);
+for(const s of[-1,1]){
+ball(.017,skin,s*.022,-.038,.246,1,.66,.70,head);
+}
+/* Mata Besar Berkilau dengan Bulu Mata & Kelopak */
 const eyes=[-1,1].map(s=>{
-const e=pivot(s*.101,.025,.222,head);
-ball(.056,eyeWhite,0,0,0,1,.73,.39,e);
-ball(.032,iris,0,-.002,.022,1,1,.29,e);
-ball(.019,pupil,0,-.002,.030,1,1,.25,e);
-ball(.008,ivory,-.009,.010,.035,1,1,.28,e);
-ball(.0035,ivory,.011,-.012,.034,1,1,.22,e);
-tube([[-.052,0,.006],[-.031,.032,.015],[.006,.038,.018],[.039,.025,.013],[.053,0,.004]],.006,skin,e);
-tube([[-.051,-.001,.005],[-.028,-.029,.012],[.015,-.032,.014],[.052,-.001,.004]],.004,skin,e);
-if(female)tube([[-.050,.006,.012],[-.023,.034,.019],[.018,.034,.019],[.053,.007,.010]],.0035,browMat,e);
-return e});
-const mouth=pivot(0,-.118,.215,head);
-tube([[-.057,.012,0],[-.023,.010,.010],[0,.014,.013],[.023,.010,.010],[.057,.012,0]],.005,lip,mouth);
-tube([[-.054,.008,.001],[-.026,-.003,.012],[0,-.007,.015],[.026,-.003,.012],[.054,.008,.001]],.006,lip,mouth);
-tube([[-.054,.010,.004],[0,.003,.019],[.054,.010,.004]],.0025,mat(0x895044),mouth);
+const e=pivot(s*.102,.024,.225,head);
+ball(.058,eyeWhite,0,0,0,1.02,.78,.40,e);
+ball(.036,iris,0,-.001,.021,1,1,.30,e);
+ball(.021,pupil,0,-.001,.029,1,1,.26,e);
+ball(.0095,gleam,-s*.008,.011,.036,1,1,.25,e);
+ball(.0042,gleam,s*.010,-.010,.035,1,1,.22,e);
+/* Garis kelopak & bulu mata atas melengkung lentik */
+tube([[-.055,-.002,.006],[-.032,.034,.018],[.005,.040,.021],[.038,.028,.016],[.056,-.002,.005]],female?.0055:.0048,browMat,e,16,6);
 if(female){
-// Closed crown, back and neck, with an opening restricted to the face.
-// Coordinates are relative to the head so the scarf cannot sway off the scalp.
+/* Ujung bulu mata lentik Putri Melayu */
+tube([[s*.042,.022,.016],[s*.064,.034,.012]],.0035,browMat,e,6,5);
+}
+tube([[-.052,-.004,.005],[-.026,-.030,.013],[.015,-.032,.014],[.052,-.004,.004]],.0038,skin,e,14,6);
+return e});
+
+/* Senyum Ramah & Natural */
+const mouth=pivot(0,-.112,.222,head);
+tube([[-.058,.016,-.002],[-.026,.006,.012],[0,.008,.016],[.026,.006,.012],[.058,.016,-.002]],.0055,lip,mouth,16,6);
+tube([[-.052,.012,-.002],[-.024,-.006,.013],[0,-.010,.016],[.024,-.006,.013],[.052,.012,-.002]],.0065,lip,mouth,16,6);
+tube([[-.054,.014,.002],[0,.001,.019],[.054,.014,.002]],.0028,mat(0x7a3e34),mouth,12,6);
+
+/* ============================================================================
+   HIJAB & SUNTING PUTRI MELAYU vs RAMBUT SPIKY & BULU ENGGANG PUTRA DAYAK
+   ============================================================================ */
+if(female){
+/* Tudung Hijab Kuning Emas Bervolume Halus Tanpa Menutupi Dahi/Alis (Sesuai FRONT, SIDE & BACK Referensi 1) */
 const rows=[[.34,0,0],[.327,.10,0],[.285,.19,0],[.23,.247,0],[.19,.27,.59],[.10,.293,.87],[-.04,.303,.99],[-.18,.287,.88],[-.28,.254,.54],[-.37,.225,0]],segments=64,verts=[],indices=[];
 for(const [y,r,gap] of rows)for(let j=0;j<=segments;j++){
 const angle=Math.PI/2+gap+j/segments*(Math.PI*2-gap*2);
@@ -2652,52 +2898,165 @@ for(let i=0;i<rows.length-1;i++)for(let j=0;j<segments;j++){
 const a=i*(segments+1)+j,b=a+segments+1;indices.push(a,a+1,b,a+1,b+1,b);
 }
 const hoodGeo=new THREE.BufferGeometry();hoodGeo.setAttribute('position',new THREE.Float32BufferAttribute(verts,3));hoodGeo.setIndex(indices);hoodGeo.computeVertexNormals();
-const hoodCloth=cloth.clone();hoodCloth.side=THREE.DoubleSide;
+const hoodCloth=hijabGold.clone();hoodCloth.side=THREE.DoubleSide;
 const hood=mesh(hoodGeo,hoodCloth,0,0,0,head);hood.name='melayu-hood';
-mesh(new Cy(.225,.285,.16,32),cloth,0,-.34,-.026,head).scale.z=.86;
-for(const side of [-1,1]){
+/* Volume sanggul belakang hijab & lipatan leher rapi yang tidak menutupi kalung di dada */
+ball(.21,hijabGold,0,-.02,-.11,1.0,1.02,1.05,head);
+mesh(new Cy(.215,.265,.15,32),hijabGold,0,-.33,-.024,head).scale.z=.84;
+for(let k=0;k<2;k++){
+const r=mesh(new THREE.TorusGeometry(.185+k*.012,.018,12,28),hijabGold,0,-.26-k*.038,-.022,head);
+r.rotation.x=Math.PI/2+.08;r.scale.set(1,.82,1);
+}
+for(const side of[-1,1]){
 const edge=rows.slice(3).map(([y,r,gap])=>[side*Math.sin(gap)*r,y,Math.cos(gap)*r*.94-.009]);
-tube(edge,.010,gold,head);
-// Subtle fabric folds along the back and sides.
-tube([[side*.20,.21,-.16],[side*.275,.02,-.11],[side*.25,-.19,-.13],[side*.19,-.34,-.09]],.008,cloth,head);
+tube(edge,.010,gold,head,20,8);
+tube([[side*.20,.21,-.16],[side*.275,.02,-.11],[side*.25,-.19,-.13],[side*.19,-.34,-.09]],.010,hijabGold,head,16,8);
 }
-for(let i=-3;i<=3;i++){const x=i*.057,y=.09+(1-Math.abs(i)/4)*.10;tube([[x,-.02,-.025],[x*1.45,y,-.02]],.004,gold,hat);ball(.022,gold,x*1.45,y,-.02,.75,1.5,.45,hat)}
+/* 7 Tangkai Sunting / Kembang Goyang Daun Emas Menyebar Rapi di Puncak Hijab */
+for(let i=-3;i<=3;i++){
+const x=i*.056,y=.09+(1-Math.abs(i)/4)*.10;
+tube([[x,-.02,-.025],[x*1.48,y,-.02]],.0045,goldBright,hat,8,6);
+ball(.024,goldBright,x*1.48,y,-.02,.76,1.55,.35,hat);
+ball(.015,gold,x*1.48,y,-.014,.62,1.25,.30,hat);
+}
 }else{
-mesh(new Sp(.276,28,18,0,Math.PI*2,0,Math.PI*.53),hair,0,-.18,-.018,hat);
-for(let i=0;i<7;i++){const tuft=ball(.09,hair,(i-3)*.059,-.10+Math.sin(i)*.025,.115, .7,1.3,.65,hat);tuft.rotation.z=-.5+i*.12}
-mesh(new Cy(.274,.274,.085,32),band,0,-.19,-.012,hat).scale.z=.91;
+/* Rambut Hitam Spiky Berlapis Khas Putra Dayak (Sesuai FRONT, 3/4, SIDE, BACK Referensi 2) */
+ball(.278,hair,0,-.16,-.025,1.02,1.02,1.02,hat);
+/* Jambul depan & poni meruncing berlapis di atas dahi */
+[[-.16,-.10,.18,-.45,.15],[-.08,-.07,.21,-.25,.20],[.01,-.05,.22,.08,.25],[.10,-.07,.20,.32,.18],[.18,-.11,.16,.52,.12]].forEach(([hx,hy,hz,rz,up])=>{
+taperedLock([[hx*.6,hy+.08,hz-.08],[hx,hy+up*.5,hz+.04],[hx+rz*.08,hy+up,hz-.01]],.058,hair,hat,1.3,.85);
+});
+/* Jambul atas (crown spikes) yang mencuat dinamis */
+[[-.12,.04,-.02,-.5],[0,.07,-.01,.15],[.11,.05,-.02,.45],[-.06,.05,-.12,-.3],[.07,.05,-.12,.3]].forEach(([hx,hy,hz,rz])=>{
+taperedLock([[hx*.5,hy-.05,hz],[hx,hy+.08,hz+.02],[hx+rz*.12,hy+.16,hz-.04]],.062,hair,hat,1.25,.9);
+});
+/* Jambul samping pelipis & rambut belakang tengkuk (terlihat di SIDE & BACK view) */
+for(const s of[-1,1]){
+taperedLock([[s*.22,-.12,.08],[s*.29,-.18,.04],[s*.31,-.26,-.02]],.048,hair,hat,.9,1.2);
+taperedLock([[s*.24,-.06,-.04],[s*.32,-.10,-.09],[s*.34,-.18,-.14]],.052,hair,hat,.9,1.2);
+}
+for(let b=-3;b<=3;b++){
+const bx=b*.055;
+taperedLock([[bx,-.22,-.22],[bx*1.15,-.34,-.27],[bx*1.2,-.45,-.25]],.046,hair,hat,1.1,.9);
+}
+
+/* Ikat Kepala Lavung Dayak Bermotif Belah Ketupat & Pita Merah di Belakang */
+const hb=mesh(new Cy(.278,.276,.092,36),bandMat,0,-.185,-.015,hat);hb.scale.z=.94;
+for(const s of[-1,1]){
+const tail=mesh(new B(.045,.14,.012),red,s*.04,-.28,-.265,hat);tail.rotation.z=s*.22;tail.rotation.x=.2;
+/* Sepasang Bola Rumbai Merah (Pom-Pom) di Pelipis & Bawah Telinga (Sesuai Referensi 2) */
+ball(.036,red,s*.282,-.22,.015,1,1,1,hat);
+tube([[s*.275,-.24,.012],[s*.272,-.34,.012]],.004,red,hat,6,5);
+ball(.028,red,s*.272,-.35,.012,1,1,1,hat);
+}
+
+/* 5 Helai Bulu Burung Enggang (Tingang) Besar Belang Putih-Hitam di Puncak Kepala */
 for(let i=-2;i<=2;i++){
-const feather=pivot(i*.058,-.10,-.05,hat);feather.rotation.z=-i*.24;
-const length=.36+(2-Math.abs(i))*.10;
-ball(.06,ivory,0,length*.5,0,.7,length/.12,.19,feather);
-tube([[0,0,.013],[.008,length*.5,.013],[0,length,.013]],.003,gold,feather);
-for(let j=1;j<10;j++){const y=j*length/10,w=Math.sin(j/10*Math.PI)*.039;for(const s of [-1,1])tube([[0,y,.012],[s*w,y+.025,.012]],.0016,mat(0xb6a793),feather)}
+const fPiv=pivot(i*.052,-.11,-.06,hat);
+const baseZ=-i*.21,len=.44+(2-Math.abs(i))*.07,w=.115+(2-Math.abs(i))*.012;
+fPiv.rotation.z=baseZ;fPiv.rotation.x=-.08;
+const fPlane=mesh(new THREE.PlaneGeometry(w,len,4,12),featherMat,0,len*.48,0,fPiv);
+/* Sedikit lengkungan alami pada helai bulu */
+const fPos=fPlane.geometry.attributes.position;
+for(let k=0;k<fPos.count;k++){const vy=fPos.getY(k)/(len*.5);fPos.setZ(k,-vy*vy*.018)}
+fPlane.geometry.computeVertexNormals();
+extraAnim.push((t,ws,ph)=>{fPiv.rotation.z=baseZ+Math.sin(t*2.8+i*.7)*.025*(1+ws*2);fPiv.rotation.x=-.08+Math.sin(ph*2+i)*.04*ws});
 }
-for(const s of [-1,1]){ball(.032,red,s*.283,-.23,.008,1,1.2,.7,hat);ball(.022,red,s*.28,-.34,.015,1,1.3,.7,hat)}
 }
-// Layered necklace follows the front of the chest.
-for(let row=0;row<3;row++)for(let i=0;i<13;i++){
-const u=i/12,angle=u*Math.PI,x=Math.cos(angle)*(.10+row*.022),y=.55-Math.sin(angle)*(.11+row*.038);
-ball(.012,female?gold:mat(0x947049),x,y,.173+Math.sin(angle)*.025,1,1,1,torso);
-if(!female&&row===2&&i%2){const tooth=mesh(new THREE.ConeGeometry(.014,.062,10),ivory,x,y-.034,.205,torso);tooth.rotation.z=Math.PI+(u-.5)*.7}
+
+/* ============================================================================
+   LENGAN, GELANG BULU DAYAK / LENGAN BAJU KURUNG MELAYU, & TANGAN 5 JARI
+   ============================================================================ */
+const addFeatherCuff=(par,yPos,s,sc=1)=>{
+/* Gelang manik merah-emas-toska + 4 helai bulu elang cokelat-putih mencuat ke atas */
+mesh(new Cy(.056*sc,.054*sc,.036*sc,18),red,0,yPos,0,par);
+mesh(new Cy(.058*sc,.058*sc,.010*sc,18),gold,0,yPos+.014*sc,0,par);
+mesh(new Cy(.058*sc,.058*sc,.010*sc,18),gold,0,yPos-.014*sc,0,par);
+for(let b=0;b<6;b++){
+const ba=b*Math.PI/3;ball(.007*sc,b%2?mat(0x38a89d):gold,Math.cos(ba)*.056*sc,yPos,Math.sin(ba)*.056*sc,1,1,1,par);
 }
-if(female)ball(.035,gold,0,.31,.20,1,.85,.28,torso);
-const arm=s=>{const shoulder=pivot(s*.245,.52,0,torso);ball(.065,female?cloth:skin,0,-.035,0,1,1.2,1,shoulder);
-mesh(new Cy(.057,.049,.265,16),female?cloth:skin,0,-.14,0,shoulder);
-const elbow=pivot(0,-.275,0,shoulder);ball(.049,female?cloth:skin,0,0,0,1,1,1,elbow);mesh(new Cy(.046,.037,.25,16),female?cloth:skin,0,-.125,0,elbow);
-mesh(new Cy(.049,.049,.036,16),female?gold:red,0,-.22,0,elbow);
-ball(.048,skin,0,-.283,.005,.8,1.23,.65,elbow);ball(.021,skin,-s*.033,-.27,.019,.7,1.4,.8,elbow);
-shoulder.rotation.z=s*Math.PI/4;return [shoulder,elbow]};
-const [armL,foreL]=arm(-1),[armR,foreR]=arm(1);
-const leg=s=>{const hip=pivot(s*.104,.84,0);mesh(new Cy(.082,.065,.37,18),female?cloth:dark,0,-.185,0,hip);const knee=pivot(0,-.37,0,hip);
-mesh(new Cy(.062,.045,.34,16),female?skin:dark,0,-.17,0,knee);
-ball(.072,skin,0,-.375,.033,1,.45,1.52,knee);ball(.078,female?gold:dark,0,-.407,.04,1,.20,1.57,knee);
-const strap=mesh(new THREE.TorusGeometry(.058,.012,8,16,Math.PI),female?gold:dark,0,-.363,.055,knee);strap.rotation.y=Math.PI/2;
-return [hip,knee]};
-const [legL,shinL]=leg(-1),[legR,shinR]=leg(1);
+for(let f=-1;f<=2;f++){
+const fz=(f-.5)*.022*sc,h=.13*sc+(f===0||f===1?.03*sc:0);
+taperedLock([[s*.048*sc,yPos,fz],[s*.095*sc,yPos+h*.55,fz*1.2],[s*.125*sc,yPos+h,fz*1.3]],.016*sc,f%2?brownWrap:ivory,par,.6,1.3);
+}
+};
+
+const buildArm=s=>{
+const shoulder=pivot(s*(female?.215:.235),.48,0,torso);
+ball(.064,female?tunicGold:skin,0,-.025,0,1,1.15,1,shoulder);
+mesh(new Cy(.056,.048,.25,18),female?tunicGold:skin,0,-.135,0,shoulder);
+if(female){
+/* Lipatan selendang pelangi yang membungkus lengan atas Putri Melayu */
+const wrapSleeve=mesh(new Cy(.082,.092,.22,20),shawlMat,s*.01,-.13,.01,shoulder);
+wrapSleeve.rotation.z=-s*.12;
+}else{
+/* Gelang Lengan Atas Berbulu (Upper Arm Feather Cuff) Putra Dayak */
+addFeatherCuff(shoulder,-.15,s,1.02);
+}
+const elbow=pivot(0,-.26,0,shoulder);
+ball(.047,female?tunicGold:skin,0,0,0,1,1,1,elbow);
+mesh(new Cy(.046,female?.052:.038,.23,18),female?tunicGold:skin,0,-.115,0,elbow);
+if(female){
+/* Manset lengan baju kurung emas */
+mesh(new Cy(.053,.055,.025,18),gold,0,-.22,0,elbow);
+}else{
+/* Gelang Pergelangan Tangan Berbulu (Wrist Feather Cuff) Putra Dayak */
+addFeatherCuff(elbow,-.19,s,.88);
+}
+/* Tangan Halus dengan Telapak & 5 Jari Proporsional */
+const hand=pivot(0,-.25,.008,elbow);
+ball(.042,skin,0,-.02,0,.82,1.05,.58,hand);
+/* Ibu jari */
+taperedLock([[-s*.026,-.01,.012],[-s*.046,-.035,.025],[-s*.042,-.058,.028]],.011,skin,hand);
+/* 4 jari tangan */
+for(let f=0;f<4;f++){
+const fx=(f-1.5)*.015,flen=.045-(Math.abs(f-1.5)*.004);
+taperedLock([[fx,-.042,.004],[fx,-.042-flen*.6,.010],[fx,-.042-flen,.004]],.0095,skin,hand);
+}
+return [shoulder,elbow,hand];
+};
+const [armL,foreL,handL]=buildArm(-1),[armR,foreR,handR]=buildArm(1);
+
+/* ============================================================================
+   KAKI, CELANA PENDEK / SARUNG, PELINDUNG BETIS, & SANDAL ADAT
+   ============================================================================ */
+const buildLeg=s=>{
+const hip=pivot(s*.102,.82,0);
+if(female){
+/* Paha & betis atas berada di dalam kain sarung songket (tidak digambar silinder panjang agar tidak pernah menembus sarung saat melangkah) */
+const knee=pivot(0,-.35,0,hip);
+/* Hanya pergelangan kaki bawah & selop bertumit emas yang tampak di bawah kelim sarung */
+mesh(new Cy(.044,.038,.12,16),skin,0,-.30,0,knee);
+ball(.062,skin,0,-.365,.032,.88,.45,1.48,knee);
+/* Sol & hak selop emas */
+mesh(new B(.082,.022,.16),gold,0,-.402,.032,knee);
+mesh(new B(.076,.038,.055),mat(0xc49232,.5,.3),0,-.392,-.022,knee);
+/* Tali V-strap selop emas */
+for(const side of[-1,1]){
+tube([[0,-.355,.085],[side*.038,-.375,.045],[side*.040,-.395,.01]],.007,goldBright,knee,10,6);
+}
+return [hip,knee];
+}else{
+/* Celana Hitam Selutut Mengembang Halus (Puffed Knee-Breeches Putra Dayak) */
+ball(.105,dark,0,-.17,0,.95,1.65,.92,hip);
+mesh(new Cy(.078,.068,.05,18),dark,0,-.33,0,hip);
+const knee=pivot(0,-.35,0,hip);
+/* Pelindung Betis Cokelat Tua (Shin Wraps) dengan Lis Atas Cokelat Muda */
+mesh(new Cy(.065,.050,.28,18),brownWrap,0,-.15,0,knee);
+mesh(new Cy(.068,.068,.028,18),mat(0x8c623e,.7),0,-.02,0,knee);
+/* Kaki & Sandal Kulit Cokelat Tua Bertali (Sesuai Referensi 2) */
+ball(.066,skin,0,-.365,.035,.92,.46,1.52,knee);
+ball(.074,brownWrap,0,-.40,.038,.96,.22,1.58,knee);
+const strap1=mesh(new THREE.TorusGeometry(.054,.011,8,16,Math.PI),brownWrap,0,-.362,.062,knee);strap1.rotation.y=Math.PI/2;
+const strap2=mesh(new THREE.TorusGeometry(.052,.010,8,16,Math.PI),brownWrap,0,-.345,.012,knee);strap2.rotation.y=Math.PI/2;strap2.rotation.z=.35;
+return [hip,knee];
+}
+};
+const [legL,shinL]=buildLeg(-1),[legR,shinR]=buildLeg(1);
+
 const disc=mesh(new THREE.CircleGeometry(.38,24),new THREE.MeshBasicMaterial({color:0x30261e,transparent:true,opacity:.22,depthWrite:false}),0,.018,0);disc.rotation.x=-Math.PI/2;
 g.traverse(o=>{if(o.isMesh&&o!==disc){o.castShadow=true;o.receiveShadow=true}});
-return {g,torso,head,hat,disc,armL,armR,foreL,foreR,legL,legR,shinL,shinR,eyes,mouth,fixedHeadwear:female,seed:Math.random()*6};
+return {g,torso,head,hat,disc,armL,armR,foreL,foreR,handL,handR,legL,legR,shinL,shinR,eyes,mouth,female,fixedHeadwear:female,extraAnim,seed:Math.random()*6};
 }
 
 function buildHero(sh0,cap0,pn0,st){if(st==='dayak'||st==='melayu')return buildPlayer(st);st=st||'songkok';const g=new THREE.Group(),skin=0xe0a96d,Cy=THREE.CylinderGeometry,Sp=THREE.SphereGeometry,B=THREE.BoxGeometry;
@@ -2733,15 +3092,26 @@ const disc=part(new THREE.CircleGeometry(.4,16),0x000000,0,.03,0);disc.rotation.
 g.traverse(o=>{if(o.isMesh&&o!==disc)o.castShadow=true});
 return {g,torso,head,hat,disc,armL,armR,foreL,foreR,legL,legR,shinL,shinR,eyes,mouth,seed:Math.random()*6}}
 /* animasi: ws=kecepatan 0..1, ph=fase langkah, mode 0=diam 1=melambai 2=bicara */
-function anim(r,t,ws,ph,mode,dt){const a=Math.min(1,14*dt),s=Math.sin(ph),c=Math.cos(ph),R=(o,k,v)=>{o.rotation[k]+=(v-o.rotation[k])*a},idle=1-ws,sw=Math.sin(t*1.7+r.seed)*.04*idle;
-R(r.legL,'x',s*.9*ws);R(r.legR,'x',-s*.9*ws);R(r.shinL,'x',Math.max(0,-c)*1.1*ws);R(r.shinR,'x',Math.max(0,c)*1.1*ws);
-let alx=-s*.9*ws+sw,arx=s*.9*ws-sw,flx=-(.12+.6*ws*(.5-.5*s)),frx=-(.12+.6*ws*(.5+.5*s)),arz=.06;
-if(mode==1){arx=-.2;arz=2.45+Math.sin(t*7)*.3;frx=-.35}
-if(mode==2){arx=-.9+Math.sin(t*3.1)*.35;frx=-.8+Math.sin(t*3.1+1)*.3;alx=-.5+Math.sin(t*2.3+2)*.25;flx=-.6+Math.sin(t*2.3)*.2}
-R(r.armL,'x',alx);R(r.armR,'x',arx);R(r.armL,'z',-.06-.1*ws);R(r.armR,'z',mode==1?arz:.06+.1*ws);R(r.foreL,'x',flx);R(r.foreR,'x',frx);
-R(r.torso,'y',s*.18*ws);R(r.torso,'z',c*.05*ws);R(r.torso,'x',.14*ws*ws);r.torso.scale.y=1+Math.sin(t*2+r.seed)*.012*idle;
-R(r.head,'x',mode==2?Math.sin(t*4)*.08:-.05*ws);R(r.head,'y',mode==2?0:Math.sin(t*.7+r.seed)*.25*idle);R(r.head,'z',s*.04*ws);
-R(r.hat,'x',r.fixedHeadwear?0:Math.sin(ph*2+1)*.08*ws);R(r.hat,'z',r.fixedHeadwear?0:s*.06*ws);
+function anim(r,t,ws,ph,mode,dt){
+const a=Math.min(1,14*dt),s=Math.sin(ph),c=Math.cos(ph),R=(o,k,v)=>{o.rotation[k]+=(v-o.rotation[k])*a},idle=1-ws,sw=Math.sin(t*1.8+r.seed)*.045*idle,br=Math.sin(t*2.3+r.seed)*idle;
+const legStride=r.female?.34:.82,shinBend=r.female?.38:1.05;
+R(r.legL,'x',s*legStride*ws);R(r.legR,'x',-s*legStride*ws);R(r.shinL,'x',Math.max(0,-c)*shinBend*ws);R(r.shinR,'x',Math.max(0,c)*shinBend*ws);
+/* Pose diam anggun untuk Putri Melayu (tangan bertaut lembut di depan seperti gambar referensi) & pose gagah rileks untuk Putra Dayak */
+const femIdle=r.female?idle:0;
+let alx=-s*.85*ws+sw-(femIdle*.22),arx=s*.85*ws-sw-(femIdle*.22);
+let flx=-(.18+.58*ws*(.5-.5*s))-(femIdle*1.08),frx=-(.18+.58*ws*(.5+.5*s))-(femIdle*1.08);
+let alz=-(r.female?.10:.14)-.08*ws+(femIdle*.06),arz=(r.female?.10:.14)+.08*ws-(femIdle*.06);
+let fly=femIdle*-.52,fry=femIdle*.52;
+if(mode==1){arx=-.2;arz=2.45+Math.sin(t*7)*.3;frx=-.35;fry=0}
+if(mode==2){arx=-.9+Math.sin(t*3.1)*.35;frx=-.8+Math.sin(t*3.1+1)*.3;alx=-.5+Math.sin(t*2.3+2)*.25;flx=-.6+Math.sin(t*2.3)*.2;fly=0;fry=0}
+R(r.armL,'x',alx);R(r.armR,'x',arx);R(r.armL,'z',alz);R(r.armR,'z',mode==1?arz:arz);
+R(r.foreL,'x',flx);R(r.foreR,'x',frx);R(r.foreL,'y',fly);R(r.foreR,'y',fry);
+if(r.handL&&r.handR){R(r.handL,'z',femIdle*.28+Math.sin(t*2.1)*.04*idle);R(r.handR,'z',-femIdle*.28-Math.sin(t*2.1)*.04*idle)}
+R(r.torso,'y',s*.16*ws+Math.sin(t*.9+r.seed)*.035*idle);R(r.torso,'z',c*.045*ws+sw*.35);R(r.torso,'x',.12*ws*ws+br*.015);
+r.torso.scale.set(1+br*.008,1+br*.014,1+br*.010);
+R(r.head,'x',mode==2?Math.sin(t*4)*.08:-.04*ws+br*.02);R(r.head,'y',mode==2?0:Math.sin(t*.75+r.seed)*.22*idle);R(r.head,'z',s*.035*ws+Math.cos(t*1.1+r.seed)*.025*idle);
+R(r.hat,'x',r.fixedHeadwear?0:Math.sin(ph*2+1)*.06*ws);R(r.hat,'z',r.fixedHeadwear?0:s*.045*ws);
+if(r.extraAnim)r.extraAnim.forEach(fn=>fn(t,ws,ph));
 const bl=((t+r.seed)%3.6)<.12?.1:1;r.eyes.forEach(e=>e.scale.y=bl);r.mouth.scale.y=mode==2?1+Math.abs(Math.sin(t*13))*1.6:1;r.disc.visible=!shadowsOn}
 function nameSprite(txt){const c=document.createElement('canvas');c.width=256;c.height=64;const x=c.getContext('2d');x.fillStyle='rgba(14,47,51,.88)';x.fillRect(4,10,248,44);x.strokeStyle='#e0a81f';x.lineWidth=3;x.strokeRect(4,10,248,44);
 let fs=26;x.font='bold '+fs+'px Georgia,serif';while(x.measureText(txt).width>228&&fs>12){fs--;x.font='bold '+fs+'px Georgia,serif'}x.fillStyle='#f1e7c8';x.textAlign='center';x.textBaseline='middle';x.fillText(txt,128,33);
