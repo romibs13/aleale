@@ -1,0 +1,2028 @@
+<!doctype html>
+<html lang="id" data-theme="forest">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,viewport-fit=cover">
+<title>Cari Ale-ale — Mini Game Edukasi Sungai Pawan</title>
+<style>
+:root, [data-theme="forest"] {
+  --outer-bg: #1e3f20;
+  --panel-bg: rgba(18, 56, 58, 0.96);
+  --panel-bg-soft: #19494c;
+  --gold-main: #e5b94e;
+  --gold-light: #ffe082;
+  --gold-dark: #9c7320;
+  --text-cream: #f5f7ee;
+  --text-gold: #f5ca63;
+  --btn-gold-bg: #e2b347;
+  --btn-gold-fg: #1d2614;
+  --sky-tint: 0;
+  --scene-brightness: 1;
+}
+
+[data-theme="light"] {
+  --outer-bg: #d8ecd0;
+  --panel-bg: rgba(22, 68, 71, 0.95);
+  --panel-bg-soft: #1f585c;
+  --gold-main: #eab949;
+  --gold-light: #ffe596;
+  --gold-dark: #8c6414;
+  --text-cream: #ffffff;
+  --text-gold: #ffe082;
+  --btn-gold-bg: #f0c14b;
+  --btn-gold-fg: #182410;
+  --sky-tint: 0;
+  --scene-brightness: 1.05;
+}
+
+[data-theme="dark"] {
+  --outer-bg: #07140d;
+  --panel-bg: rgba(11, 36, 38, 0.96);
+  --panel-bg-soft: #123639;
+  --gold-main: #d9a83e;
+  --gold-light: #f7cf6d;
+  --gold-dark: #7a5812;
+  --text-cream: #eef5f0;
+  --text-gold: #f5c85c;
+  --btn-gold-bg: #dfa938;
+  --btn-gold-fg: #141c0c;
+  --sky-tint: 0.38;
+  --scene-brightness: 0.84;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--outer-bg);
+  color: var(--text-cream);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+button:focus-visible {
+  outline: 3px solid var(--gold-light);
+  outline-offset: 2px;
+}
+
+/* Full-screen responsive container for both Desktop Website & Mobile */
+.game-shell {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: #3e7830;
+}
+
+.game-viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Full-Bleed Illustrated SVG Scene */
+.scene-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  filter: brightness(var(--scene-brightness));
+  transition: filter 0.35s ease;
+  touch-action: none;
+}
+
+.scene-layer svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Top HUD Bar */
+.top-hud {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: max(12px, env(safe-area-inset-top)) clamp(12px, 2.5vw, 28px) 8px;
+  pointer-events: none;
+}
+
+.stage-plaque {
+  pointer-events: auto;
+  position: relative;
+  background: var(--panel-bg);
+  border: 2.5px solid var(--gold-main);
+  border-radius: 12px;
+  padding: 8px 18px;
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.42), inset 0 0 0 2px rgba(229, 185, 78, 0.22);
+  backdrop-filter: blur(6px);
+}
+
+.stage-plaque-text {
+  font-size: clamp(0.86rem, 1.8vw, 1.12rem);
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: var(--text-gold);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.hud-buttons {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-btn {
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
+  min-height: 46px;
+  border-radius: 50%;
+  background: var(--panel-bg);
+  border: 2.5px solid var(--gold-main);
+  color: var(--text-gold);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.42), inset 0 0 0 2px rgba(229, 185, 78, 0.18);
+  transition: transform 0.14s ease, background 0.15s ease;
+  backdrop-filter: blur(6px);
+}
+
+.icon-btn:hover {
+  background: var(--panel-bg-soft);
+  transform: translateY(-1px);
+}
+
+.icon-btn:active {
+  transform: scale(0.94);
+}
+
+.icon-btn svg {
+  width: 23px;
+  height: 23px;
+}
+
+.icon-btn.off {
+  opacity: 0.68;
+}
+
+/* Floating Stage Status Pill (For Stage 2 Timer / Clarity, Stage 3 Quote) */
+.floating-banner {
+  position: relative;
+  z-index: 9;
+  align-self: center;
+  max-width: min(92vw, 620px);
+  margin: 0 14px auto;
+  background: var(--panel-bg);
+  border: 2px solid var(--gold-main);
+  border-radius: 999px;
+  padding: 7px 20px;
+  color: var(--text-cream);
+  font-size: clamp(0.84rem, 1.5vw, 0.96rem);
+  font-weight: 700;
+  text-align: center;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.38);
+  display: none;
+  pointer-events: none;
+  backdrop-filter: blur(6px);
+}
+
+.floating-banner.show {
+  display: block;
+}
+
+/* Bottom Guide Dialog Box — Responsive for Mobile & Desktop */
+.bottom-dialog-wrap {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 6px clamp(10px, 2.5vw, 28px) max(12px, env(safe-area-inset-bottom));
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+}
+
+.dialog-card {
+  pointer-events: auto;
+  position: relative;
+  width: 100%;
+  max-width: 660px;
+  background: var(--panel-bg);
+  border: 2.5px solid var(--gold-main);
+  border-radius: 20px;
+  min-height: 184px;
+  padding: 14px 18px 14px 162px;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.58), inset 0 0 0 1.5px rgba(229, 185, 78, 0.16);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  backdrop-filter: blur(8px);
+  transition: all 0.25s ease;
+}
+
+.guide-portrait-box {
+  position: absolute;
+  left: 6px;
+  bottom: 0;
+  width: 150px;
+  height: 212px;
+  pointer-events: none;
+  overflow: hidden;
+  border-bottom-left-radius: 17px;
+}
+
+.guide-portrait-box svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.dialog-body {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.dialog-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.dialog-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 12px;
+  border-radius: 999px;
+  border: 1.5px solid var(--gold-main);
+  background: rgba(229, 185, 78, 0.14);
+  color: var(--text-gold);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.dialog-loc-title {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--gold-light);
+  opacity: 0.95;
+}
+
+.dialog-text {
+  margin: 0;
+  font-size: clamp(0.88rem, 1.4vw, 1rem);
+  line-height: 1.48;
+  color: var(--text-cream);
+  font-weight: 500;
+}
+
+.dialog-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.btn-gold {
+  min-height: 44px;
+  min-width: 124px;
+  padding: 8px 24px;
+  border-radius: 999px;
+  border: 2px solid var(--gold-light);
+  background: linear-gradient(180deg, #ecc35c 0%, #d8a432 100%);
+  color: var(--btn-gold-fg);
+  font-size: 0.98rem;
+  font-weight: 800;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.32);
+  transition: transform 0.12s ease, filter 0.15s ease;
+}
+
+.btn-gold:hover:not(:disabled) {
+  filter: brightness(1.07);
+  transform: translateY(-1px);
+}
+
+.btn-gold:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.btn-gold:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn-outline {
+  min-height: 44px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 2px solid var(--gold-main);
+  background: var(--panel-bg-soft);
+  color: var(--text-gold);
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+/* Desktop Widescreen & Landscape Adaptation:
+   Dock the dialog card cleanly to the bottom-left on wide screens so the entire S-curve river center stays unobstructed */
+@media (min-width: 960px) and (min-aspect-ratio: 11/10) {
+  .bottom-dialog-wrap {
+    justify-content: flex-start;
+  }
+  .dialog-card {
+    max-width: 470px;
+    min-height: 170px;
+    padding: 14px 18px 14px 148px;
+  }
+  .guide-portrait-box {
+    width: 138px;
+    height: 196px;
+  }
+}
+
+/* Short Landscape Screens (e.g. Mobile Landscape) */
+@media (max-height: 540px) and (orientation: landscape) {
+  .top-hud {
+    padding-top: 8px;
+  }
+  .stage-plaque {
+    min-height: 40px;
+    padding: 5px 14px;
+  }
+  .bottom-dialog-wrap {
+    justify-content: flex-start;
+    padding-bottom: 8px;
+  }
+  .dialog-card {
+    max-width: 420px;
+    min-height: 132px;
+    padding: 10px 14px 10px 112px;
+    border-radius: 16px;
+  }
+  .guide-portrait-box {
+    width: 104px;
+    height: 148px;
+  }
+  .dialog-text {
+    font-size: 0.82rem;
+    line-height: 1.35;
+  }
+  .btn-gold {
+    min-height: 38px;
+    padding: 5px 18px;
+    font-size: 0.88rem;
+  }
+}
+
+/* Small Mobile Portrait Adjustments */
+@media (max-width: 420px) {
+  .dialog-card {
+    padding: 12px 12px 12px 130px;
+    min-height: 172px;
+  }
+  .guide-portrait-box {
+    width: 124px;
+    height: 184px;
+  }
+  .stage-plaque {
+    padding: 6px 11px;
+  }
+  .icon-btn {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+/* Ending Collection Modal Overlay (Responsive Grid on Desktop, Stack on Mobile) */
+.ending-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 25;
+  background: rgba(9, 28, 29, 0.88);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  overflow-y: auto;
+  backdrop-filter: blur(6px);
+}
+
+.ending-overlay.open {
+  display: flex;
+}
+
+.ending-card {
+  width: 100%;
+  max-width: 720px;
+  background: var(--panel-bg);
+  border: 3px solid var(--gold-main);
+  border-radius: 24px;
+  padding: clamp(16px, 3vw, 26px);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.65);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ending-title {
+  margin: 0;
+  font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+  font-weight: 900;
+  color: var(--gold-light);
+  text-align: center;
+  line-height: 1.3;
+}
+
+.collection-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.col-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--panel-bg-soft);
+  border: 2px solid var(--gold-main);
+  border-radius: 16px;
+  padding: 14px;
+}
+
+.col-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  border: 2px solid var(--gold-main);
+  background: #d8f0f8;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.col-info h4 {
+  margin: 6px 0 4px;
+  font-size: 1.04rem;
+  color: var(--gold-light);
+}
+
+.col-info p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.44;
+  color: var(--text-cream);
+}
+
+.ending-btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+/* SVG Interactive Pin & Object Animations */
+@keyframes pinFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes haloPulse {
+  0%, 100% { transform: scale(1); opacity: 0.55; }
+  50% { transform: scale(1.13); opacity: 0.18; }
+}
+
+@keyframes waterShimmer {
+  0%, 100% { stroke-dashoffset: 0; opacity: 0.48; }
+  50% { stroke-dashoffset: 24; opacity: 0.78; }
+}
+
+@keyframes palmSway {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(2.2deg); }
+}
+
+@keyframes eyeBlink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  96% { transform: scaleY(0.1); }
+}
+
+@keyframes mouthTalk {
+  0%, 100% { transform: scaleY(0.85); }
+  50% { transform: scaleY(1.25); }
+}
+
+@keyframes sproutUp {
+  0% { transform: scale(0.1); opacity: 0; }
+  70% { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes sparkleSpin {
+  0%, 100% { transform: scale(0.8) rotate(0deg); opacity: 0.65; }
+  50% { transform: scale(1.25) rotate(25deg); opacity: 1; }
+}
+
+.pin-float {
+  animation: pinFloat 3s ease-in-out infinite;
+}
+
+.pin-float.delay-1 { animation-delay: 0.5s; }
+.pin-float.delay-2 { animation-delay: 1.1s; }
+
+.halo-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: haloPulse 2s ease-in-out infinite;
+}
+
+.water-ripple {
+  stroke-dasharray: 18 14;
+  animation: waterShimmer 3.8s ease-in-out infinite;
+}
+
+.palm-crown {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: palmSway 4.2s ease-in-out infinite;
+}
+
+.guide-eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: eyeBlink 4.5s infinite;
+}
+
+.guide-mouth.talking {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: mouthTalk 0.28s infinite;
+}
+
+.sprout-anim {
+  transform-box: fill-box;
+  transform-origin: bottom center;
+  animation: sproutUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.clam-sparkle {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: sparkleSpin 1.5s ease-in-out infinite;
+}
+
+.interactive-node {
+  cursor: pointer;
+}
+
+.interactive-node:hover .pin-outer-ring {
+  stroke: #fff3b0;
+  stroke-width: 4.5;
+}
+
+body.no-anim *,
+body.no-anim *::before,
+body.no-anim *::after {
+  animation: none !important;
+  transition: none !important;
+}
+</style>
+</head>
+<body>
+<div class="game-shell">
+  <div class="game-viewport">
+
+    <!-- ==================== TOP HUD BAR ==================== -->
+    <header class="top-hud" aria-label="Status Tahap dan Pengaturan">
+      <div class="stage-plaque" role="status" aria-live="polite">
+        <span class="stage-plaque-text" id="hudStageText">TAHAP 1: PETUNJUK (0/3)</span>
+      </div>
+
+      <div class="hud-buttons">
+        <!-- Tombol Suara -->
+        <button type="button" class="icon-btn" id="btnSound" aria-pressed="true" title="Matikan atau nyalakan suara" aria-label="Suara Nyala">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"/>
+            <path id="soundWaves" d="M15.54 8.46a5 5 0 0 1 0 7.07 M19.07 4.93a10 10 0 0 1 0 14.14"/>
+            <line id="soundMuteSlash" x1="16" y1="9" x2="22" y2="15" style="display:none"/>
+          </svg>
+        </button>
+
+        <!-- Tombol Mode Terang / Gelap -->
+        <button type="button" class="icon-btn" id="btnTheme" title="Ganti mode tampilan terang/gelap" aria-label="Ganti Mode Terang atau Gelap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="5"/>
+            <path d="M12 7 A5 5 0 0 1 12 17 Z" fill="currentColor"/>
+            <line x1="12" y1="2" x2="12" y2="4"/>
+            <line x1="12" y1="20" x2="12" y2="22"/>
+            <line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/>
+            <line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/>
+            <line x1="2" y1="12" x2="4" y2="12"/>
+            <line x1="20" y1="12" x2="22" y2="12"/>
+            <line x1="4.93" y1="19.07" x2="6.34" y2="17.66"/>
+            <line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/>
+          </svg>
+        </button>
+
+        <!-- Tombol Matikan/Nyalakan Animasi -->
+        <button type="button" class="icon-btn" id="btnAnim" aria-pressed="true" title="Matikan atau nyalakan animasi" aria-label="Animasi Nyala">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon id="animSparkle" points="12 2 14.8 8.5 22 9.3 16.5 14 18.2 21 12 17.3 5.8 21 7.5 14 2 9.3 9.2 8.5 12 2" fill="currentColor"/>
+            <g id="animPause" style="display:none">
+              <rect x="6" y="5" width="4" height="14" fill="currentColor"/>
+              <rect x="14" y="5" width="4" height="14" fill="currentColor"/>
+            </g>
+          </svg>
+        </button>
+
+        <!-- Tombol Kembali ke Museum -->
+        <button type="button" class="icon-btn" id="btnExitTop" title="Kembali ke museum" aria-label="Kembali ke museum">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 21h18 M5 21V9l7-5 7 5v12 M9 21v-6h6v6"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Banner Status Mengambang (Tahap 2 & Tahap 3) -->
+    <div class="floating-banner" id="floatingBanner" role="status" aria-live="polite"></div>
+
+    <!-- ==================== FULL-BLEED PANORAMIC SUNGAI PAWAN SCENE ==================== -->
+    <main class="scene-layer" id="sceneLayer" aria-label="Layar Permainan Sungai Pawan">
+      <svg id="mainSvg" viewBox="0 0 540 960" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Ilustrasi Sungai Pawan dan Hutan Ketapang">
+        <defs>
+          <!-- Gradien Hutan & Sungai -->
+          <linearGradient id="bgMeadowGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#3c732e"/>
+            <stop offset="35%" stop-color="#68ab48"/>
+            <stop offset="70%" stop-color="#76bc54"/>
+            <stop offset="100%" stop-color="#437d31"/>
+          </linearGradient>
+
+          <linearGradient id="riverCleanGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#4893b8"/>
+            <stop offset="40%" stop-color="#5db4dc"/>
+            <stop offset="80%" stop-color="#4da4cf"/>
+            <stop offset="100%" stop-color="#2e799e"/>
+          </linearGradient>
+
+          <linearGradient id="pinGoldGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#ffe58f"/>
+            <stop offset="50%" stop-color="#e3b246"/>
+            <stop offset="100%" stop-color="#b5831f"/>
+          </linearGradient>
+
+          <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#081c14" flood-opacity="0.45"/>
+          </filter>
+
+          <!-- Clip Path untuk Vignette Bundar di Dalam Pin -->
+          <clipPath id="clipCirclePin">
+            <circle cx="0" cy="0" r="56"/>
+          </clipPath>
+
+          <!-- Template Pohon Kelapa / Palem Tepian Sungai -->
+          <g id="palmTree">
+            <path d="M0 0 Q-5 -24 -2 -48" fill="none" stroke="#6e4b2a" stroke-width="5.5" stroke-linecap="round"/>
+            <g class="palm-crown" transform="translate(-2, -48)" fill="#438a34" stroke="#25541b" stroke-width="1.2">
+              <path d="M0 0 Q-22 -8 -30 6 Q-14 2 0 0 Z"/>
+              <path d="M0 0 Q-18 -22 -4 -28 Q-4 -12 0 0 Z"/>
+              <path d="M0 0 Q16 -24 26 -10 Q12 -8 0 0 Z"/>
+              <path d="M0 0 Q24 -4 28 12 Q12 4 0 0 Z"/>
+              <path d="M0 0 Q-6 14 -18 20 Q-8 6 0 0 Z"/>
+              <path d="M0 0 Q10 14 16 22 Q4 10 0 0 Z"/>
+            </g>
+          </g>
+
+          <!-- Template Rumpun Pohon Hutan -->
+          <g id="forestCluster">
+            <rect x="-26" y="10" width="12" height="40" fill="#6e4826"/>
+            <rect x="22" y="14" width="11" height="36" fill="#6e4826"/>
+            <circle cx="-38" cy="0" r="38" fill="#3a702c" stroke="#254f1e" stroke-width="2"/>
+            <circle cx="35" cy="4" r="36" fill="#468035" stroke="#254f1e" stroke-width="2"/>
+            <circle cx="0" cy="-14" r="44" fill="#549440" stroke="#254f1e" stroke-width="2"/>
+            <circle cx="-16" cy="12" r="32" fill="#64ab4c" stroke="#254f1e" stroke-width="2"/>
+            <circle cx="20" cy="16" r="30" fill="#5ca046" stroke="#254f1e" stroke-width="2"/>
+          </g>
+
+          <!-- Template Rumah Panggung Kayu Tepian Sungai -->
+          <g id="stiltHouse">
+            <line x1="-22" y1="12" x2="-22" y2="28" stroke="#4a2e16" stroke-width="3"/>
+            <line x1="-8" y1="14" x2="-8" y2="30" stroke="#4a2e16" stroke-width="3"/>
+            <line x1="8" y1="14" x2="8" y2="30" stroke="#4a2e16" stroke-width="3"/>
+            <line x1="22" y1="12" x2="22" y2="28" stroke="#4a2e16" stroke-width="3"/>
+            <polygon points="-26,-4 26,-4 26,15 -26,15" fill="#9c6f44" stroke="#4a2e16" stroke-width="2"/>
+            <rect x="-16" y="1" width="8" height="8" fill="#523418"/>
+            <rect x="6" y="1" width="8" height="8" fill="#523418"/>
+            <polygon points="-32,-3 0,-24 32,-3" fill="#7c5633" stroke="#422812" stroke-width="2.2"/>
+            <polygon points="-28,-3 0,-21 28,-3" fill="#8f653d"/>
+          </g>
+        </defs>
+
+        <!-- 1. DASAR DARATAN HIJAU PANORAMIK (Mendukung Widescreen Desktop & Portrait Mobile) -->
+        <rect x="-700" y="-200" width="1940" height="1400" fill="url(#bgMeadowGrad)"/>
+
+        <!-- Perbukitan & Hutan Jauh di Horizon Atas (Menyambung Kiri-Kanan) -->
+        <path d="M-700 -200 L1240 -200 L1240 120 Q920 75 680 110 Q410 95 270 125 Q120 150 -80 110 Q-380 65 -700 115 Z" fill="#2c5923"/>
+        <path d="M-700 70 Q-450 35 -210 80 Q-60 95 0 75 Q95 45 195 82 Q320 55 445 85 Q680 45 920 82 L1240 65 L1240 145 L-700 145 Z" fill="#396e2d"/>
+
+        <!-- 2. ALIRAN SUNGAI PAWAN BERKELOK (S-CURVE, Menyambung dari Hulu Kanan ke Muara Bawah) -->
+        <!-- Tebing Cokelat Tepian Sungai -->
+        <path d="M 1240 55
+                 C 960 65, 720 88, 565 92
+                 C 430 96, 215 118, 210 198
+                 C 205 268, 435 285, 435 395
+                 C 435 495, 115 470, 115 595
+                 C 115 695, 375 725, 495 815
+                 C 625 910, 880 945, 1240 970"
+              fill="none" stroke="#8c6d46" stroke-width="148" stroke-linecap="round"/>
+
+        <!-- Bantaran Rumput Halus -->
+        <path d="M 1240 55
+                 C 960 65, 720 88, 565 92
+                 C 430 96, 215 118, 210 198
+                 C 205 268, 435 285, 435 395
+                 C 435 495, 115 470, 115 595
+                 C 115 695, 375 725, 495 815
+                 C 625 910, 880 945, 1240 970"
+              fill="none" stroke="#9ab565" stroke-width="134" stroke-linecap="round" opacity="0.55"/>
+
+        <!-- Air Sungai Pawan Bersih -->
+        <path id="riverWaterBase"
+              d="M 1240 55
+                 C 960 65, 720 88, 565 92
+                 C 430 96, 215 118, 210 198
+                 C 205 268, 435 285, 435 395
+                 C 435 495, 115 470, 115 595
+                 C 115 695, 375 725, 495 815
+                 C 625 910, 880 945, 1240 970"
+              fill="none" stroke="url(#riverCleanGrad)" stroke-width="120" stroke-linecap="round"/>
+
+        <!-- Lapisan Air Keruh (Aktif pada Tahap 2, memudar saat sampah dibersihkan) -->
+        <path id="riverMurkyOverlay"
+              d="M 1240 55
+                 C 960 65, 720 88, 565 92
+                 C 430 96, 215 118, 210 198
+                 C 205 268, 435 285, 435 395
+                 C 435 495, 115 470, 115 595
+                 C 115 695, 375 725, 495 815
+                 C 625 910, 880 945, 1240 970"
+              fill="none" stroke="#6b6335" stroke-width="120" stroke-linecap="round" opacity="0"/>
+
+        <!-- Garis Riak Air Mengalir -->
+        <g class="water-ripple" fill="none" stroke="#9ee0fa" stroke-width="3" stroke-linecap="round">
+          <path d="M 820 75 Q 700 82 610 88"/>
+          <path d="M 465 104 Q 360 112 295 140"/>
+          <path d="M 225 185 Q 230 235 315 275"/>
+          <path d="M 385 330 Q 430 375 390 425"/>
+          <path d="M 310 475 Q 210 505 155 545"/>
+          <path d="M 135 595 Q 150 655 255 695"/>
+          <path d="M 315 720 Q 395 755 455 790"/>
+          <path d="M 560 855 Q 675 910 790 930"/>
+        </g>
+
+        <!-- 3. HUTAN RIMBUN TENGAH, SAYAP KIRI (WIDESCREEN), DAN SAYAP KANAN (WIDESCREEN) -->
+        <!-- Hutan Sayap Kiri Widescreen (x: -550..0) -->
+        <use href="#forestCluster" transform="translate(-120, 175) scale(1.25)"/>
+        <use href="#forestCluster" transform="translate(-280, 155) scale(1.35)"/>
+        <use href="#forestCluster" transform="translate(-440, 190) scale(1.4)"/>
+        <use href="#forestCluster" transform="translate(-85, 310) scale(1.2)"/>
+        <use href="#forestCluster" transform="translate(-240, 295) scale(1.3)"/>
+        <use href="#forestCluster" transform="translate(-410, 340) scale(1.35)"/>
+        <use href="#forestCluster" transform="translate(-130, 460) scale(1.25)"/>
+        <use href="#forestCluster" transform="translate(-310, 470) scale(1.35)"/>
+        <use href="#forestCluster" transform="translate(-460, 510) scale(1.4)"/>
+        <use href="#forestCluster" transform="translate(-140, 620) scale(1.3)"/>
+        <use href="#forestCluster" transform="translate(-320, 645) scale(1.35)"/>
+        <use href="#forestCluster" transform="translate(-180, 790) scale(1.4)"/>
+        <use href="#forestCluster" transform="translate(-380, 810) scale(1.45)"/>
+
+        <!-- Hutan Sayap Kanan Widescreen (x: 560..1080) -->
+        <use href="#forestCluster" transform="translate(650, 200) scale(1.2)"/>
+        <use href="#forestCluster" transform="translate(820, 185) scale(1.3)"/>
+        <use href="#forestCluster" transform="translate(990, 210) scale(1.4)"/>
+        <use href="#forestCluster" transform="translate(620, 340) scale(1.15)"/>
+        <use href="#forestCluster" transform="translate(785, 325) scale(1.28)"/>
+        <use href="#forestCluster" transform="translate(955, 355) scale(1.35)"/>
+        <use href="#forestCluster" transform="translate(740, 475) scale(1.22)"/>
+        <use href="#forestCluster" transform="translate(910, 495) scale(1.35)"/>
+        <use href="#forestCluster" transform="translate(780, 640) scale(1.25)"/>
+        <use href="#forestCluster" transform="translate(950, 670) scale(1.38)"/>
+        <use href="#forestCluster" transform="translate(880, 810) scale(1.35)"/>
+
+        <!-- Rumpun Pohon Hutan Area Inti Kiri -->
+        <g stroke="#254f1e" stroke-width="2">
+          <rect x="38" y="395" width="12" height="42" fill="#6e4826" stroke="none"/>
+          <rect x="92" y="340" width="11" height="38" fill="#6e4826" stroke="none"/>
+          <rect x="492" y="210" width="12" height="40" fill="#6e4826" stroke="none"/>
+          <circle cx="32" cy="155" r="44" fill="#3a702c"/>
+          <circle cx="88" cy="145" r="38" fill="#4b8739"/>
+          <circle cx="140" cy="165" r="34" fill="#5da146"/>
+          <circle cx="24" cy="220" r="46" fill="#468035"/>
+          <circle cx="76" cy="215" r="40" fill="#5ca046"/>
+          <circle cx="18" cy="295" r="48" fill="#3a702c"/>
+          <circle cx="75" cy="295" r="42" fill="#4f8c3d"/>
+          <circle cx="128" cy="315" r="34" fill="#64ab4c"/>
+          <circle cx="44" cy="375" r="38" fill="#549440"/>
+          <circle cx="96" cy="335" r="32" fill="#69b050"/>
+          <circle cx="15" cy="465" r="42" fill="#3a702c"/>
+          <circle cx="52" cy="510" r="35" fill="#4e8c3b"/>
+          <circle cx="18" cy="585" r="40" fill="#3c732e"/>
+        </g>
+
+        <!-- Rumpun Pohon Hutan Area Inti Kanan -->
+        <g stroke="#254f1e" stroke-width="2">
+          <circle cx="465" cy="155" r="36" fill="#468035"/>
+          <circle cx="518" cy="165" r="44" fill="#3a702c"/>
+          <circle cx="498" cy="205" r="35" fill="#5ca046"/>
+          <circle cx="528" cy="275" r="42" fill="#3d752f"/>
+          <circle cx="515" cy="345" r="45" fill="#4b8739"/>
+          <circle cx="525" cy="425" r="44" fill="#3a702c"/>
+        </g>
+
+        <!-- Bebatuan dan Semak di Tebing Kiri Bawah -->
+        <g>
+          <polygon points="-60,645 55,615 92,650 75,695 -60,695" fill="#8c6d49" stroke="#594127" stroke-width="2"/>
+          <polygon points="35,660 88,645 122,685 85,715 20,705" fill="#9e7d56" stroke="#594127" stroke-width="2"/>
+          <circle cx="24" cy="615" r="32" fill="#589c42" stroke="#28541e" stroke-width="2"/>
+          <circle cx="18" cy="720" r="38" fill="#3d752f" stroke="#254f1e" stroke-width="2"/>
+          <circle cx="72" cy="735" r="32" fill="#4f8c3d" stroke="#254f1e" stroke-width="2"/>
+        </g>
+
+        <!-- Perkampungan Rumah Panggung Kayu di Kanan Bawah (Desa Tanjungpura) -->
+        <g transform="translate(465, 470) scale(0.95)"><use href="#stiltHouse"/></g>
+        <g transform="translate(515, 515) scale(0.95)"><use href="#stiltHouse"/></g>
+        <g transform="translate(335, 560) scale(0.95)"><use href="#stiltHouse"/></g>
+        <g transform="translate(475, 575) scale(0.95)"><use href="#stiltHouse"/></g>
+        <g transform="translate(505, 650) scale(1.05)"><use href="#stiltHouse"/></g>
+        <g transform="translate(585, 540) scale(1.0)"><use href="#stiltHouse"/></g>
+        <g transform="translate(645, 595) scale(1.05)"><use href="#stiltHouse"/></g>
+        <g transform="translate(595, 680) scale(1.08)"><use href="#stiltHouse"/></g>
+        <g transform="translate(680, 735) scale(1.1)"><use href="#stiltHouse"/></g>
+
+        <!-- Pohon-Pohon Kelapa / Palem di Sepanjang Kelokan Sungai -->
+        <use href="#palmTree" transform="translate(348, 185) scale(0.82)"/>
+        <use href="#palmTree" transform="translate(390, 192) scale(0.76)"/>
+        <use href="#palmTree" transform="translate(425, 180) scale(0.72)"/>
+        <use href="#palmTree" transform="translate(248, 285) scale(0.95)"/>
+        <use href="#palmTree" transform="translate(278, 315) scale(0.88)"/>
+        <use href="#palmTree" transform="translate(478, 295) scale(0.85)"/>
+        <use href="#palmTree" transform="translate(508, 355) scale(0.92)"/>
+        <use href="#palmTree" transform="translate(105, 425) scale(0.95)"/>
+        <use href="#palmTree" transform="translate(58, 495) scale(0.9)"/>
+        <use href="#palmTree" transform="translate(275, 565) scale(1.05)"/>
+        <use href="#palmTree" transform="translate(142, 695) scale(1.05)"/>
+        <use href="#palmTree" transform="translate(-45, 560) scale(1.05)"/>
+        <use href="#palmTree" transform="translate(615, 435) scale(0.95)"/>
+        <use href="#palmTree" transform="translate(690, 515) scale(1.0)"/>
+
+        <!-- ==================== LAYER TAHAP 3: BIBIT POHON KETAPANG YANG TUMBUH ==================== -->
+        <g id="plantedTreesLayer">
+          <!-- Pohon Ketapang 1 (Kelokan Atas) -->
+          <g id="grownTree1" class="sprout-anim" transform="translate(255, 235)" style="display:none">
+            <path d="M0 0 Q-14 18 -26 32 M0 0 Q0 22 -4 36 M0 0 Q14 18 26 30" stroke="#5c3818" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <rect x="-5" y="-58" width="10" height="62" rx="3" fill="#6b4222"/>
+            <ellipse cx="0" cy="-28" rx="36" ry="12" fill="#2b7a3d" stroke="#174722" stroke-width="2"/>
+            <ellipse cx="0" cy="-46" rx="28" ry="10" fill="#3ea153" stroke="#174722" stroke-width="2"/>
+            <ellipse cx="0" cy="-62" rx="18" ry="8" fill="#5ec472" stroke="#174722" stroke-width="2"/>
+          </g>
+          <!-- Pohon Ketapang 2 (Kelokan Tengah) -->
+          <g id="grownTree2" class="sprout-anim" transform="translate(350, 395)" style="display:none">
+            <path d="M0 0 Q-14 18 -26 32 M0 0 Q0 22 -4 36 M0 0 Q14 18 26 30" stroke="#5c3818" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <rect x="-5" y="-58" width="10" height="62" rx="3" fill="#6b4222"/>
+            <ellipse cx="0" cy="-28" rx="36" ry="12" fill="#2b7a3d" stroke="#174722" stroke-width="2"/>
+            <ellipse cx="0" cy="-46" rx="28" ry="10" fill="#3ea153" stroke="#174722" stroke-width="2"/>
+            <ellipse cx="0" cy="-62" rx="18" ry="8" fill="#5ec472" stroke="#174722" stroke-width="2"/>
+          </g>
+          <!-- Pohon Ketapang 3 (Kelokan Bawah) -->
+          <g id="grownTree3" class="sprout-anim" transform="translate(215, 595)" style="display:none">
+            <path d="M0 0 Q-14 18 -26 32 M0 0 Q0 22 -4 36 M0 0 Q14 18 26 30" stroke="#5c3818" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <rect x="-5" y="-58" width="10" height="62" rx="3" fill="#6b4222"/>
+            <ellipse cx="0" cy="-28" rx="36" ry="12" fill="#2b7a3d" stroke="#174722" stroke-width="2"/>
+            <ellipse cx="0" cy="-46" rx="28" ry="10" fill="#3ea153" stroke="#174722" stroke-width="2"/>
+            <ellipse cx="0" cy="-62" rx="18" ry="8" fill="#5ec472" stroke="#174722" stroke-width="2"/>
+          </g>
+        </g>
+
+        <!-- ==================== LAYER TAHAP 1: 3 PIN PETUNJUK BERSEJARAH ==================== -->
+        <g id="stage1Layer">
+
+          <!-- PIN 1: ISTANA PANEMBAHAN MATAN, MULIA KERTA -->
+          <g class="interactive-node" id="pinNode1" role="button" tabindex="0" aria-label="Petunjuk 1: Istana Panembahan Matan, Mulia Kerta" transform="translate(172, 210)">
+            <g class="pin-float">
+              <circle class="halo-pulse" id="pinHalo1" cx="0" cy="0" r="74" fill="#ffe082"/>
+              <path class="pin-outer-ring" d="M -52 38 L 0 88 L 52 38 A 66 66 0 1 1 52 37.9 Z" fill="#133a3c" stroke="url(#pinGoldGrad)" stroke-width="3.5" filter="url(#softShadow)"/>
+              <circle cx="0" cy="70" r="5" fill="#f5ca63"/>
+              <!-- Vignette Bundar Ilustrasi Istana Panembahan Matan -->
+              <g clip-path="url(#clipCirclePin)">
+                <rect x="-60" y="-60" width="120" height="120" fill="#d9f1fa"/>
+                <ellipse cx="-20" cy="-32" rx="26" ry="8" fill="#ffffff" opacity="0.85"/>
+                <circle cx="-42" cy="8" r="22" fill="#4f8f3c"/>
+                <circle cx="42" cy="8" r="22" fill="#4f8f3c"/>
+                <rect x="-60" y="20" width="120" height="40" fill="#7ec255"/>
+                <g stroke="#4a2c14" stroke-width="2.4">
+                  <line x1="-36" y1="18" x2="-36" y2="32"/><line x1="-24" y1="18" x2="-24" y2="32"/>
+                  <line x1="-12" y1="18" x2="-12" y2="32"/><line x1="12" y1="18" x2="12" y2="32"/>
+                  <line x1="24" y1="18" x2="24" y2="32"/><line x1="36" y1="18" x2="36" y2="32"/>
+                </g>
+                <rect x="-42" y="-2" width="84" height="20" fill="#9c6839" stroke="#4a2c14" stroke-width="1.8"/>
+                <rect x="-26" y="-12" width="52" height="30" fill="#b37b46" stroke="#4a2c14" stroke-width="1.8"/>
+                <rect x="-6" y="-4" width="12" height="18" fill="#4a2c14"/>
+                <rect x="-20" y="0" width="8" height="10" fill="#5e391b"/>
+                <rect x="12" y="0" width="8" height="10" fill="#5e391b"/>
+                <polygon points="-48,-2 48,-2 34,-14 -34,-14" fill="#7a4e28" stroke="#3d2410" stroke-width="1.8"/>
+                <polygon points="-24,-10 0,-38 24,-10" fill="#8f5d32" stroke="#3d2410" stroke-width="2"/>
+                <line x1="0" y1="-38" x2="0" y2="-45" stroke="#e5b94e" stroke-width="2.5"/>
+                <polygon points="-8,18 8,18 12,33 -12,33" fill="#7a4e28" stroke="#3d2410" stroke-width="1.5"/>
+              </g>
+              <circle cx="0" cy="0" r="56" fill="none" stroke="url(#pinGoldGrad)" stroke-width="3"/>
+
+              <!-- Lencana Kaca Pembesar (Belum Dibaca) -->
+              <g id="pinGlass1" transform="translate(44, -44)">
+                <circle cx="0" cy="0" r="22" fill="#ffe082" stroke="#d49b2a" stroke-width="3"/>
+                <circle cx="-2" cy="-2" r="7" fill="none" stroke="#6e4715" stroke-width="3"/>
+                <line x1="3" y1="3" x2="10" y2="10" stroke="#6e4715" stroke-width="3.5" stroke-linecap="round"/>
+              </g>
+
+              <!-- Lencana Centang Emas (Sudah Dibaca) -->
+              <g id="pinCheck1" transform="translate(44, -44)" style="display:none">
+                <circle cx="0" cy="0" r="23" fill="#d49b2a"/>
+                <circle cx="0" cy="0" r="19" fill="#f7cf68" stroke="#b57c16" stroke-width="2"/>
+                <path d="M-8 0 L-2 6 L9 -6" fill="none" stroke="#5e3a10" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+              </g>
+
+              <!-- Label Pita Nama Lokasi -->
+              <g transform="translate(0, 108)">
+                <rect x="-112" y="-18" width="224" height="36" rx="18" fill="#133a3c" stroke="url(#pinGoldGrad)" stroke-width="2.5" filter="url(#softShadow)"/>
+                <text x="0" y="5" text-anchor="middle" fill="#f5ca63" font-size="14" font-weight="800">Istana Panembahan Matan</text>
+              </g>
+            </g>
+          </g>
+
+          <!-- PIN 2: SISA TIANG MASJID JAMI -->
+          <g class="interactive-node" id="pinNode2" role="button" tabindex="0" aria-label="Petunjuk 2: Sisa Tiang Masjid Jami" transform="translate(385, 295)">
+            <g class="pin-float delay-1">
+              <circle class="halo-pulse" id="pinHalo2" cx="0" cy="0" r="74" fill="#ffe082"/>
+              <path class="pin-outer-ring" d="M -52 38 L 0 88 L 52 38 A 66 66 0 1 1 52 37.9 Z" fill="#133a3c" stroke="url(#pinGoldGrad)" stroke-width="3.5" filter="url(#softShadow)"/>
+              <circle cx="0" cy="70" r="5" fill="#f5ca63"/>
+              <!-- Vignette Bundar Ilustrasi Sisa Tiang Masjid Jami -->
+              <g clip-path="url(#clipCirclePin)">
+                <rect x="-60" y="-60" width="120" height="120" fill="#d9f1fa"/>
+                <path d="M-60 6 Q-20 -4 25 6 L60 4 L60 18 L-60 18 Z" fill="#3e7830"/>
+                <rect x="-60" y="12" width="120" height="48" fill="#5bb3db"/>
+                <path d="M-28 45 Q-10 22 22 18 L60 15 L60 60 L-28 60 Z" fill="#9c6a3e" stroke="#5e3a1c" stroke-width="2"/>
+                <path d="M12 22 Q28 32 45 26" fill="none" stroke="#6e4422" stroke-width="2"/>
+                <path d="M-8 38 L-7 -34 L3 -36 L7 38 Z" fill="#7c5230" stroke="#3d2410" stroke-width="2"/>
+                <line x1="-2" y1="-28" x2="-2" y2="32" stroke="#4a2c14" stroke-width="1.5"/>
+                <line x1="2" y1="-22" x2="2" y2="28" stroke="#4a2c14" stroke-width="1.2"/>
+              </g>
+              <circle cx="0" cy="0" r="56" fill="none" stroke="url(#pinGoldGrad)" stroke-width="3"/>
+
+              <g id="pinGlass2" transform="translate(44, -44)">
+                <circle cx="0" cy="0" r="22" fill="#ffe082" stroke="#d49b2a" stroke-width="3"/>
+                <circle cx="-2" cy="-2" r="7" fill="none" stroke="#6e4715" stroke-width="3"/>
+                <line x1="3" y1="3" x2="10" y2="10" stroke="#6e4715" stroke-width="3.5" stroke-linecap="round"/>
+              </g>
+
+              <g id="pinCheck2" transform="translate(44, -44)" style="display:none">
+                <circle cx="0" cy="0" r="23" fill="#d49b2a"/>
+                <circle cx="0" cy="0" r="19" fill="#f7cf68" stroke="#b57c16" stroke-width="2"/>
+                <path d="M-8 0 L-2 6 L9 -6" fill="none" stroke="#5e3a10" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+              </g>
+
+              <g transform="translate(0, 108)">
+                <rect x="-102" y="-18" width="204" height="36" rx="18" fill="#133a3c" stroke="url(#pinGoldGrad)" stroke-width="2.5" filter="url(#softShadow)"/>
+                <text x="0" y="5" text-anchor="middle" fill="#f5ca63" font-size="14" font-weight="800">Sisa Tiang Masjid Jami</text>
+              </g>
+            </g>
+          </g>
+
+          <!-- PIN 3: DESA TANJUNGPURA -->
+          <g class="interactive-node" id="pinNode3" role="button" tabindex="0" aria-label="Petunjuk 3: Desa Tanjungpura" transform="translate(395, 535)">
+            <g class="pin-float delay-2">
+              <circle class="halo-pulse" id="pinHalo3" cx="0" cy="0" r="74" fill="#ffe082"/>
+              <path class="pin-outer-ring" d="M -52 38 L 0 88 L 52 38 A 66 66 0 1 1 52 37.9 Z" fill="#133a3c" stroke="url(#pinGoldGrad)" stroke-width="3.5" filter="url(#softShadow)"/>
+              <circle cx="0" cy="70" r="5" fill="#f5ca63"/>
+              <!-- Vignette Bundar Ilustrasi Desa Tanjungpura -->
+              <g clip-path="url(#clipCirclePin)">
+                <rect x="-60" y="-60" width="120" height="120" fill="#d9f1fa"/>
+                <path d="M-60 5 Q-10 -22 60 2 L60 22 L-60 22 Z" fill="#468235"/>
+                <path d="M-60 12 L25 22 L-60 32 Z" fill="#82ba52"/>
+                <rect x="-60" y="18" width="120" height="45" fill="#5bb3db"/>
+                <g transform="translate(-28, 4) scale(0.5)"><use href="#stiltHouse"/></g>
+                <g transform="translate(0, 6) scale(0.48)"><use href="#stiltHouse"/></g>
+                <g transform="translate(26, 8) scale(0.44)"><use href="#stiltHouse"/></g>
+                <path d="M18 32 Q30 38 42 32 L38 37 L22 37 Z" fill="#6e4422"/>
+              </g>
+              <circle cx="0" cy="0" r="56" fill="none" stroke="url(#pinGoldGrad)" stroke-width="3"/>
+
+              <g id="pinGlass3" transform="translate(44, -44)">
+                <circle cx="0" cy="0" r="22" fill="#ffe082" stroke="#d49b2a" stroke-width="3"/>
+                <circle cx="-2" cy="-2" r="7" fill="none" stroke="#6e4715" stroke-width="3"/>
+                <line x1="3" y1="3" x2="10" y2="10" stroke="#6e4715" stroke-width="3.5" stroke-linecap="round"/>
+              </g>
+
+              <g id="pinCheck3" transform="translate(44, -44)" style="display:none">
+                <circle cx="0" cy="0" r="23" fill="#d49b2a"/>
+                <circle cx="0" cy="0" r="19" fill="#f7cf68" stroke="#b57c16" stroke-width="2"/>
+                <path d="M-8 0 L-2 6 L9 -6" fill="none" stroke="#5e3a10" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+              </g>
+
+              <g transform="translate(0, 108)">
+                <rect x="-92" y="-18" width="184" height="36" rx="18" fill="#133a3c" stroke="url(#pinGoldGrad)" stroke-width="2.5" filter="url(#softShadow)"/>
+                <text x="0" y="5" text-anchor="middle" fill="#f5ca63" font-size="14" font-weight="800">Desa Tanjungpura</text>
+              </g>
+            </g>
+          </g>
+        </g>
+
+        <!-- ==================== LAYER TAHAP 2: BERSIHKAN SUNGAI ==================== -->
+        <g id="stage2Layer" style="display:none">
+          <!-- Tempat Sampah di Tepi Sungai -->
+          <g id="riverTrashBin" class="interactive-node" role="button" tabindex="0" aria-label="Tempat Sampah Tepi Sungai" transform="translate(105, 445)">
+            <circle class="halo-pulse" id="binDropHalo" cx="0" cy="0" r="58" fill="#ffe082"/>
+            <ellipse cx="0" cy="36" rx="42" ry="14" fill="#1f4218" opacity="0.45"/>
+            <path d="M-32 -24 L32 -24 L25 36 L-25 36 Z" fill="#164447" stroke="#e5b94e" stroke-width="3.5"/>
+            <rect x="-36" y="-34" width="72" height="11" rx="5" fill="#e5b94e" stroke="#4a3309" stroke-width="2"/>
+            <rect x="-12" y="-41" width="24" height="7" rx="3" fill="#e5b94e" stroke="#4a3309" stroke-width="2"/>
+            <circle cx="0" cy="6" r="14" fill="#ffe082"/>
+            <path d="M-6 6 L-1 11 L7 1" fill="none" stroke="#164447" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="-66" y="44" width="132" height="28" rx="14" fill="#133a3c" stroke="#e5b94e" stroke-width="2"/>
+            <text x="0" y="62" text-anchor="middle" fill="#f5ca63" font-size="12" font-weight="800">TEMPAT SAMPAH</text>
+          </g>
+
+          <!-- Wadah Sampah Hanyut -->
+          <g id="driftingTrashGroup"></g>
+        </g>
+
+        <!-- ==================== LAYER TAHAP 3: TANAM 3 BIBIT KETAPANG ==================== -->
+        <g id="stage3Layer" style="display:none">
+          <!-- Titik Tanam 1 -->
+          <g class="interactive-node" id="soilPin1" role="button" tabindex="0" aria-label="Titik Tanam Bibit Ketapang 1" transform="translate(255, 235)">
+            <circle class="halo-pulse" cx="0" cy="-12" r="46" fill="#ffe082"/>
+            <ellipse cx="0" cy="6" rx="36" ry="14" fill="#6b4423" stroke="#e5b94e" stroke-width="3"/>
+            <circle cx="0" cy="-18" r="26" fill="#133a3c" stroke="#e5b94e" stroke-width="3"/>
+            <path d="M0 -6 L0 -26 M0 -16 Q-12 -26 -14 -16 Q-4 -10 0 -16 M0 -20 Q12 -30 14 -20 Q4 -14 0 -20" fill="#70c456" stroke="#70c456" stroke-width="2.5" stroke-linecap="round"/>
+            <rect x="-64" y="24" width="128" height="26" rx="13" fill="#133a3c" stroke="#e5b94e" stroke-width="2"/>
+            <text x="0" y="41" text-anchor="middle" fill="#f5ca63" font-size="12" font-weight="800">Tanam Ketapang #1</text>
+          </g>
+
+          <!-- Titik Tanam 2 -->
+          <g class="interactive-node" id="soilPin2" role="button" tabindex="0" aria-label="Titik Tanam Bibit Ketapang 2" transform="translate(350, 395)">
+            <circle class="halo-pulse" cx="0" cy="-12" r="46" fill="#ffe082"/>
+            <ellipse cx="0" cy="6" rx="36" ry="14" fill="#6b4423" stroke="#e5b94e" stroke-width="3"/>
+            <circle cx="0" cy="-18" r="26" fill="#133a3c" stroke="#e5b94e" stroke-width="3"/>
+            <path d="M0 -6 L0 -26 M0 -16 Q-12 -26 -14 -16 Q-4 -10 0 -16 M0 -20 Q12 -30 14 -20 Q4 -14 0 -20" fill="#70c456" stroke="#70c456" stroke-width="2.5" stroke-linecap="round"/>
+            <rect x="-64" y="24" width="128" height="26" rx="13" fill="#133a3c" stroke="#e5b94e" stroke-width="2"/>
+            <text x="0" y="41" text-anchor="middle" fill="#f5ca63" font-size="12" font-weight="800">Tanam Ketapang #2</text>
+          </g>
+
+          <!-- Titik Tanam 3 -->
+          <g class="interactive-node" id="soilPin3" role="button" tabindex="0" aria-label="Titik Tanam Bibit Ketapang 3" transform="translate(215, 595)">
+            <circle class="halo-pulse" cx="0" cy="-12" r="46" fill="#ffe082"/>
+            <ellipse cx="0" cy="6" rx="36" ry="14" fill="#6b4423" stroke="#e5b94e" stroke-width="3"/>
+            <circle cx="0" cy="-18" r="26" fill="#133a3c" stroke="#e5b94e" stroke-width="3"/>
+            <path d="M0 -6 L0 -26 M0 -16 Q-12 -26 -14 -16 Q-4 -10 0 -16 M0 -20 Q12 -30 14 -20 Q4 -14 0 -20" fill="#70c456" stroke="#70c456" stroke-width="2.5" stroke-linecap="round"/>
+            <rect x="-64" y="24" width="128" height="26" rx="13" fill="#133a3c" stroke="#e5b94e" stroke-width="2"/>
+            <text x="0" y="41" text-anchor="middle" fill="#f5ca63" font-size="12" font-weight="800">Tanam Ketapang #3</text>
+          </g>
+        </g>
+
+        <!-- ==================== LAYER AKHIR: 10 KERANG ALE-ALE BERKILAU ==================== -->
+        <g id="stage4Layer" style="display:none"></g>
+
+        <!-- Overlay Gelap untuk Mode Malam/Gelap -->
+        <rect x="-700" y="-200" width="1940" height="1400" fill="#041214" opacity="var(--sky-tint)" pointer-events="none"/>
+      </svg>
+    </main>
+
+    <!-- ==================== BOTTOM DIALOG CARD & PEMANDU MELAYU ==================== -->
+    <section class="bottom-dialog-wrap" aria-label="Dialog Pemandu Sungai">
+      <div class="dialog-card">
+        <!-- Ilustrasi Karakter Pemandu Bertanjak & Berbaju Batik Melayu -->
+        <div class="guide-portrait-box" aria-hidden="true">
+          <svg viewBox="0 0 160 220">
+            <defs>
+              <pattern id="batikPattern" width="24" height="24" patternUnits="userSpaceOnUse" patternTransform="rotate(28)">
+                <rect width="24" height="24" fill="#613b1f"/>
+                <path d="M0 6 Q6 0 12 6 T24 6 M0 18 Q6 12 12 18 T24 18" fill="none" stroke="#d9a84e" stroke-width="2.2"/>
+                <circle cx="6" cy="12" r="2" fill="#f2cf7e"/>
+                <circle cx="18" cy="12" r="2" fill="#f2cf7e"/>
+              </pattern>
+            </defs>
+
+            <!-- Bahu & Baju Batik Melayu Cokelat Emas -->
+            <path d="M 12 220 L 18 156 Q 22 136 52 130 L 108 130 Q 138 136 142 156 L 148 220 Z"
+                  fill="url(#batikPattern)" stroke="#2b1708" stroke-width="2.5"/>
+            <path d="M 56 130 L 46 220 M 104 130 L 114 220" stroke="#c9963b" stroke-width="4"/>
+            <path d="M 76 142 L 76 220 M 84 142 L 84 220" stroke="#c9963b" stroke-width="3"/>
+
+            <!-- Leher & Kerah Baju Teluk Belanga Emas -->
+            <path d="M 62 114 L 62 136 L 80 146 L 98 136 L 98 114 Z" fill="#c78758" stroke="#4a2912" stroke-width="2"/>
+            <path d="M 56 126 L 80 144 L 104 126 L 98 138 L 80 150 L 62 138 Z" fill="#d9a84e" stroke="#4a2912" stroke-width="2"/>
+
+            <!-- Telinga -->
+            <ellipse cx="43" cy="88" rx="6" ry="11" fill="#c78758" stroke="#4a2912" stroke-width="2"/>
+            <ellipse cx="117" cy="88" rx="6" ry="11" fill="#c78758" stroke="#4a2912" stroke-width="2"/>
+
+            <!-- Wajah Ramah -->
+            <path d="M 46 62 Q 45 124 80 126 Q 115 124 114 62 Z" fill="#d19264" stroke="#4a2912" stroke-width="2.4"/>
+
+            <!-- Rambut Samping -->
+            <path d="M 45 64 Q 42 76 46 86 L 50 70 Z" fill="#24150b"/>
+            <path d="M 115 64 Q 118 76 114 86 L 110 70 Z" fill="#24150b"/>
+
+            <!-- Alis & Mata Berkedip -->
+            <path d="M 55 74 Q 64 69 72 73" fill="none" stroke="#24150b" stroke-width="3.2" stroke-linecap="round"/>
+            <path d="M 88 73 Q 96 69 105 74" fill="none" stroke="#24150b" stroke-width="3.2" stroke-linecap="round"/>
+            <g class="guide-eyes">
+              <ellipse cx="64" cy="83" rx="5.5" ry="4" fill="#ffffff"/>
+              <circle cx="64" cy="83" r="3" fill="#24150b"/>
+              <circle cx="65.2" cy="81.8" r="1" fill="#ffffff"/>
+              <ellipse cx="96" cy="83" rx="5.5" ry="4" fill="#ffffff"/>
+              <circle cx="96" cy="83" r="3" fill="#24150b"/>
+              <circle cx="97.2" cy="81.8" r="1" fill="#ffffff"/>
+            </g>
+
+            <!-- Hidung -->
+            <path d="M 80 82 L 77 95 Q 80 98 84 95" fill="none" stroke="#8c5430" stroke-width="2.2" stroke-linecap="round"/>
+
+            <!-- Kumis Tipis & Senyum Hangat -->
+            <path d="M 67 102 Q 80 98 93 102" fill="none" stroke="#361f10" stroke-width="2.2" stroke-linecap="round"/>
+            <g class="guide-mouth" id="guideMouth">
+              <path d="M 67 104 Q 80 115 93 104 Z" fill="#ffffff" stroke="#5c2c16" stroke-width="2"/>
+            </g>
+            <!-- Janggut Tipis di Dagu -->
+            <path d="M 71 122 Q 80 127 89 122" fill="none" stroke="#24150b" stroke-width="3.5" stroke-linecap="round"/>
+
+            <!-- TANJAK MELAYU EMAS DENGAN BROS BULAN BINTANG -->
+            <g>
+              <path d="M 44 58 L 38 32 L 58 42 L 84 14 L 112 42 L 116 58 Z" fill="#b88946" stroke="#3b230d" stroke-width="2.4" stroke-linejoin="round"/>
+              <path d="M 42 54 Q 68 34 114 44 L 116 60 Q 80 52 44 60 Z" fill="#d1a45a" stroke="#3b230d" stroke-width="2.2"/>
+              <path d="M 43 60 Q 80 51 117 60 L 115 68 Q 80 60 45 68 Z" fill="#dfc07c" stroke="#3b230d" stroke-width="2.2"/>
+              <circle cx="77" cy="49" r="9.5" fill="#1c3b2b" stroke="#ffd563" stroke-width="2"/>
+              <path d="M 75 43 A 5.5 5.5 0 1 0 82 52 A 4.2 4.2 0 1 1 75 43 Z" fill="#ffd563"/>
+              <polygon points="79,44 80,46.5 82.5,46.5 80.5,48 81.2,50.5 79,49 76.8,50.5 77.5,48 75.5,46.5 78,46.5" fill="#ffd563"/>
+            </g>
+          </svg>
+        </div>
+
+        <!-- Isi Teks Dialog & Lencana -->
+        <div class="dialog-body">
+          <div class="dialog-top-row">
+            <span class="dialog-badge" id="dialogBadge">
+              <span aria-hidden="true">✪</span>
+              <span id="dialogBadgeText">Cerita rekaan</span>
+            </span>
+            <span class="dialog-loc-title" id="dialogLocTitle">Penjaga Sungai Pawan</span>
+          </div>
+
+          <p class="dialog-text" id="dialogText">
+            Tabik, Penjaga Sungai! Konon, Sungai Pawan dan ale-ale berasal dari pohon ketapang raksasa yang tumbang di negeri ini. Ketuk 3 titik bersejarah yang memiliki kaca pembesar di peta sungai!
+          </p>
+        </div>
+
+        <div class="dialog-actions">
+          <button type="button" class="btn-gold" id="btnDialogNext">Lanjut</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== OVERLAY KARTU KOLEKSI (AKHIR PERMAINAN) ==================== -->
+    <div class="ending-overlay" id="endingOverlay" role="dialog" aria-modal="true" aria-labelledby="endingTitle">
+      <div class="ending-card">
+        <h2 class="ending-title" id="endingTitle">🎉 Ale-ale pulang! Terima kasih, Penjaga Sungai.</h2>
+
+        <div class="collection-list">
+          <!-- Kartu Koleksi 1: Kerang Ale-ale -->
+          <article class="col-item">
+            <svg class="col-icon" viewBox="0 0 64 64" aria-hidden="true">
+              <rect width="64" height="64" fill="#d9f1fa"/>
+              <path d="M0 44 Q32 36 64 44 L64 64 L0 64 Z" fill="#5bb3db"/>
+              <ellipse cx="32" cy="34" rx="20" ry="15" fill="#ffd563" stroke="#6e4715" stroke-width="2.5"/>
+              <path d="M17 36 Q32 22 47 36 M21 41 Q32 30 43 41" fill="none" stroke="#6e4715" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <div class="col-info">
+              <span class="dialog-badge">✪ Fakta sejarah</span>
+              <h4>Kerang Ale-ale</h4>
+              <p>Ketapang dijuluki Kota Ale-ale, dan ale-ale diolah jadi tumisan, serundeng, dan pekasam.</p>
+            </div>
+          </article>
+
+          <!-- Kartu Koleksi 2: Buah Ketapang -->
+          <article class="col-item">
+            <svg class="col-icon" viewBox="0 0 64 64" aria-hidden="true">
+              <rect width="64" height="64" fill="#e2f4dc"/>
+              <path d="M14 42 Q18 16 48 18 Q44 46 20 44 Z" fill="#3a8a3e" stroke="#1b4d20" stroke-width="2.2"/>
+              <line x1="18" y1="40" x2="43" y2="21" stroke="#9be082" stroke-width="2" stroke-linecap="round"/>
+              <ellipse cx="38" cy="42" rx="12" ry="8" transform="rotate(-18 38 42)" fill="#8c5a32" stroke="#4a2c14" stroke-width="2"/>
+            </svg>
+            <div class="col-info">
+              <span class="dialog-badge">✪ Fakta sejarah</span>
+              <h4>Buah Ketapang</h4>
+              <p>Ketapang dinamai dari buah ketapang (<em>Terminalia catappa</em>).</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="ending-btn-row">
+          <button type="button" class="btn-gold" id="btnPlayAgain">🔄 Main lagi</button>
+          <button type="button" class="btn-outline" id="btnBackMuseum">🏛️ Kembali ke museum</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* =========================================================================
+     STATE PERMAINAN (Disimpan murni di variabel JS)
+     ========================================================================= */
+  var state = {
+    stage: 1,
+    soundOn: true,
+    animOn: true,
+    themeIndex: 0,
+    themes: ["forest", "light", "dark"],
+    cluesDone: { 1: false, 2: false, 3: false },
+    activePin: null,
+    pinDialogStep: 0,
+    trashList: [],
+    selectedTrashId: null,
+    draggingId: null,
+    dragOffsetX: 0,
+    dragOffsetY: 0,
+    timerSec: 0,
+    timerHandle: null,
+    rafHandle: null,
+    lastFrameTime: 0,
+    soilDone: { 1: false, 2: false, 3: false },
+    clamsCount: 0,
+    maxClams: 10,
+    talkTimeout: null
+  };
+
+  /* Data 3 Titik Petunjuk */
+  var CLUES = {
+    1: {
+      name: "Istana Panembahan Matan, Mulia Kerta",
+      fact: "Istana Panembahan Matan di Mulia Kerta adalah pusat terakhir Kerajaan Matan-Tanjungpura, penerus Kerajaan Tanjungpura yang sudah ada sejak masa Hindu. Istana ini menyimpan meriam, kain, dan senjata peninggalan para panembahan.",
+      story: "Tabik, Kawan! Konon, masyarakat di sepanjang Sungai Pawan sejak dahulu hidup berdampingan menjaga kelestarian air dan ale-ale. Ayuh kita periksa titik lainnya di tepian sungai!"
+    },
+    2: {
+      name: "Sisa Tiang Masjid Jami",
+      fact: "Masjid Jami dibangun di tepi Sungai Pawan pada masa Panembahan Gusti Muhammad Sabran (memerintah 1876-1908), pusat kerajaan pindah ke Mulia Kerta tahun 1876. Masjid dipindah karena abrasi, tinggal satu tiang lama yang dilestarikan.",
+      story: "Perhatikanlah tebing sungai yang terkikis itu, Penjaga Sungai. Tanah longsor menimbun dasar sungai, rumah ale-ale. Kita wajib menanam bibit ketapang nanti supaya tebing ini tidak runtuh lagi!"
+    },
+    3: {
+      name: "Desa Tanjungpura",
+      fact: "Desa Tanjungpura pernah menjadi pusat kerajaan, dan di sana terdapat Makam Keramat Sembilan. Pusat kerajaan berpindah menghilir mengikuti sungai.",
+      story: "Ingatlah petunjuk bijak ini: kalau sungai sakit, negeri ikut sakit. Sampah yang hanyut membuat dasar Sungai Pawan kotor. Ayuh kita bersihkan sungai bersama-sama!"
+    }
+  };
+
+  /* =========================================================================
+     RESPONSIVE VIEWBOX ADAPTER (Menyesuaikan Desktop Widescreen & Mobile Portrait)
+     ========================================================================= */
+  function updateResponsiveViewBox() {
+    var svg = document.getElementById("mainSvg");
+    if (!svg) return;
+    var w = window.innerWidth || 540;
+    var h = window.innerHeight || 960;
+    var aspect = w / h;
+
+    /* Pada layar desktop/landscape lebar, kartu dialog berada di kiri bawah sehingga tinggi area aman cukup 810 unit.
+       Pada layar mobile portrait, kartu dialog berada di tengah bawah sehingga tinggi area aman 950 unit. */
+    var isWideDesktop = w >= 960 && aspect >= 1.1;
+    var isShortLandscape = h <= 540 && aspect > 1;
+
+    var safeW = 540;
+    var safeH = (isWideDesktop || isShortLandscape) ? 805 : 950;
+    var centerX = (isWideDesktop || isShortLandscape) ? 245 : 270;
+    var centerY = (isWideDesktop || isShortLandscape) ? 415 : 475;
+
+    var vbW, vbH;
+    if (aspect > safeW / safeH) {
+      /* Layar lebih lebar (Desktop / Website / Tablet Landscape): pastikan seluruh tinggi sungai muat, perluas hutan kiri-kanan */
+      vbH = safeH;
+      vbW = safeH * aspect;
+    } else {
+      /* Layar lebih tinggi (HP Portrait): pastikan seluruh lebar sungai muat, perluas atas-bawah */
+      vbW = safeW;
+      vbH = safeW / aspect;
+    }
+
+    /* Batasi agar tidak melewati kanvas panoramik (-700..1240 x -200..1200) */
+    vbW = Math.min(1880, Math.max(540, vbW));
+    vbH = Math.min(1320, Math.max(780, vbH));
+
+    var minX = Math.round(centerX - vbW / 2);
+    var minY = Math.round(centerY - vbH / 2);
+    svg.setAttribute("viewBox", minX + " " + minY + " " + Math.round(vbW) + " " + Math.round(vbH));
+  }
+
+  window.addEventListener("resize", updateResponsiveViewBox);
+  window.addEventListener("orientationchange", updateResponsiveViewBox);
+  updateResponsiveViewBox();
+
+  /* =========================================================================
+     EFEK SUARA SYNTHESIZER (Web Audio API murni)
+     ========================================================================= */
+  var audioCtx = null;
+  function playTone(freq, dur, type, endFreq) {
+    if (!state.soundOn) return;
+    try {
+      var AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) return;
+      if (!audioCtx) audioCtx = new AudioContextClass();
+      if (audioCtx.state === "suspended") audioCtx.resume();
+      var osc = audioCtx.createOscillator();
+      var gain = audioCtx.createGain();
+      var now = audioCtx.currentTime;
+      osc.type = type || "sine";
+      osc.frequency.setValueAtTime(freq, now);
+      if (endFreq) osc.frequency.exponentialRampToValueAtTime(endFreq, now + dur);
+      gain.gain.setValueAtTime(0.14, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + dur);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(now);
+      osc.stop(now + dur);
+    } catch (e) {}
+  }
+
+  function sfxTap() { playTone(540, 0.08, "triangle", 700); }
+  function sfxCheck() {
+    playTone(523.25, 0.1, "sine", 659.25);
+    setTimeout(function () { playTone(783.99, 0.18, "sine", 1046.5); }, 95);
+  }
+  function sfxDrop() { playTone(380, 0.13, "sine", 210); }
+  function sfxClam() { playTone(760, 0.12, "triangle", 1220); }
+
+  /* =========================================================================
+     UTILITAS DOM & DIALOG PEMANDU
+     ========================================================================= */
+  function $(id) { return document.getElementById(id); }
+
+  function setDialog(badgeType, locationTitle, text, btnLabel, btnEnabled) {
+    var badgeText = badgeType === "fact" ? "Fakta sejarah" : "Cerita rekaan";
+    $("dialogBadgeText").textContent = badgeText;
+    $("dialogLocTitle").textContent = locationTitle || "Penjaga Sungai Pawan";
+    $("dialogText").textContent = text;
+    var btn = $("btnDialogNext");
+    btn.textContent = btnLabel || "Lanjut";
+    btn.disabled = btnEnabled === false;
+
+    var mouth = $("guideMouth");
+    if (state.animOn && mouth) {
+      mouth.classList.add("talking");
+      if (state.talkTimeout) clearTimeout(state.talkTimeout);
+      state.talkTimeout = setTimeout(function () {
+        mouth.classList.remove("talking");
+      }, 1100);
+    }
+  }
+
+  function countDone(obj) {
+    return (obj[1] ? 1 : 0) + (obj[2] ? 1 : 0) + (obj[3] ? 1 : 0);
+  }
+
+  /* =========================================================================
+     KONTROL TOMBOL ATAS (Suara, Tema Terang/Gelap, Animasi, Keluar)
+     ========================================================================= */
+  $("btnSound").addEventListener("click", function () {
+    state.soundOn = !state.soundOn;
+    $("btnSound").setAttribute("aria-pressed", String(state.soundOn));
+    $("btnSound").classList.toggle("off", !state.soundOn);
+    $("soundWaves").style.display = state.soundOn ? "block" : "none";
+    $("soundMuteSlash").style.display = state.soundOn ? "none" : "block";
+    if (state.soundOn) sfxTap();
+  });
+
+  $("btnTheme").addEventListener("click", function () {
+    state.themeIndex = (state.themeIndex + 1) % state.themes.length;
+    var nextTheme = state.themes[state.themeIndex];
+    document.documentElement.setAttribute("data-theme", nextTheme);
+    sfxTap();
+  });
+
+  $("btnAnim").addEventListener("click", function () {
+    state.animOn = !state.animOn;
+    $("btnAnim").setAttribute("aria-pressed", String(state.animOn));
+    $("btnAnim").classList.toggle("off", !state.animOn);
+    $("animSparkle").style.display = state.animOn ? "block" : "none";
+    $("animPause").style.display = state.animOn ? "none" : "block";
+    document.body.classList.toggle("no-anim", !state.animOn);
+    sfxTap();
+  });
+
+  function exitToMuseum() {
+    sfxTap();
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage({ type: "aleale:close" }, "*");
+    } else {
+      window.location.href = "./";
+    }
+  }
+
+  $("btnExitTop").addEventListener("click", exitToMuseum);
+  $("btnBackMuseum").addEventListener("click", exitToMuseum);
+
+  /* =========================================================================
+     TAHAP 1: KUMPULKAN 3 PETUNJUK SEJARAH
+     ========================================================================= */
+  function updateStage1Hud() {
+    var done = countDone(state.cluesDone);
+    $("hudStageText").textContent = "TAHAP 1: PETUNJUK (" + done + "/3)";
+  }
+
+  function openPinClue(id) {
+    if (state.stage !== 1) return;
+    sfxTap();
+    state.activePin = id;
+    state.pinDialogStep = 0;
+    var c = CLUES[id];
+    setDialog("fact", c.name, c.fact, "Lanjut", true);
+  }
+
+  [1, 2, 3].forEach(function (id) {
+    var node = $("pinNode" + id);
+    node.addEventListener("click", function () { openPinClue(id); });
+    node.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openPinClue(id);
+      }
+    });
+  });
+
+  $("btnDialogNext").addEventListener("click", function () {
+    sfxTap();
+
+    if (state.stage === 1) {
+      if (state.activePin !== null && state.pinDialogStep === 0) {
+        state.pinDialogStep = 1;
+        var c = CLUES[state.activePin];
+        setDialog("story", c.name, c.story, "Simpan Petunjuk ✓", true);
+        return;
+      }
+
+      if (state.activePin !== null && state.pinDialogStep === 1) {
+        var pid = state.activePin;
+        state.cluesDone[pid] = true;
+        state.activePin = null;
+        $("pinGlass" + pid).style.display = "none";
+        $("pinHalo" + pid).style.display = "none";
+        $("pinCheck" + pid).style.display = "block";
+        sfxCheck();
+        updateStage1Hud();
+
+        var done = countDone(state.cluesDone);
+        if (done < 3) {
+          setDialog(
+            "story",
+            "Penjaga Sungai Pawan",
+            "Bagus sekali! Satu petunjuk sudah dicatat. Ayuh ketuk titik lokasi berikutnya yang masih bertanda kaca pembesar di peta sungai!",
+            "Pilih Titik Peta",
+            false
+          );
+        } else {
+          setDialog(
+            "story",
+            "Penjaga Sungai Pawan",
+            "Syabas! Ketiga petunjuk sejarah sudah terkumpul. Sekarang ayuh kita bersihkan Sungai Pawan dari sampah yang hanyut!",
+            "Mulai Tahap 2 →",
+            true
+          );
+        }
+        return;
+      }
+
+      if (countDone(state.cluesDone) === 3) {
+        enterStage2();
+        return;
+      }
+
+      for (var i = 1; i <= 3; i++) {
+        if (!state.cluesDone[i]) {
+          openPinClue(i);
+          break;
+        }
+      }
+    } else if (state.stage === 2) {
+      var rem = state.trashList.filter(function (t) { return !t.removed; }).length;
+      if (rem === 0) enterStage3();
+    } else if (state.stage === 3) {
+      if (countDone(state.soilDone) === 3) enterStage4();
+    } else if (state.stage === 4) {
+      if (state.clamsCount >= state.maxClams) {
+        $("endingOverlay").classList.add("open");
+      }
+    }
+  });
+
+  /* =========================================================================
+     TAHAP 2: BERSIHKAN SUNGAI (Drag & Drop + Ketuk di Aliran Sungai S-Curve)
+     ========================================================================= */
+  var RIVER_WAYPOINTS = [
+    { x: 465, y: 102 },
+    { x: 310, y: 128 },
+    { x: 215, y: 195 },
+    { x: 325, y: 280 },
+    { x: 430, y: 385 },
+    { x: 315, y: 472 },
+    { x: 135, y: 555 },
+    { x: 165, y: 655 }
+  ];
+
+  var TRASH_DEFS = [
+    { id: "t1", kind: "bottle", label: "Botol Plastik", progress: 0.08, speed: 0.032 },
+    { id: "t2", kind: "plastic", label: "Kantong Plastik", progress: 0.24, speed: 0.026 },
+    { id: "t3", kind: "twig", label: "Ranting Hanyut", progress: 0.40, speed: 0.029 },
+    { id: "t4", kind: "bottle", label: "Botol Minuman", progress: 0.56, speed: 0.025 },
+    { id: "t5", kind: "plastic", label: "Bungkus Plastik", progress: 0.72, speed: 0.030 },
+    { id: "t6", kind: "twig", label: "Ranting Kayu", progress: 0.86, speed: 0.027 }
+  ];
+
+  function pointOnRiverPath(u) {
+    var clamped = u % 1;
+    if (clamped < 0) clamped += 1;
+    var segs = RIVER_WAYPOINTS.length - 1;
+    var exact = clamped * segs;
+    var idx = Math.min(segs - 1, Math.floor(exact));
+    var frac = exact - idx;
+    var a = RIVER_WAYPOINTS[idx];
+    var b = RIVER_WAYPOINTS[idx + 1];
+    return {
+      x: a.x + (b.x - a.x) * frac,
+      y: a.y + (b.y - a.y) * frac
+    };
+  }
+
+  function buildTrashSvg(kind) {
+    if (kind === "bottle") {
+      return (
+        '<circle class="halo-pulse" cx="0" cy="0" r="32" fill="#ffe082"/>' +
+        '<circle cx="0" cy="0" r="26" fill="#133a3c" fill-opacity="0.45" stroke="#e5b94e" stroke-width="2.2"/>' +
+        '<rect x="-15" y="-8" width="26" height="16" rx="5" fill="#dff4fc" stroke="#1b4d63" stroke-width="2"/>' +
+        '<rect x="11" y="-4" width="6" height="8" rx="1.5" fill="#d94e34" stroke="#1b4d63" stroke-width="1.5"/>' +
+        '<rect x="-6" y="-8" width="8" height="16" fill="#d94e34"/>'
+      );
+    }
+    if (kind === "plastic") {
+      return (
+        '<circle class="halo-pulse" cx="0" cy="0" r="32" fill="#ffe082"/>' +
+        '<circle cx="0" cy="0" r="26" fill="#133a3c" fill-opacity="0.45" stroke="#e5b94e" stroke-width="2.2"/>' +
+        '<path d="M-14 -10 Q-6 -18 0 -8 Q6 -18 14 -10 L17 12 Q0 18 -17 12 Z" fill="#fadf7f" stroke="#6b5210" stroke-width="2"/>' +
+        '<path d="M-8 -2 Q0 6 8 -2" fill="none" stroke="#6b5210" stroke-width="1.8"/>'
+      );
+    }
+    return (
+      '<circle class="halo-pulse" cx="0" cy="0" r="32" fill="#ffe082"/>' +
+      '<circle cx="0" cy="0" r="26" fill="#133a3c" fill-opacity="0.45" stroke="#e5b94e" stroke-width="2.2"/>' +
+      '<path d="M-18 5 L18 -6 M-4 -1 L8 -13 M3 -2 L14 9" stroke="#5e3716" stroke-width="4.5" stroke-linecap="round"/>' +
+      '<circle cx="9" cy="-13" r="4.5" fill="#70b846"/>'
+    );
+  }
+
+  function formatTimer(sec) {
+    var m = Math.floor(sec / 60);
+    var s = sec % 60;
+    return (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
+  }
+
+  function enterStage2() {
+    state.stage = 2;
+    $("stage1Layer").style.display = "none";
+    $("stage2Layer").style.display = "block";
+    $("stage3Layer").style.display = "none";
+    $("stage4Layer").style.display = "none";
+
+    var group = $("driftingTrashGroup");
+    group.innerHTML = "";
+    state.selectedTrashId = null;
+    state.draggingId = null;
+    state.timerSec = 0;
+
+    state.trashList = TRASH_DEFS.map(function (td) {
+      var pt = pointOnRiverPath(td.progress);
+      var g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      g.setAttribute("class", "interactive-node");
+      g.setAttribute("role", "button");
+      g.setAttribute("tabindex", "0");
+      g.setAttribute("aria-label", td.label + " - seret ke Tempat Sampah");
+      g.innerHTML = buildTrashSvg(td.kind);
+      g.setAttribute("transform", "translate(" + pt.x.toFixed(1) + "," + pt.y.toFixed(1) + ")");
+      group.appendChild(g);
+
+      var item = {
+        id: td.id,
+        label: td.label,
+        progress: td.progress,
+        speed: td.speed,
+        x: pt.x,
+        y: pt.y,
+        removed: false,
+        el: g
+      };
+      bindTrashInteraction(item);
+      return item;
+    });
+
+    updateStage2Status();
+
+    setDialog(
+      "story",
+      "Tahap 2: Bersihkan Sungai",
+      "Seret (drag) setiap botol, plastik, dan ranting yang hanyut ke Tempat Sampah di tepi kiri sungai (atau ketuk sampah lalu ketuk Tempat Sampah)!",
+      "Bersihkan...",
+      false
+    );
+
+    if (state.timerHandle) clearInterval(state.timerHandle);
+    state.timerHandle = setInterval(function () {
+      state.timerSec++;
+      updateStage2Banner();
+    }, 1000);
+
+    state.lastFrameTime = performance.now();
+    function animateTrash(now) {
+      if (state.stage !== 2) return;
+      var dt = Math.min(0.05, (now - state.lastFrameTime) / 1000);
+      state.lastFrameTime = now;
+      if (state.animOn) {
+        for (var i = 0; i < state.trashList.length; i++) {
+          var it = state.trashList[i];
+          if (!it.removed && state.draggingId !== it.id) {
+            it.progress = (it.progress + it.speed * dt) % 1;
+            var p = pointOnRiverPath(it.progress);
+            it.x = p.x;
+            it.y = p.y;
+            it.el.setAttribute("transform", "translate(" + it.x.toFixed(1) + "," + it.y.toFixed(1) + ")");
+          }
+        }
+      }
+      state.rafHandle = requestAnimationFrame(animateTrash);
+    }
+    state.rafHandle = requestAnimationFrame(animateTrash);
+  }
+
+  function stopStage2Timers() {
+    if (state.timerHandle) {
+      clearInterval(state.timerHandle);
+      state.timerHandle = null;
+    }
+    if (state.rafHandle) {
+      cancelAnimationFrame(state.rafHandle);
+      state.rafHandle = null;
+    }
+  }
+
+  function clientToSvgCoords(clientX, clientY) {
+    var svg = $("mainSvg");
+    var pt = svg.createSVGPoint();
+    pt.x = clientX;
+    pt.y = clientY;
+    var ctm = svg.getScreenCTM();
+    if (ctm) return pt.matrixTransform(ctm.inverse());
+    var r = svg.getBoundingClientRect();
+    return {
+      x: ((clientX - r.left) / r.width) * 540,
+      y: ((clientY - r.top) / r.height) * 960
+    };
+  }
+
+  function bindTrashInteraction(item) {
+    item.el.addEventListener("pointerdown", function (e) {
+      if (item.removed) return;
+      e.preventDefault();
+      sfxTap();
+      state.selectedTrashId = item.id;
+      state.draggingId = item.id;
+      var p = clientToSvgCoords(e.clientX, e.clientY);
+      state.dragOffsetX = item.x - p.x;
+      state.dragOffsetY = item.y - p.y;
+      if (item.el.setPointerCapture) {
+        try { item.el.setPointerCapture(e.pointerId); } catch (err) {}
+      }
+    });
+
+    item.el.addEventListener("pointermove", function (e) {
+      if (state.draggingId !== item.id || item.removed) return;
+      var p = clientToSvgCoords(e.clientX, e.clientY);
+      item.x = p.x + state.dragOffsetX;
+      item.y = p.y + state.dragOffsetY;
+      item.el.setAttribute("transform", "translate(" + item.x.toFixed(1) + "," + item.y.toFixed(1) + ")");
+    });
+
+    function endDrag() {
+      if (state.draggingId !== item.id) return;
+      state.draggingId = null;
+      var dx = item.x - 105;
+      var dy = item.y - 445;
+      if (Math.sqrt(dx * dx + dy * dy) < 95) {
+        removeTrash(item);
+      }
+    }
+
+    item.el.addEventListener("pointerup", endDrag);
+    item.el.addEventListener("pointercancel", endDrag);
+    item.el.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        removeTrash(item);
+      }
+    });
+  }
+
+  $("riverTrashBin").addEventListener("click", function () {
+    if (!state.selectedTrashId) return;
+    var found = state.trashList.find(function (t) { return t.id === state.selectedTrashId && !t.removed; });
+    if (found) removeTrash(found);
+  });
+
+  function removeTrash(item) {
+    if (item.removed) return;
+    item.removed = true;
+    item.el.style.display = "none";
+    if (state.selectedTrashId === item.id) state.selectedTrashId = null;
+    sfxDrop();
+    updateStage2Status();
+  }
+
+  function updateStage2Banner() {
+    var total = state.trashList.length;
+    var cleaned = state.trashList.filter(function (t) { return t.removed; }).length;
+    var pct = Math.round((cleaned / total) * 100);
+    var banner = $("floatingBanner");
+    banner.classList.add("show");
+    banner.textContent = "Waktu santai: " + formatTimer(state.timerSec) + "  •  Kejernihan Air: " + pct + "%";
+  }
+
+  function updateStage2Status() {
+    var total = state.trashList.length;
+    var cleaned = state.trashList.filter(function (t) { return t.removed; }).length;
+    var ratio = cleaned / total;
+
+    $("hudStageText").textContent = "TAHAP 2: BERSIHKAN (" + cleaned + "/" + total + ")";
+    var murkyOp = Math.max(0, 0.72 * (1 - ratio));
+    $("riverMurkyOverlay").setAttribute("opacity", murkyOp.toFixed(2));
+    updateStage2Banner();
+
+    if (cleaned === total) {
+      stopStage2Timers();
+      sfxCheck();
+      setDialog(
+        "story",
+        "Tahap 2 Selesai!",
+        "Alhamdulillah, air Sungai Pawan sudah jernih kembali! Sekarang ayuh kita tanam bibit pohon ketapang di tebing yang gundul.",
+        "Lanjut Tahap 3 →",
+        true
+      );
+    }
+  }
+
+  /* =========================================================================
+     TAHAP 3: TANAM 3 BIBIT KETAPANG
+     ========================================================================= */
+  function enterStage3() {
+    stopStage2Timers();
+    state.stage = 3;
+    $("stage1Layer").style.display = "none";
+    $("stage2Layer").style.display = "none";
+    $("stage3Layer").style.display = "block";
+    $("stage4Layer").style.display = "none";
+    $("riverMurkyOverlay").setAttribute("opacity", "0");
+
+    var banner = $("floatingBanner");
+    banner.classList.add("show");
+    banner.textContent = "Akar ketapang menahan tebing agar tidak terkikis.";
+
+    updateStage3Hud();
+    setDialog(
+      "story",
+      "Tahap 3: Tanam Bibit Ketapang",
+      "Ketuk 3 titik tanah di tebing sungai untuk menanam bibit ketapang. Akar ketapang menahan tebing agar tidak terkikis.",
+      "Tanam 3 Bibit...",
+      false
+    );
+  }
+
+  function updateStage3Hud() {
+    var planted = countDone(state.soilDone);
+    $("hudStageText").textContent = "TAHAP 3: KETAPANG (" + planted + "/3)";
+  }
+
+  function plantKetapang(idx) {
+    if (state.stage !== 3 || state.soilDone[idx]) return;
+    state.soilDone[idx] = true;
+    $("soilPin" + idx).style.display = "none";
+    $("grownTree" + idx).style.display = "block";
+    sfxCheck();
+    updateStage3Hud();
+
+    var planted = countDone(state.soilDone);
+    if (planted < 3) {
+      setDialog(
+        "story",
+        "Bibit Ketapang #" + idx + " Tumbuh!",
+        "Akar ketapang menahan tebing agar tidak terkikis. Ayuh ketuk titik tanah berikutnya di tepian Sungai Pawan!",
+        "Tanam Lagi...",
+        false
+      );
+    } else {
+      setDialog(
+        "story",
+        "Tahap 3 Selesai!",
+        "Akar ketapang menahan tebing agar tidak terkikis. Tebing Sungai Pawan kini kokoh dan teduh! Ayuh lihat kembalinya ale-ale!",
+        "Lihat Ale-ale →",
+        true
+      );
+    }
+  }
+
+  [1, 2, 3].forEach(function (idx) {
+    var sp = $("soilPin" + idx);
+    sp.addEventListener("click", function () { plantKetapang(idx); });
+    sp.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        plantKetapang(idx);
+      }
+    });
+  });
+
+  /* =========================================================================
+     AKHIR: ALE-ALE PULANG (Kumpulkan hingga 10 kerang berkilau)
+     ========================================================================= */
+  var CLAM_COORDS = [
+    { x: 435, y: 105 },
+    { x: 305, y: 135 },
+    { x: 215, y: 200 },
+    { x: 305, y: 270 },
+    { x: 420, y: 350 },
+    { x: 410, y: 430 },
+    { x: 285, y: 485 },
+    { x: 145, y: 550 },
+    { x: 155, y: 635 },
+    { x: 265, y: 675 }
+  ];
+
+  function enterStage4() {
+    state.stage = 4;
+    $("stage1Layer").style.display = "none";
+    $("stage2Layer").style.display = "none";
+    $("stage3Layer").style.display = "none";
+    var layer4 = $("stage4Layer");
+    layer4.style.display = "block";
+    layer4.innerHTML = "";
+
+    state.clamsCount = 0;
+    $("hudStageText").textContent = "ALE-ALE PULANG (0/10)";
+    var banner = $("floatingBanner");
+    banner.classList.add("show");
+    banner.textContent = "Ketuk 10 kerang ale-ale yang berkilau di sepanjang Sungai Pawan!";
+
+    CLAM_COORDS.forEach(function (c, i) {
+      var g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      g.setAttribute("class", "interactive-node");
+      g.setAttribute("role", "button");
+      g.setAttribute("tabindex", "0");
+      g.setAttribute("aria-label", "Kerang ale-ale berkilau " + (i + 1));
+      g.setAttribute("transform", "translate(" + c.x + "," + c.y + ")");
+      g.innerHTML =
+        '<circle class="halo-pulse" cx="0" cy="0" r="28" fill="#ffe082"/>' +
+        '<ellipse cx="0" cy="3" rx="20" ry="15" fill="#ffd563" stroke="#5e3a10" stroke-width="2.5"/>' +
+        '<path d="M-13 5 Q0 -7 13 5 M-9 10 Q0 1 9 10" fill="none" stroke="#5e3a10" stroke-width="2" stroke-linecap="round"/>' +
+        '<polygon class="clam-sparkle" points="14,-14 16,-8 22,-6 16,-4 14,2 12,-4 6,-6 12,-8" fill="#ffffff"/>';
+
+      var picked = false;
+      function collectClam() {
+        if (picked || state.clamsCount >= state.maxClams) return;
+        picked = true;
+        g.style.display = "none";
+        state.clamsCount++;
+        sfxClam();
+        $("hudStageText").textContent = "ALE-ALE PULANG (" + state.clamsCount + "/10)";
+
+        if (state.clamsCount >= state.maxClams) {
+          sfxCheck();
+          banner.textContent = "Ale-ale pulang! Terima kasih, Penjaga Sungai.";
+          setDialog(
+            "fact",
+            "Ale-ale Pulang!",
+            "Ale-ale pulang! Terima kasih, Penjaga Sungai. Ketuk tombol Lihat Koleksi untuk membaca kartu koleksi Kerang Ale-ale dan Buah Ketapang!",
+            "Lihat Koleksi 🎉",
+            true
+          );
+          $("endingOverlay").classList.add("open");
+        }
+      }
+
+      g.addEventListener("click", collectClam);
+      g.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          collectClam();
+        }
+      });
+
+      layer4.appendChild(g);
+    });
+
+    setDialog(
+      "story",
+      "Akhir: Ale-ale Pulang",
+      "Lihatlah! Kerang-kerang kecil ale-ale berkilau muncul kembali di dasar Sungai Pawan. Ketuk 10 kerang ale-ale untuk mengumpulkannya!",
+      "Kumpulkan...",
+      false
+    );
+  }
+
+  /* =========================================================================
+     MAIN LAGI (Reset Seluruh State Variabel JS ke Tahap 1)
+     ========================================================================= */
+  function resetAll() {
+    sfxTap();
+    stopStage2Timers();
+    $("endingOverlay").classList.remove("open");
+    $("floatingBanner").classList.remove("show");
+
+    state.stage = 1;
+    state.cluesDone = { 1: false, 2: false, 3: false };
+    state.activePin = null;
+    state.pinDialogStep = 0;
+    state.soilDone = { 1: false, 2: false, 3: false };
+    state.clamsCount = 0;
+
+    [1, 2, 3].forEach(function (id) {
+      $("pinGlass" + id).style.display = "block";
+      $("pinHalo" + id).style.display = "block";
+      $("pinCheck" + id).style.display = "none";
+      $("soilPin" + id).style.display = "block";
+      $("grownTree" + id).style.display = "none";
+    });
+
+    $("riverMurkyOverlay").setAttribute("opacity", "0");
+    $("stage1Layer").style.display = "block";
+    $("stage2Layer").style.display = "none";
+    $("stage3Layer").style.display = "none";
+    $("stage4Layer").style.display = "none";
+
+    updateStage1Hud();
+    setDialog(
+      "story",
+      "Penjaga Sungai Pawan",
+      "Tabik, Penjaga Sungai! Konon, Sungai Pawan dan ale-ale berasal dari pohon ketapang raksasa yang tumbang di negeri ini. Ketuk 3 titik bersejarah yang memiliki kaca pembesar di peta sungai!",
+      "Lanjut",
+      true
+    );
+  }
+
+  $("btnPlayAgain").addEventListener("click", resetAll);
+})();
+</script>
+</body>
+</html>
