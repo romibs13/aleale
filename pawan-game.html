@@ -6,18 +6,159 @@
 <meta name="theme-color" content="#092623">
 <title>Kayuh di Sungai Pawan · Bekesah Sejarah</title>
 <style>
-:root{color-scheme:dark;--ink:#092623;--cream:#fff5dc;--gold:#e6b44c}*{box-sizing:border-box}body{margin:0;overflow:hidden;background:var(--ink);color:var(--cream);font:15px/1.6 Georgia,serif}button{font:600 14px/1.3 Verdana,sans-serif;cursor:pointer;touch-action:manipulation}button:focus-visible{outline:3px solid var(--cream);outline-offset:4px}#river{position:fixed;inset:0;touch-action:none}canvas{display:block;width:100%;height:100%}.hud{position:fixed;inset:max(14px,env(safe-area-inset-top)) 72px auto 14px;display:flex;gap:8px;align-items:center;pointer-events:none}.stat,#pause{border:1px solid #e6b44c77;background:#092623e8;border-radius:12px;padding:8px 13px}.stat small{display:block;font:9px/1.5 Verdana,sans-serif;text-transform:uppercase;letter-spacing:.15em;color:var(--gold)}.stat strong{font:20px Georgia,serif}#pause{margin-left:auto;color:var(--cream);pointer-events:auto;min-height:44px;padding:8px 12px}.veil{position:fixed;inset:0;display:grid;place-items:center;padding:70px 20px 24px;background:linear-gradient(0deg,#092623ed,#09262333)}[hidden]{display:none!important}.card{width:min(440px,100%);background:#092623ed;border:1px solid #e6b44c88;padding:clamp(22px,5vw,40px);border-radius:4px 32px 4px 32px;box-shadow:0 24px 80px #09262366}.eyebrow{font:10px Verdana,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}h1{font-weight:400;font-size:clamp(32px,7vw,48px);line-height:1.08;margin:18px 0}h1 em{color:var(--gold);font-weight:400}p{color:#e1e6d6;margin:14px 0 20px}.rule{height:1px;width:52px;background:var(--gold);margin:20px 0}.primary,.secondary{display:block;width:100%;min-height:48px;border:1px solid var(--gold);border-radius:7px;padding:13px 18px;margin-top:12px;background:var(--gold);color:var(--ink)}.secondary{background:transparent;color:var(--cream)}.hint{font:11px/1.7 Verdana,sans-serif;opacity:.8;margin-top:18px}.controls{position:fixed;bottom:max(18px,env(safe-area-inset-bottom));left:18px;right:18px;display:flex;justify-content:space-between;pointer-events:none}.controls button{pointer-events:auto;width:64px;height:52px;border:1px solid #e6b44c99;border-radius:16px;background:#092623cf;color:var(--cream);font-size:25px}#feedback{position:fixed;top:95px;left:0;right:0;text-align:center;color:var(--gold);pointer-events:none;font:18px Georgia,serif}#standalone-close{position:fixed;right:14px;top:14px;width:44px;height:44px;border:1px solid var(--gold);border-radius:50%;background:var(--ink);color:var(--cream);font-size:24px}@media(max-height:540px){.card{padding:16px 24px}.card h1{font-size:29px;margin:8px 0}.card p{margin:8px 0}.rule{margin:10px 0}.hint{margin-top:8px}.veil{padding-top:64px}.controls button{height:44px}}
+:root{color-scheme:dark;--ink:#082220;--ink-deep:#051716;--cream:#fff5dc;--gold:#e6b44c;--gold-bright:#ffd875;--crimson:#b3261e;--emerald:#184e44}
+*{box-sizing:border-box}
+body{margin:0;overflow:hidden;background:var(--ink);color:var(--cream);font:15px/1.6 Georgia,serif;-webkit-user-select:none;user-select:none}
+button{font:600 14px/1.3 system-ui,-apple-system,"Segoe UI",Verdana,sans-serif;cursor:pointer;touch-action:manipulation;transition:transform .15s,background .2s,border-color .2s,box-shadow .2s}
+button:active:not(:disabled){transform:scale(.96)}
+button:focus-visible{outline:3px solid var(--cream);outline-offset:4px}
+#river{position:fixed;inset:0;touch-action:none}
+canvas{display:block;width:100%;height:100%}
+
+/* HUD dengan aksen ukiran Dayak & pucuk rebung Melayu */
+.hud{position:fixed;inset:max(14px,env(safe-area-inset-top)) 72px auto 14px;display:flex;gap:10px;align-items:center;pointer-events:none;z-index:3}
+.stat,#pause{
+  position:relative;overflow:hidden;
+  border:1.5px solid rgba(230,180,76,.65);
+  background:linear-gradient(160deg,rgba(12,48,44,.92),rgba(6,25,23,.94));
+  border-radius:14px;padding:8px 15px;
+  box-shadow:0 8px 24px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,245,220,.15);
+  backdrop-filter:blur(6px);
+}
+.stat::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:repeating-linear-gradient(90deg,var(--gold) 0 10px,var(--crimson) 10px 20px,#17110d 20px 30px);
+}
+.stat small{display:block;font:700 9px/1.4 system-ui,Verdana,sans-serif;text-transform:uppercase;letter-spacing:.16em;color:var(--gold);margin-top:2px}
+.stat strong{font:700 21px/1.2 Georgia,serif;color:var(--cream);text-shadow:0 2px 6px rgba(0,0,0,.5)}
+#pause{
+  margin-left:auto;color:var(--cream);pointer-events:auto;min-height:46px;min-width:46px;padding:8px 14px;
+  font-size:16px;border-color:var(--gold);
+}
+#pause:hover:not(:disabled){background:rgba(24,78,68,.95);box-shadow:0 0 16px rgba(230,180,76,.35)}
+
+/* Umpan balik artefak budaya */
+#feedback{
+  position:fixed;top:max(82px,calc(env(safe-area-inset-top) + 68px));left:50%;transform:translateX(-50%);
+  text-align:center;color:var(--gold-bright);pointer-events:none;
+  font:700 16px/1.35 Georgia,serif;padding:6px 18px;border-radius:999px;
+  background:rgba(8,34,32,.85);border:1px solid rgba(230,180,76,.55);
+  box-shadow:0 8px 24px rgba(0,0,0,.45);
+  opacity:0;transition:opacity .25s,transform .25s;z-index:3;white-space:nowrap;
+}
+#feedback.show{opacity:1;transform:translateX(-50%) translateY(4px)}
+
+/* Panel Overlay Budaya Dayak & Melayu */
+.veil{
+  position:fixed;inset:0;display:grid;place-items:center;padding:68px 18px 24px;
+  background:radial-gradient(circle at 50% 40%,rgba(14,56,50,.55),rgba(5,22,20,.92));
+  backdrop-filter:blur(4px);z-index:4;
+}
+[hidden]{display:none!important}
+.card{
+  position:relative;width:min(470px,100%);
+  background:linear-gradient(165deg,rgba(11,44,40,.96),rgba(6,24,22,.98));
+  border:2px solid var(--gold);
+  padding:clamp(22px,4.5vw,36px);
+  border-radius:8px 34px 8px 34px;
+  box-shadow:0 28px 90px rgba(0,0,0,.72),inset 0 0 0 4px rgba(230,180,76,.14);
+  overflow:hidden;
+}
+.orn-bar{
+  height:12px;width:100%;margin:0 0 16px;border-radius:3px;
+  background:
+    repeating-linear-gradient(90deg,#e6b44c 0 12px,#b3261e 12px 24px,#17110d 24px 36px,#1d5c4f 36px 48px);
+  border:1px solid rgba(230,180,76,.6);
+}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font:700 10px system-ui,Verdana,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.badge{
+  font:600 10px/1.2 system-ui,sans-serif;padding:4px 9px;border-radius:999px;
+  border:1px solid rgba(230,180,76,.45);background:rgba(255,245,220,.07);color:#f3e5c0;
+}
+.badge.dayak{border-color:#d9534f88;background:rgba(179,38,30,.22)}
+.badge.melayu{border-color:#e6b44c88;background:rgba(230,180,76,.18)}
+h1{font-weight:400;font-size:clamp(30px,6.5vw,44px);line-height:1.08;margin:14px 0 12px;text-shadow:0 3px 12px rgba(0,0,0,.5)}
+h1 em{color:var(--gold);font-style:italic;font-weight:400}
+p{color:#e5ece0;margin:10px 0 16px;font-size:14.5px;line-height:1.6}
+.rule{
+  height:2px;width:72px;
+  background:linear-gradient(90deg,var(--gold),var(--crimson),transparent);
+  margin:14px 0;
+}
+.primary,.secondary{
+  display:block;width:100%;min-height:48px;border:1.5px solid var(--gold);
+  border-radius:10px;padding:12px 18px;margin-top:10px;
+  font-weight:700;font-size:15px;letter-spacing:.02em;
+}
+.primary{
+  background:linear-gradient(180deg,#f3c762,#dca234);
+  color:#15120a;box-shadow:0 6px 20px rgba(230,180,76,.3);
+}
+.primary:hover:not(:disabled){background:linear-gradient(180deg,#ffd575,#e6ae3e);box-shadow:0 8px 26px rgba(230,180,76,.45)}
+.primary:disabled{opacity:.6;cursor:wait}
+.secondary{background:rgba(255,245,220,.05);color:var(--cream)}
+.secondary:hover{background:rgba(255,245,220,.12)}
+.hint{font:11.5px/1.65 system-ui,Verdana,sans-serif;color:#c9d6c8;margin-top:14px;padding-top:12px;border-top:1px solid rgba(230,180,76,.22)}
+
+/* Tombol kontrol seluler / layar sentuh */
+.controls{position:fixed;bottom:max(20px,env(safe-area-inset-bottom));left:20px;right:20px;display:flex;justify-content:space-between;pointer-events:none;z-index:3}
+.controls button{
+  pointer-events:auto;width:68px;height:56px;
+  border:1.5px solid var(--gold);border-radius:18px;
+  background:linear-gradient(160deg,rgba(12,48,44,.88),rgba(6,24,22,.92));
+  color:var(--cream);font-size:26px;
+  box-shadow:0 8px 24px rgba(0,0,0,.5);backdrop-filter:blur(4px);
+}
+.controls button:hover{background:rgba(24,78,68,.95)}
+#standalone-close{
+  position:fixed;right:14px;top:14px;width:44px;height:44px;z-index:5;
+  border:1.5px solid var(--gold);border-radius:50%;
+  background:var(--ink);color:var(--cream);font-size:24px;
+}
+@media(max-height:560px){
+  .card{padding:16px 22px}
+  .card h1{font-size:26px;margin:8px 0}
+  .card p{margin:6px 0;font-size:13.5px}
+  .orn-bar{margin-bottom:10px;height:8px}
+  .rule{margin:8px 0}
+  .hint{margin-top:8px;padding-top:8px;font-size:10.5px}
+  .veil{padding-top:58px}
+  .controls button{height:46px;width:58px}
+}
 </style>
 </head>
 <body>
 <div id="river" aria-label="Lintasan sungai tiga jalur"></div>
-<div class="hud"><div class="stat"><small>Jarak</small><strong id="distance">0</strong> m</div><div class="stat"><small>Artefak</small><strong id="items">0</strong></div><button id="pause" aria-label="Jeda permainan" disabled>Ⅱ</button></div>
+<div class="hud">
+  <div class="stat"><small>Jarak Kayuh</small><strong id="distance">0</strong> m</div>
+  <div class="stat"><small>Artefak Budaya</small><strong id="items">0</strong></div>
+  <button id="pause" aria-label="Jeda permainan" disabled>Ⅱ</button>
+</div>
 <div id="feedback" role="status" aria-live="polite"></div>
-<div class="controls" hidden><button id="left" aria-label="Pindah jalur kiri">←</button><button id="right" aria-label="Pindah jalur kanan">→</button></div>
-<div class="veil" id="overlay"><section class="card" aria-labelledby="title"><span class="eyebrow">Bekesah Sejarah / Ketapang</span><h1 id="title">Kayuh di<br><em>Sungai Pawan</em></h1><div class="rule"></div><p id="description">Susuri tepian hutan dan rumah panggung. Kumpulkan artefak emas, hindari kayu hanyut, batu, dan eceng gondok.</p><button class="primary" id="start" disabled>Menyiapkan sungai…</button><button class="secondary" id="back">Kembali ke Cerita</button><div class="hint" id="instructions">← → atau A / D untuk berpindah jalur.<br>Di ponsel: usap, ketuk sisi layar, atau gunakan tombol panah. Arus makin cepat seiring jarak.<br>Ilustrasi permainan, bukan peta Sungai Pawan.</div></section></div>
+<div class="controls" hidden>
+  <button id="left" aria-label="Pindah jalur kiri">←</button>
+  <button id="right" aria-label="Pindah jalur kanan">→</button>
+</div>
+<div class="veil" id="overlay">
+  <section class="card" aria-labelledby="title">
+    <div class="orn-bar" aria-hidden="true"></div>
+    <span class="eyebrow">Bekesah Sejarah · Ketapang</span>
+    <div class="badges" aria-hidden="true">
+      <span class="badge dayak">❖ Ukiran Tingang &amp; Aso Dayak</span>
+      <span class="badge melayu">❖ Pucuk Rebung &amp; Lanchang Melayu</span>
+    </div>
+    <h1 id="title">Kayuh di<br><em>Sungai Pawan</em></h1>
+    <div class="rule"></div>
+    <p id="description">Susuri Sungai Pawan dengan perahu adat berhias burung Enggang Dayak dan motif Pucuk Rebung Melayu. Lewati rumah betang serta kampung panggung Melayu, kumpulkan artefak pusaka (Tajau, Talawang, Mahkota Matan, &amp; Ale-Ale Emas), dan hindari kayu hanyut, batu sungai, serta eceng gondok.</p>
+    <button class="primary" id="start" disabled>Menyiapkan sungai…</button>
+    <button class="secondary" id="back">Kembali ke Cerita</button>
+    <div class="hint" id="instructions">← → atau A / D untuk berpindah jalur.<br>Di ponsel: usap layar, ketuk sisi kiri/kanan, atau tekan tombol panah.<br>Ilustrasi permainan budaya Dayak &amp; Melayu Ketapang.</div>
+  </section>
+</div>
 <button id="standalone-close" aria-label="Tutup game">×</button>
 <script type="module">
-// Game ini mandiri: semua model prosedural; hanya Three.js dimuat dari CDN.
+// Game mandiri: seluruh geometri, tekstur ukiran Dayak & songket Melayu, serta lanskap Sungai Pawan dibuat secara prosedural.
 const $ = id => document.getElementById(id);
 const embedded = window.parent !== window;
 $('standalone-close').hidden = embedded;
@@ -26,11 +167,11 @@ function returnToStory() {
   else location.href = './';
 }
 $('back').onclick = $('standalone-close').onclick = returnToStory;
-// Hook integrasi: tambahkan logika database/unlock Anda di sini atau dengarkan
-// event window "pawan:gameover" dan "pawan:artifact" di aplikasi induk.
+
 function onGameOver(finalScore, collectedItems) { /* Callback skor akhir (meter) dan jumlah artefak. */ }
 function onArtifactCollected(totalItems) { /* Callback setiap artefak terkumpul. */ }
 function notify(type, detail) { if (embedded) parent.postMessage({type, detail}, location.origin); }
+
 let THREE;
 try {
   THREE = await import('https://unpkg.com/three@0.160.0/build/three.module.js');
@@ -41,225 +182,978 @@ try {
   $('start').textContent = 'Coba muat lagi'; $('start').disabled = false;
   $('start').onclick = () => location.reload();
 }
+
 function init() {
-// 1. Setup Scene — resolusi dibatasi demi kinerja perangkat mobile.
-const scene = new THREE.Scene(); scene.background = new THREE.Color('#9acdd5');
-scene.fog = new THREE.Fog('#d3dfbf', 40, 105);
-const renderer = new THREE.WebGLRenderer({antialias:devicePixelRatio < 2, powerPreference:'low-power'});
-renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
-renderer.outputColorSpace = THREE.SRGBColorSpace;
-$('river').append(renderer.domElement);
-const camera = new THREE.PerspectiveCamera(58, 1, .1, 140);
-scene.add(new THREE.HemisphereLight(0xfff2d4,0x3a5743,2.2));
-const sun = new THREE.DirectionalLight(0xffd391,2.3);sun.position.set(-12,22,10);scene.add(sun);
-const materials = new Map(), geometries = [];
-function material(color){if(!materials.has(color)) materials.set(color,new THREE.MeshLambertMaterial({color,flatShading:true}));return materials.get(color);}
-const box = new THREE.BoxGeometry(1,1,1), sphere = new THREE.IcosahedronGeometry(1,0), cylinder = new THREE.CylinderGeometry(1,1,1,7), cone = new THREE.ConeGeometry(1,1,6);
-geometries.push(box,sphere,cylinder,cone);
-function mesh(parent,geo,color,x,y,z,sx=1,sy=1,sz=1){const m=new THREE.Mesh(geo,material(color));m.position.set(x,y,z);m.scale.set(sx,sy,sz);parent.add(m);return m;}
-// Langit prosedural: gradasi atmosfer, matahari hangat, awan low-poly.
-const skyGeo = new THREE.SphereGeometry(115,24,12);geometries.push(skyGeo);
-const skyMat = new THREE.ShaderMaterial({
-  side:THREE.BackSide,depthWrite:false,
-  vertexShader:`varying vec3 vSky;void main(){vSky=position;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
-  fragmentShader:`varying vec3 vSky;void main(){float h=smoothstep(-0.04,0.55,normalize(vSky).y);vec3 color=mix(vec3(0.87,0.88,0.72),vec3(0.34,0.66,0.79),h);gl_FragColor=vec4(color,1.0);}`
-});
-scene.add(new THREE.Mesh(skyGeo,skyMat));
-const sunMat=new THREE.MeshBasicMaterial({color:'#ffe4a0',fog:false});
-const sunDisc=new THREE.Mesh(sphere,sunMat);sunDisc.position.set(-15,12,-85);sunDisc.scale.setScalar(3.4);scene.add(sunDisc);
-const clouds=[];
-for(let i=0;i<7;i++){
-  const cloud=new THREE.Group();cloud.position.set(-43+i*14,9+(i%3)*2,-65-(i%2)*13);
-  for(let j=0;j<4;j++)mesh(cloud,sphere,'#fff1d5',(j-1.5)*2.5,Math.sin(j*2)*.4,0,3.2,1.1+(j%2)*.5,1.5);
-  scene.add(cloud);clouds.push(cloud);
-}
-// 2. Pembuatan Perahu — lambung terbuka, bangku, pendayung dan dayung kayu.
-const boat = new THREE.Group(); scene.add(boat); boat.position.z=5;
-const hull = new THREE.Shape(); hull.moveTo(0,-1.9);hull.lineTo(.62,-.95);hull.lineTo(.66,1.1);hull.lineTo(0,1.8);hull.lineTo(-.66,1.1);hull.lineTo(-.62,-.95);hull.closePath();
-const hullGeo = new THREE.ExtrudeGeometry(hull,{depth:.22,bevelEnabled:false});geometries.push(hullGeo);
-const bottom = new THREE.Mesh(hullGeo,material('#704026'));bottom.rotation.x=-Math.PI/2;bottom.position.y=.1;boat.add(bottom);
-for(const side of [-1,1]){mesh(boat,box,'#aa6b35',side*.57,.48,0,.12,.5,2.45);const tip=mesh(boat,box,'#c69350',side*.31,.45,-1.35,.1,.4,1.05);tip.rotation.y=side*.6;}
-for(const z of [-.8,.65])mesh(boat,box,'#d3a364',0,.56,z,1.08,.12,.32);
-mesh(boat,box,'#eed9a5',0,.99,.4,.55,.65,.36);
-mesh(boat,sphere,'#bd8053',0,1.55,.34,.24,.28,.23);
-mesh(boat,cone,'#e3b968',0,1.83,.34,.48,.23,.48);
-mesh(boat,box,'#384f49',0,.68,.03,.5,.2,.6);
-const paddle=new THREE.Group();paddle.position.set(.42,1.18,.3);boat.add(paddle);
-mesh(paddle,box,'#87522e',.38,-.48,0,.065,1.7,.065).rotation.z=.45;
-mesh(paddle,box,'#d6a25e',.72,-1.1,0,.26,.55,.09).rotation.z=.45;
-mesh(boat,box,'#bd8053',.39,1.16,.36,.5,.14,.14).rotation.z=-.35;
-// 3. Generator Lingkungan Sungai — segmen tepi didaur ulang, tanpa aset eksternal.
-const waterGeo=new THREE.PlaneGeometry(19,150,14,65);waterGeo.rotateX(-Math.PI/2);geometries.push(waterGeo);
-// Tekstur lokal: kilauan kecil dan riak arus yang berulang.
-const waterCanvas=document.createElement('canvas');waterCanvas.width=waterCanvas.height=256;
-const waterCtx=waterCanvas.getContext('2d');
-waterCtx.fillStyle='#687e56';waterCtx.fillRect(0,0,256,256);
-for(let i=0;i<65;i++){
-  const x=Math.random()*256,y=Math.random()*256,length=7+Math.random()*26;
-  waterCtx.strokeStyle=i%3===0?'#a5b88a':'#7f986b';waterCtx.lineWidth=i%3===0?1.5:1;
-  // Ulangi tepi agar sambungan tekstur tetap halus.
-  for(const offset of [-256,0,256]){waterCtx.beginPath();waterCtx.moveTo(x+offset,y);waterCtx.quadraticCurveTo(x+offset+length*.5,y+3,x+offset+length,y);waterCtx.stroke();}
-}
-const waterTexture=new THREE.CanvasTexture(waterCanvas);waterTexture.wrapS=waterTexture.wrapT=THREE.RepeatWrapping;
-waterTexture.repeat.set(3,22);waterTexture.colorSpace=THREE.SRGBColorSpace;
-const waterMat=new THREE.MeshPhongMaterial({map:waterTexture,color:'#d5d6a3',specular:'#d2dabb',shininess:65});
-const water=new THREE.Mesh(waterGeo,waterMat);water.position.z=-48;scene.add(water);
-// Geometri riak bersama untuk jejak air yang melebar di belakang sampan.
-const wakeGeo=new THREE.TorusGeometry(1,.018,3,20,Math.PI*.9);wakeGeo.rotateX(-Math.PI/2);geometries.push(wakeGeo);
-const wakes=[];
-for(let i=0;i<12;i++){
-  const mat=new THREE.MeshBasicMaterial({color:'#e1e5bc',transparent:true,opacity:0,depthWrite:false});
-  const wake=new THREE.Mesh(wakeGeo,mat);wake.userData.age=i/12;wake.position.set(0,.14,7);scene.add(wake);wakes.push(wake);
-}
-const waterBase=Float32Array.from(waterGeo.attributes.position.array);
-const banks=[];
-for(let i=0;i<12;i++){
-  const segment=new THREE.Group();segment.position.z=15-i*10;scene.add(segment);banks.push(segment);
-  for(const side of [-1,1]){
-    mesh(segment,box,'#718547',side*15,-.24,0,11,.5,10.1);
-    for(let j=0;j<3;j++){
-      const x=side*(10.5+Math.random()*5),z=(j-1)*3.3;
-      mesh(segment,cylinder,'#745336',x,1.6,z,.18,3.3,.18);
-      mesh(segment,sphere,j%2?'#426e3c':'#315e3e',x,4,z,1.8,2.2,1.7);
-      if(j===0){ // Rumpun nipah rendah di tepi air.
-        for(let k=0;k<5;k++){const leaf=mesh(segment,sphere,'#678d43',side*9.6,.7,z,.18,.12,1.3);leaf.rotation.y=k*Math.PI/2.5;leaf.rotation.z=.25;}
+  // 1. Setup Scene & Pencahayaan Tropis Sore Hari di Sungai Pawan
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color('#7ec4cf');
+  scene.fog = new THREE.FogExp2('#c8d9be', 0.0115);
+
+  const renderer = new THREE.WebGLRenderer({antialias: devicePixelRatio < 2, powerPreference: 'high-performance'});
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 1.75));
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.08;
+  $('river').append(renderer.domElement);
+
+  const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 160);
+
+  const hemiLight = new THREE.HemisphereLight(0xfff4d6, 0x2d4c3b, 1.85);
+  scene.add(hemiLight);
+  const sun = new THREE.DirectionalLight(0xffdf9e, 2.5);
+  sun.position.set(-18, 28, 14);
+  scene.add(sun);
+  const fillLight = new THREE.DirectionalLight(0x90d5d8, 0.75);
+  fillLight.position.set(16, 12, 18);
+  scene.add(fillLight);
+
+  const geometries = [], textures = [], materials = new Map();
+  const trackGeo = g => { geometries.push(g); return g; };
+  const trackTex = t => { textures.push(t); return t; };
+
+  function makeCanvasTex(w, h, drawFn, rx = 1, ry = 1, isColor = true) {
+    const c = document.createElement('canvas');
+    c.width = w; c.height = h;
+    drawFn(c.getContext('2d'), w, h);
+    const t = new THREE.CanvasTexture(c);
+    t.wrapS = t.wrapT = THREE.RepeatWrapping;
+    t.repeat.set(rx, ry);
+    if (isColor) t.colorSpace = THREE.SRGBColorSpace;
+    return trackTex(t);
+  }
+
+  // Tekstur Prosedural: Kayu Ulin, Ukiran Aso Dayak, Pucuk Rebung Melayu, dan Air Sungai Pawan
+  const woodTex = makeCanvasTex(256, 256, (ctx, w, h) => {
+    ctx.fillStyle = '#6c4327'; ctx.fillRect(0, 0, w, h);
+    for (let i = 0; i < 64; i++) {
+      ctx.fillStyle = i % 2 ? 'rgba(42,22,10,0.22)' : 'rgba(170,118,72,0.16)';
+      ctx.fillRect(0, i * 4, w, 2);
+    }
+    ctx.strokeStyle = 'rgba(30,15,6,0.3)'; ctx.lineWidth = 1.5;
+    for (let i = 0; i < 28; i++) {
+      const y = Math.random() * h;
+      ctx.beginPath(); ctx.moveTo(0, y);
+      for (let x = 0; x <= w; x += 16) ctx.lineTo(x, y + Math.sin(x * 0.05 + i) * 3);
+      ctx.stroke();
+    }
+  }, 2, 2);
+
+  // Sabuk Ornamen Perahu: Perpaduan Motif Aso/Pakis Dayak & Pucuk Rebung Melayu
+  const boatMotifTex = makeCanvasTex(512, 128, (ctx, w, h) => {
+    ctx.fillStyle = '#1b130f'; ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = '#e6b44c'; ctx.fillRect(0, 0, w, 8); ctx.fillRect(0, h - 8, w, 8);
+    ctx.fillStyle = '#b3261e'; ctx.fillRect(0, 8, w, 8); ctx.fillRect(0, h - 16, w, 8);
+    for (let i = 0; i < 8; i++) {
+      const cx = i * 64 + 32, cy = h / 2;
+      if (i % 2 === 0) {
+        // Motif Pucuk Rebung Melayu Emas & Zamrud
+        ctx.fillStyle = '#1b5e4b';
+        ctx.beginPath(); ctx.moveTo(cx - 24, h - 18); ctx.lineTo(cx, 18); ctx.lineTo(cx + 24, h - 18); ctx.closePath(); ctx.fill();
+        ctx.strokeStyle = '#e6b44c'; ctx.lineWidth = 3;
+        ctx.beginPath(); ctx.moveTo(cx - 22, h - 18); ctx.lineTo(cx, 20); ctx.lineTo(cx + 22, h - 18); ctx.closePath(); ctx.stroke();
+        ctx.fillStyle = '#e6b44c';
+        ctx.beginPath(); ctx.moveTo(cx, 32); ctx.lineTo(cx + 10, cy + 4); ctx.lineTo(cx, h - 24); ctx.lineTo(cx - 10, cy + 4); ctx.closePath(); ctx.fill();
+      } else {
+        // Motif Ukiran Pakis / Aso Dayak (Merah, Gading, Emas)
+        ctx.strokeStyle = '#fff3d1'; ctx.lineWidth = 4; ctx.lineCap = 'round';
+        for (const s of [-1, 1]) {
+          ctx.beginPath();
+          for (let t = 0; t <= 1; t += 0.05) {
+            const a = t * Math.PI * 2.2, r = (1 - t * 0.75) * 20;
+            const px = cx + s * Math.cos(a) * r, py = cy + Math.sin(a) * r;
+            t === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+          }
+          ctx.stroke();
+        }
+        ctx.fillStyle = '#b3261e';
+        ctx.beginPath(); ctx.arc(cx, cy, 7, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#e6b44c';
+        ctx.beginPath(); ctx.arc(cx, cy, 3.5, 0, Math.PI * 2); ctx.fill();
       }
     }
-    if(i%3===0){
-      const x=side*11;
-      for(const dx of [-.85,.85])for(const dz of [-.9,.9])mesh(segment,box,'#62472e',x+dx,.8,dz,.12,1.8,.12);
-      mesh(segment,box,'#b18a55',x,1.9,0,2,1.3,2.3);
-      const roof=mesh(segment,cone,'#75432e',x,3.05,0,1.8,1.1,1.9);roof.rotation.y=Math.PI/4;
-      mesh(segment,box,'#304d40',x-side*1.02,1.9,0,.03,.75,.55);
-      mesh(segment,box,'#a47b4d',side*9.2,.45,0,2.2,.16,1.3);
+  }, 2, 1);
+
+  // Tekstur Dinding & Ornamen Rumah Betang Dayak
+  const dayakWallTex = makeCanvasTex(256, 128, (ctx, w, h) => {
+    ctx.fillStyle = '#382216'; ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = '#e6b44c'; ctx.fillRect(0, 0, w, 6); ctx.fillRect(0, h - 6, w, 6);
+    for (let i = 0; i < 4; i++) {
+      const cx = i * 64 + 32, cy = h / 2;
+      ctx.fillStyle = '#b3261e';
+      ctx.beginPath(); ctx.moveTo(cx, 14); ctx.lineTo(cx + 24, cy); ctx.lineTo(cx, h - 14); ctx.lineTo(cx - 24, cy); ctx.closePath(); ctx.fill();
+      ctx.strokeStyle = '#f5e8c7'; ctx.lineWidth = 3; ctx.stroke();
+      ctx.fillStyle = '#17110d';
+      ctx.beginPath(); ctx.arc(cx, cy, 8, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#e6b44c';
+      ctx.beginPath(); ctx.arc(cx, cy, 4, 0, Math.PI * 2); ctx.fill();
     }
+  }, 2, 1);
+
+  // Tekstur Dinding Rumah Melayu (Hijau Zamrud & Lis Pucuk Rebung Emas)
+  const melayuWallTex = makeCanvasTex(256, 128, (ctx, w, h) => {
+    ctx.fillStyle = '#1d5446'; ctx.fillRect(0, 0, w, h);
+    for (let x = 0; x < w; x += 16) {
+      ctx.fillStyle = 'rgba(0,0,0,0.14)'; ctx.fillRect(x, 0, 2, h);
+    }
+    ctx.fillStyle = '#e6b44c'; ctx.fillRect(0, 0, w, 8); ctx.fillRect(0, h - 18, w, 18);
+    ctx.fillStyle = '#163f35';
+    for (let x = 8; x < w; x += 24) {
+      ctx.beginPath(); ctx.moveTo(x, h - 2); ctx.lineTo(x + 10, h - 16); ctx.lineTo(x + 20, h - 2); ctx.closePath(); ctx.fill();
+    }
+  }, 2, 1);
+
+  function stdMat(color, roughness = 0.72, metalness = 0.05, map = null) {
+    const key = `${color}_${roughness}_${metalness}_${map ? map.uuid : ''}`;
+    if (!materials.has(key)) {
+      materials.set(key, new THREE.MeshStandardMaterial({color, roughness, metalness, map}));
+    }
+    return materials.get(key);
   }
-}
-// Pool objek tetap: setiap baris selalu menyisakan jalur aman.
-const lanes=[-3.3,0,3.3], rows=[], particles=[];
-function makeObject(kind){
-  const g=new THREE.Group();g.userData.kind=kind;
-  if(kind==='coin'){
-    const c=mesh(g,cylinder,'#e6b44c',0,.9,0,.43,.13,.43);c.rotation.x=Math.PI/2;
-    mesh(g,box,'#fff1ad',0,.9,.09,.13,.47,.04);
-  }else if(kind==='log'){
-    const m=mesh(g,cylinder,'#825335',0,.25,0,.4,2.05,.4);m.rotation.z=Math.PI/2;
-    const ring=mesh(g,cylinder,'#c99b63',1.04,.25,0,.3,.025,.3);ring.rotation.z=Math.PI/2;
-  }else if(kind==='rock') mesh(g,sphere,'#818578',0,.25,0,.85,.75,.8);
-  else for(let i=0;i<6;i++){mesh(g,sphere,'#4c7942',Math.sin(i*2)*.65,.22,Math.cos(i*2)*.5,.45,.2,.4);mesh(g,cone,'#b095c5',Math.sin(i*2)*.65,.52,Math.cos(i*2)*.5,.09,.35,.09);}
-  return g;
-}
-for(let i=0;i<9;i++){
-  const g=new THREE.Group();scene.add(g);
-  const objects=['coin','coin','log','rock','plant'].map(kind=>{const o=makeObject(kind);g.add(o);return o;});
-  rows.push({g,objects});
-}
-function placeRow(row,z){
-  row.g.position.z=z;
-  row.objects.forEach(o=>o.visible=false);
-  const safe=Math.floor(Math.random()*3),blocked=(safe+1+Math.floor(Math.random()*2))%3;
-  const hazard=row.objects[2+Math.floor(Math.random()*3)];hazard.visible=true;hazard.position.set(lanes[blocked],0,0);
-  row.objects[0].visible=true;row.objects[0].position.set(lanes[safe],0,0);
-  if(Math.random()>.5){row.objects[1].visible=true;row.objects[1].position.set(lanes[safe],0,-2.5);}
-}
-for(let i=0;i<18;i++){const p=mesh(scene,sphere,'#ffe49a',0,-10,0,.07,.07,.07);p.visible=false;particles.push(p);}
-// 4. Kontrol — satu gerakan = satu jalur, juga pada layar portrait.
-let state='ready',lane=1,distance=0,items=0,speed=9,last=0,time=0,raf=0,audio;
-function move(dir){if(state==='running')lane=THREE.MathUtils.clamp(lane+dir,0,2);}
-$('left').onclick=()=>move(-1);$('right').onclick=()=>move(1);
-let pointer=null;
-$('river').addEventListener('pointerdown',e=>{if(!e.isPrimary)return;pointer={id:e.pointerId,x:e.clientX,y:e.clientY};$('river').setPointerCapture(e.pointerId);});
-$('river').addEventListener('pointerup',e=>{if(!pointer||e.pointerId!==pointer.id)return;const dx=e.clientX-pointer.x,dy=e.clientY-pointer.y;pointer=null;if(Math.abs(dx)>25&&Math.abs(dx)>Math.abs(dy))move(Math.sign(dx));else if(Math.hypot(dx,dy)<20)move(e.clientX<innerWidth/2?-1:1);});
-$('river').addEventListener('pointercancel',()=>pointer=null);
-addEventListener('keydown',e=>{
-  if(['ArrowLeft','ArrowRight','KeyA','KeyD','Escape','KeyP','Space'].includes(e.code))e.preventDefault();
-  if(e.code==='Escape'){if(state==='running')pause();else returnToStory();}
-  if(e.repeat)return;
-  if(e.code==='ArrowLeft'||e.code==='KeyA')move(-1);
-  if(e.code==='ArrowRight'||e.code==='KeyD')move(1);
-  if(e.code==='KeyP'||(e.code==='Space'&&e.target.tagName!=='BUTTON')){if(state==='running')pause();else if(state==='paused')resume();}
-});
-function panel(title,description,label,action){$('overlay').hidden=false;$('title').innerHTML=title;$('description').textContent=description;$('start').textContent=label;$('start').onclick=action;$('start').focus();}
-function pause(){if(state!=='running')return;state='paused';$('pause').disabled=true;$('pause').setAttribute('aria-label','Permainan dijeda');$('feedback').textContent='';panel('Sejenak<br><em>di tepian</em>','Perjalananmu menunggu. Lanjutkan saat siap mendayung kembali.','Lanjut Mendayung',resume);}
-function resume(){state='running';last=0;$('overlay').hidden=true;$('pause').disabled=false;$('pause').setAttribute('aria-label','Jeda permainan');renderer.domElement.focus();}
-$('pause').onclick=pause;
-document.addEventListener('visibilitychange',()=>{if(document.hidden)pause();last=0;});
-window.addEventListener('blur',pause);
-function start(){
-  distance=items=0;speed=9;lane=1;boat.position.x=0;time=0;
-  rows.forEach((r,i)=>placeRow(r,-16-i*12));particles.forEach(p=>p.visible=false);
-  wakes.forEach((w,i)=>{w.userData.age=i/12;w.position.set(0,.14,6.5);w.material.opacity=0;});
-  $('distance').textContent='0';$('items').textContent='0';$('feedback').textContent='';
-  document.querySelector('.controls').hidden=false;
-  try{audio ||= new (window.AudioContext||window.webkitAudioContext)();audio.resume().catch(()=>{});}catch{}
-  resume();
-}
-function sound(){if(!audio||audio.state!=='running')return;const osc=audio.createOscillator(),gain=audio.createGain();osc.connect(gain);gain.connect(audio.destination);osc.frequency.setValueAtTime(660,audio.currentTime);osc.frequency.exponentialRampToValueAtTime(1050,audio.currentTime+.13);gain.gain.setValueAtTime(.045,audio.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audio.currentTime+.2);osc.start();osc.stop(audio.currentTime+.2);}
-function finish(){
-  state='over';$('pause').disabled=true;document.querySelector('.controls').hidden=true;
-  const score=Math.floor(distance);
-  panel('Perjalanan<br><em>yang berkesah</em>',`Sampan menyentuh rintangan. Kamu menempuh ${score} meter dan mengumpulkan ${items} artefak. Ayo jelajahi sungai sekali lagi!`,'Main Lagi',start);
-  try{onGameOver(score,items);}catch(e){console.warn('Callback game over gagal.');}
-  notify('pawan:gameover',{finalScore:score,collectedItems:items});
-}
-// 5. Deteksi Tabrakan — rentang z tersapu agar objek tidak lolos pada frame lambat.
-function updateRows(dt){
-  for(const row of rows){
-    const oldZ=row.g.position.z;row.g.position.z+=speed*dt;
-    for(const o of row.objects){
-      if(!o.visible)continue;
-      if(o.userData.kind==='coin')o.rotation.y+=dt*2;
-      const z=row.g.position.z+o.position.z,prev=oldZ+o.position.z;
-      const isCoin=o.userData.kind==='coin';
-      if(prev<6.25&&z>3.75&&Math.abs(boat.position.x-o.position.x)<(isCoin?.85:1.12)){
-        if(!isCoin){finish();return;}
-        o.visible=false;items++;$('items').textContent=items;sound();
-        for(const p of particles){p.visible=true;p.position.set(boat.position.x,.9,5);p.userData.life=.55;p.userData.v=new THREE.Vector3((Math.random()-.5)*4,2+Math.random()*2,(Math.random()-.5)*4);}
-        try{onArtifactCollected(items);}catch(e){console.warn('Callback artefak gagal.');}
-        notify('pawan:artifact',{totalItems:items});
+
+  const boxGeo = trackGeo(new THREE.BoxGeometry(1, 1, 1));
+  const sphGeo = trackGeo(new THREE.SphereGeometry(1, 16, 12));
+  const icoGeo = trackGeo(new THREE.IcosahedronGeometry(1, 1));
+  const cylGeo = trackGeo(new THREE.CylinderGeometry(1, 1, 1, 14));
+  const coneGeo = trackGeo(new THREE.ConeGeometry(1, 1, 12));
+  const pyrGeo = trackGeo(new THREE.ConeGeometry(1, 1, 4));
+
+  function addPart(parent, geo, matOrColor, x, y, z, sx = 1, sy = 1, sz = 1) {
+    const mat = typeof matOrColor === 'object' && matOrColor.isMaterial ? matOrColor : stdMat(matOrColor);
+    const m = new THREE.Mesh(geo, mat);
+    m.position.set(x, y, z);
+    m.scale.set(sx, sy, sz);
+    parent.add(m);
+    return m;
+  }
+
+  // Langit Sore Sungai Pawan: Gradasi hangat keemasan, matahari bersinar, awan lembut, dan siluet Gunung Palung + Burung Enggang terbang
+  const skyGeo = trackGeo(new THREE.SphereGeometry(135, 28, 16));
+  const skyMat = new THREE.ShaderMaterial({
+    side: THREE.BackSide, depthWrite: false,
+    vertexShader: `varying vec3 vSky; void main(){ vSky = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+    fragmentShader: `varying vec3 vSky; void main(){
+      vec3 d = normalize(vSky);
+      float h = smoothstep(-0.05, 0.58, d.y);
+      vec3 horizon = vec3(0.95, 0.85, 0.65);
+      vec3 mid = vec3(0.52, 0.78, 0.82);
+      vec3 zenith = vec3(0.18, 0.48, 0.64);
+      vec3 col = mix(horizon, mid, smoothstep(0.0, 0.28, h));
+      col = mix(col, zenith, smoothstep(0.28, 1.0, h));
+      gl_FragColor = vec4(col, 1.0);
+    }`
+  });
+  scene.add(new THREE.Mesh(skyGeo, skyMat));
+
+  // Matahari sore & halo hangat
+  const sunMat = new THREE.MeshBasicMaterial({color: '#ffebb3', fog: false});
+  const haloMat = new THREE.MeshBasicMaterial({color: '#ffd27d', transparent: true, opacity: 0.28, fog: false, depthWrite: false});
+  const sunDisc = new THREE.Mesh(sphGeo, sunMat);
+  sunDisc.position.set(-18, 15, -98); sunDisc.scale.setScalar(4.2); scene.add(sunDisc);
+  const sunHalo = new THREE.Mesh(sphGeo, haloMat);
+  sunHalo.position.set(-18, 15, -97); sunHalo.scale.setScalar(8.5); scene.add(sunHalo);
+
+  // Siluet Pegunungan Gunung Palung di kejauhan
+  const mountainGrp = new THREE.Group();
+  scene.add(mountainGrp);
+  [[-38, -105, 28, 16, '#4d756b'], [-12, -110, 34, 21, '#3f665e'], [18, -108, 30, 18, '#466e64'], [42, -104, 26, 14, '#547c71']].forEach(([mx, mz, mr, mh, mc]) => {
+    const pk = addPart(mountainGrp, coneGeo, new THREE.MeshBasicMaterial({color: mc, fog: true}), mx, mh * 0.42, mz, mr, mh, mr * 0.65);
+    pk.rotation.y = 0.4;
+  });
+
+  // Awan lembut & kawanan Burung Enggang (Tingang) terbang di langit
+  const clouds = [], skyBirds = [];
+  for (let i = 0; i < 7; i++) {
+    const cloud = new THREE.Group();
+    cloud.position.set(-48 + i * 16, 12 + (i % 3) * 2.4, -72 - (i % 2) * 14);
+    for (let j = 0; j < 4; j++) {
+      addPart(cloud, sphGeo, stdMat('#fff4dc', 0.9, 0), (j - 1.5) * 2.4, Math.sin(j * 2) * 0.4, 0, 3.1, 1.1 + (j % 2) * 0.45, 1.6);
+    }
+    scene.add(cloud); clouds.push(cloud);
+  }
+  for (let i = 0; i < 5; i++) {
+    const bGrp = new THREE.Group();
+    bGrp.position.set(-22 + i * 11, 9.5 + (i % 2) * 2.2, -45 - i * 8);
+    bGrp.userData.phase = i * 1.3;
+    bGrp.userData.baseX = bGrp.position.x;
+    bGrp.userData.baseY = bGrp.position.y;
+    addPart(bGrp, sphGeo, stdMat('#1c1614', 0.6), 0, 0, 0, 0.22, 0.14, 0.55);
+    addPart(bGrp, coneGeo, stdMat('#f09a24', 0.4), 0, 0.04, 0.58, 0.08, 0.35, 0.08).rotation.x = Math.PI / 2;
+    addPart(bGrp, boxGeo, stdMat('#b3261e', 0.4), 0, 0.12, 0.48, 0.07, 0.08, 0.18);
+    addPart(bGrp, boxGeo, stdMat('#fff5dc', 0.6), 0, 0, -0.55, 0.26, 0.03, 0.38);
+    const wL = addPart(bGrp, boxGeo, stdMat('#1c1614', 0.6), -0.45, 0.02, 0, 0.82, 0.03, 0.32);
+    const wR = addPart(bGrp, boxGeo, stdMat('#1c1614', 0.6), 0.45, 0.02, 0, 0.82, 0.03, 0.32);
+    bGrp.userData.wL = wL; bGrp.userData.wR = wR;
+    scene.add(bGrp); skyBirds.push(bGrp);
+  }
+
+  // 2. Perahu Adat Sungai Pawan (Perpaduan Ukiran Burung Enggang Dayak & Lanchang Pucuk Rebung Melayu)
+  const boat = new THREE.Group();
+  scene.add(boat);
+  boat.position.z = 5;
+
+  const woodMat = stdMat('#8a5632', 0.72, 0.05, woodTex);
+  const darkWoodMat = stdMat('#4d2e19', 0.78, 0.04, woodTex);
+  const goldMat = stdMat('#eab94f', 0.32, 0.65);
+  const redMat = stdMat('#b8291f', 0.5, 0.08);
+  const emeraldMat = stdMat('#185848', 0.55, 0.08);
+  const motifBandMat = stdMat('#ffffff', 0.6, 0.08, boatMotifTex);
+
+  // Lambung perahu kayu ulin melengkung realistis
+  const hullShape = new THREE.Shape();
+  hullShape.moveTo(0, -2.35);
+  hullShape.quadraticCurveTo(0.68, -1.45, 0.72, -0.2);
+  hullShape.lineTo(0.70, 1.25);
+  hullShape.quadraticCurveTo(0.55, 2.0, 0, 2.25);
+  hullShape.quadraticCurveTo(-0.55, 2.0, -0.70, 1.25);
+  hullShape.lineTo(-0.72, -0.2);
+  hullShape.quadraticCurveTo(-0.68, -1.45, 0, -2.35);
+  const hullGeo = trackGeo(new THREE.ExtrudeGeometry(hullShape, {depth: 0.26, bevelEnabled: true, bevelSegments: 3, steps: 1, bevelSize: 0.06, bevelThickness: 0.06}));
+  const bottomMesh = new THREE.Mesh(hullGeo, darkWoodMat);
+  bottomMesh.rotation.x = -Math.PI / 2;
+  bottomMesh.position.y = 0.12;
+  boat.add(bottomMesh);
+
+  // Dinding samping perahu dengan sabuk motif Dayak & Melayu
+  for (const side of [-1, 1]) {
+    addPart(boat, boxGeo, woodMat, side * 0.64, 0.44, -0.05, 0.09, 0.38, 2.75);
+    addPart(boat, boxGeo, motifBandMat, side * 0.695, 0.47, -0.05, 0.02, 0.24, 2.68);
+    addPart(boat, boxGeo, goldMat, side * 0.65, 0.65, -0.05, 0.11, 0.045, 2.82);
+    // Lengkungan haluan depan & buritan belakang
+    const bowSide = addPart(boat, boxGeo, motifBandMat, side * 0.34, 0.50, -1.78, 0.08, 0.30, 1.05);
+    bowSide.rotation.y = side * 0.58;
+    const bowTrim = addPart(boat, boxGeo, goldMat, side * 0.34, 0.66, -1.78, 0.09, 0.04, 1.08);
+    bowTrim.rotation.y = side * 0.58;
+    const sternSide = addPart(boat, boxGeo, woodMat, side * 0.35, 0.46, 1.68, 0.08, 0.32, 0.92);
+    sternSide.rotation.y = -side * 0.58;
+  }
+
+  // Gading-gading (tulang kayu dalam perahu) & bangku duduk
+  for (const z of [-1.25, -0.55, 0.15, 0.85, 1.35]) {
+    addPart(boat, boxGeo, darkWoodMat, 0, 0.27, z, 1.18, 0.06, 0.07);
+  }
+  for (const z of [-0.65, 0.55]) {
+    addPart(boat, boxGeo, woodMat, 0, 0.50, z, 1.22, 0.08, 0.36);
+    addPart(boat, boxGeo, goldMat, 0, 0.545, z, 1.24, 0.02, 0.38);
+  }
+
+  // Haluan Perahu: Ukiran Kepala Burung Enggang Gading (Dayak) + Selembayung Emas (Melayu)
+  const prowGrp = new THREE.Group();
+  prowGrp.position.set(0, 0.62, -2.25);
+  boat.add(prowGrp);
+  const neck = addPart(prowGrp, cylGeo, goldMat, 0, 0.22, 0.08, 0.11, 0.48, 0.14);
+  neck.rotation.x = 0.42;
+  addPart(prowGrp, sphGeo, redMat, 0, 0.46, -0.05, 0.15, 0.14, 0.18);
+  // Paruh Enggang Gading & Balung (Casque) Merah-Emas
+  const beak = addPart(prowGrp, coneGeo, goldMat, 0, 0.44, -0.38, 0.085, 0.52, 0.10);
+  beak.rotation.x = -Math.PI / 2 - 0.12;
+  const casque = addPart(prowGrp, boxGeo, redMat, 0, 0.56, -0.22, 0.09, 0.10, 0.28);
+  casque.rotation.x = 0.18;
+  addPart(prowGrp, boxGeo, goldMat, 0, 0.62, -0.20, 0.095, 0.03, 0.26).rotation.x = 0.18;
+  for (const s of [-1, 1]) {
+    addPart(prowGrp, sphGeo, stdMat('#17110d', 0.2), s * 0.11, 0.48, -0.08, 0.03, 0.03, 0.03);
+    // Sayap ukiran Selembayung Melayu di sisi haluan
+    const wing = addPart(prowGrp, coneGeo, goldMat, s * 0.16, 0.28, 0.16, 0.06, 0.38, 0.12);
+    wing.rotation.set(-0.5, 0, -s * 0.45);
+  }
+
+  // Ornamen Perisai Talawang Dayak kecil di kedua sisi haluan & lentera Melayu di buritan
+  for (const s of [-1, 1]) {
+    const shield = addPart(boat, cylGeo, redMat, s * 0.54, 0.54, -1.42, 0.18, 0.03, 0.32);
+    shield.rotation.z = Math.PI / 2; shield.rotation.y = s * 0.45;
+    const shieldRim = addPart(boat, cylGeo, goldMat, s * 0.555, 0.54, -1.42, 0.11, 0.032, 0.20);
+    shieldRim.rotation.z = Math.PI / 2; shieldRim.rotation.y = s * 0.45;
+  }
+  // Tiang buritan dengan lentera emas Melayu
+  addPart(boat, cylGeo, darkWoodMat, 0, 0.85, 1.95, 0.04, 0.72, 0.04);
+  addPart(boat, coneGeo, goldMat, 0, 1.25, 1.95, 0.14, 0.14, 0.14);
+  addPart(boat, sphGeo, new THREE.MeshBasicMaterial({color: '#ffe699'}), 0, 1.12, 1.95, 0.09, 0.12, 0.09);
+
+  // Karakter 1 (Di Depan): Putri Melayu Ketapang (Busana Baju Kurung Zamrud-Emas, Selendang Songket & Sunting Melayu)
+  const melayuChar = new THREE.Group();
+  melayuChar.position.set(0, 0.54, -0.62);
+  boat.add(melayuChar);
+  const skinMat = stdMat('#d89c74', 0.75, 0.02);
+  const hairMat = stdMat('#1f1a1c', 0.8, 0.04);
+  // Baju kurung & kain songket
+  addPart(melayuChar, cylGeo, emeraldMat, 0, 0.28, 0, 0.21, 0.48, 0.16);
+  addPart(melayuChar, cylGeo, motifBandMat, 0, 0.12, 0, 0.225, 0.22, 0.17);
+  // Selendang songket menyilang di bahu
+  const sash = addPart(melayuChar, boxGeo, goldMat, 0.02, 0.31, 0, 0.42, 0.10, 0.28);
+  sash.rotation.z = 0.48;
+  // Kepala, kerudung/sanggul & mahkota sunting emas Melayu
+  const mHead = new THREE.Group();
+  mHead.position.set(0, 0.64, 0);
+  melayuChar.add(mHead);
+  addPart(mHead, sphGeo, skinMat, 0, 0, 0, 0.15, 0.17, 0.15);
+  addPart(mHead, sphGeo, hairMat, 0, 0.03, -0.02, 0.165, 0.16, 0.16);
+  addPart(mHead, sphGeo, hairMat, 0, 0.02, 0.15, 0.09, 0.09, 0.09);
+  addPart(mHead, cylGeo, goldMat, 0, 0.13, -0.01, 0.15, 0.05, 0.14);
+  for (let i = -2; i <= 2; i++) {
+    addPart(mHead, coneGeo, goldMat, i * 0.045, 0.21 + (2 - Math.abs(i)) * 0.02, -0.01, 0.022, 0.10, 0.022);
+  }
+
+  // Karakter 2 (Pendayung Utama di Belakang): Putra Dayak (Rompi Sangkarut Ukir Dayak, Ikat Kepala Lavung & Bulu Enggang)
+  const rower = new THREE.Group();
+  rower.position.set(0, 0.54, 0.52);
+  boat.add(rower);
+  const rowerTorso = new THREE.Group();
+  rowerTorso.position.set(0, 0.08, 0);
+  rower.add(rowerTorso);
+  // Badan & Rompi Adat Dayak
+  addPart(rowerTorso, cylGeo, skinMat, 0, 0.26, 0, 0.22, 0.50, 0.16);
+  addPart(rowerTorso, cylGeo, motifBandMat, 0, 0.27, 0, 0.232, 0.46, 0.172);
+  addPart(rowerTorso, boxGeo, redMat, 0, 0.04, 0, 0.45, 0.08, 0.34);
+  // Kalung manik-manik & taring Dayak di dada
+  addPart(rowerTorso, cylGeo, goldMat, 0, 0.46, 0, 0.16, 0.04, 0.14);
+  // Kepala Pendayung Dayak + Ikat Kepala Lavung & 3 Helai Bulu Burung Enggang
+  const rHead = new THREE.Group();
+  rHead.position.set(0, 0.64, 0);
+  rowerTorso.add(rHead);
+  addPart(rHead, sphGeo, skinMat, 0, 0, 0, 0.16, 0.18, 0.16);
+  addPart(rHead, sphGeo, hairMat, 0, 0.04, -0.01, 0.172, 0.15, 0.172);
+  addPart(rHead, cylGeo, redMat, 0, 0.08, 0, 0.176, 0.065, 0.176);
+  addPart(rHead, cylGeo, goldMat, 0, 0.08, 0, 0.180, 0.022, 0.180);
+  for (let i = -1; i <= 1; i++) {
+    const fth = addPart(rHead, boxGeo, stdMat('#fff7e0', 0.5), i * 0.045, 0.26 + (1 - Math.abs(i)) * 0.04, 0.08, 0.032, 0.24, 0.012);
+    fth.rotation.z = -i * 0.18; fth.rotation.x = -0.2;
+    addPart(rHead, boxGeo, stdMat('#17110d', 0.5), i * 0.045, 0.32 + (1 - Math.abs(i)) * 0.04, 0.09, 0.034, 0.06, 0.014).rotation.z = -i * 0.18;
+  }
+
+  // Lengan Berartikulasi & Dayung Kayu Ulin Berukir
+  const paddleRig = new THREE.Group();
+  paddleRig.position.set(0.32, 0.42, -0.04);
+  rowerTorso.add(paddleRig);
+  // Batang & bilah dayung
+  const shaft = addPart(paddleRig, cylGeo, darkWoodMat, 0.26, -0.34, 0, 0.028, 1.75, 0.028);
+  shaft.rotation.z = 0.48;
+  const blade = addPart(paddleRig, boxGeo, woodMat, 0.62, -0.96, 0, 0.22, 0.58, 0.035);
+  blade.rotation.z = 0.48;
+  const bladeOrn = addPart(paddleRig, boxGeo, goldMat, 0.56, -0.84, 0, 0.23, 0.08, 0.04);
+  bladeOrn.rotation.z = 0.48;
+  const bladeTip = addPart(paddleRig, boxGeo, redMat, 0.67, -1.08, 0, 0.20, 0.18, 0.038);
+  bladeTip.rotation.z = 0.48;
+  // Tangan kanan & kiri memegang batang dayung
+  const armR = addPart(paddleRig, cylGeo, skinMat, 0.06, 0.02, 0.02, 0.055, 0.38, 0.055);
+  armR.rotation.z = -1.05;
+  addPart(paddleRig, sphGeo, redMat, -0.09, 0.10, 0.02, 0.075, 0.075, 0.075);
+  const armL = addPart(paddleRig, cylGeo, skinMat, -0.16, 0.18, -0.05, 0.052, 0.46, 0.052);
+  armL.rotation.z = -1.35; armL.rotation.y = 0.35;
+
+  // 3. Air Sungai Pawan yang Realistis dengan Riak Cahaya & Gelombang 3D
+  const waterGeo = trackGeo(new THREE.PlaneGeometry(21, 155, 24, 80));
+  waterGeo.rotateX(-Math.PI / 2);
+  const waterTex = makeCanvasTex(256, 256, (ctx, w, h) => {
+    const grad = ctx.createLinearGradient(0, 0, w, h);
+    grad.addColorStop(0, '#3e6e58'); grad.addColorStop(0.5, '#4b7a5e'); grad.addColorStop(1, '#396652');
+    ctx.fillStyle = grad; ctx.fillRect(0, 0, w, h);
+    for (let i = 0; i < 110; i++) {
+      const x = Math.random() * w, y = Math.random() * h, len = 10 + Math.random() * 28;
+      ctx.strokeStyle = i % 3 === 0 ? 'rgba(235,220,165,0.32)' : 'rgba(130,175,145,0.28)';
+      ctx.lineWidth = i % 3 === 0 ? 1.8 : 1.1;
+      for (const ox of [-w, 0, w]) {
+        ctx.beginPath(); ctx.moveTo(x + ox, y);
+        ctx.quadraticCurveTo(x + ox + len * 0.5, y + 3, x + ox + len, y);
+        ctx.stroke();
       }
     }
-    if(row.g.position.z>15){const farthest=Math.min(...rows.map(r=>r.g.position.z));placeRow(row,farthest-12);}
+  }, 4, 24);
+  const waterMat = new THREE.MeshStandardMaterial({
+    map: waterTex, color: '#a8c9a5', roughness: 0.24, metalness: 0.18
+  });
+  const water = new THREE.Mesh(waterGeo, waterMat);
+  water.position.z = -48;
+  scene.add(water);
+  const waterBase = Float32Array.from(waterGeo.attributes.position.array);
+
+  // Riak Jejak Air (Wake) di belakang sampan
+  const wakeGeo = trackGeo(new THREE.TorusGeometry(1, 0.024, 4, 24, Math.PI * 0.92));
+  wakeGeo.rotateX(-Math.PI / 2);
+  const wakes = [];
+  for (let i = 0; i < 14; i++) {
+    const mat = new THREE.MeshBasicMaterial({color: '#f2f0d5', transparent: true, opacity: 0, depthWrite: false});
+    const wake = new THREE.Mesh(wakeGeo, mat);
+    wake.userData.age = i / 14;
+    wake.position.set(0, 0.14, 7);
+    scene.add(wake); wakes.push(wake);
   }
-}
-// 6. Game Loop — delta time, pool objek, gelombang vertex dan bobbing sampan.
-function tick(now){
-  raf=requestAnimationFrame(tick);
-  const dt=last?Math.min((now-last)/1000,.05):0;last=now;
-  if(state==='running'){
-    time+=dt;speed=Math.min(23,9+distance/180);distance+=speed*dt;
-    $('distance').textContent=Math.floor(distance);
-    const delta=lanes[lane]-boat.position.x;boat.position.x+=delta*(1-Math.exp(-11*dt));
-    boat.rotation.z=THREE.MathUtils.lerp(boat.rotation.z,-delta*.12,1-Math.exp(-8*dt));
-    boat.rotation.y=delta*.06;boat.position.y=Math.sin(time*3)*.065;
-    paddle.rotation.x=Math.sin(time*7)*.55;paddle.rotation.z=Math.cos(time*7)*.14;
-    for(const bank of banks){bank.position.z+=speed*dt;if(bank.position.z>25)bank.position.z-=120;}
-    waterTexture.offset.y-=speed*dt*.012;
-    waterTexture.offset.x=Math.sin(time*.22)*.025;
-    for(const cloud of clouds){cloud.position.x+=dt*.18;if(cloud.position.x>58)cloud.position.x=-58;}
-    for(const wake of wakes){
-      wake.userData.age+=dt*.65;
-      if(wake.userData.age>=1){wake.userData.age%=1;wake.position.set(boat.position.x,.14,6.5);}
-      const age=wake.userData.age;wake.position.z+=speed*dt*.5;
-      wake.scale.set(0.45+age*1.8,1,.35+age*1.4);wake.material.opacity=(1-age)*.45;
-      wake.position.y=.14+Math.sin(time*3+age*5)*.025;
+
+  // 4. Tepian Sungai Pawan: Rumah Panggung Melayu (Selembayung) & Rumah Betang Dayak (Enggang & Sandung)
+  const banks = [];
+  const leafDark = stdMat('#285934', 0.8), leafMid = stdMat('#38733e', 0.78), leafLight = stdMat('#518f44', 0.76);
+  const bankGrassMat = stdMat('#4c6e35', 0.9), bankMudMat = stdMat('#6b533b', 0.92);
+
+  function addPalmOrNipah(parent, x, y, z, scale = 1, isTall = false) {
+    const pg = new THREE.Group();
+    pg.position.set(x, y, z); pg.scale.setScalar(scale);
+    parent.add(pg);
+    if (isTall) {
+      addPart(pg, cylGeo, darkWoodMat, 0, 1.4, 0, 0.14, 2.8, 0.14).rotation.z = (x > 0 ? -0.08 : 0.08);
     }
-    const positions=waterGeo.attributes.position;
-    for(let i=0;i<positions.count;i++){const x=waterBase[i*3],z=waterBase[i*3+2];positions.setY(i,Math.sin(z*.65+time*3+x*.6)*.08+Math.cos(x*1.6-z*.3+time*1.8)*.035);}
-    positions.needsUpdate=true;waterGeo.computeVertexNormals();
-    updateRows(dt);
-    for(const p of particles)if(p.visible){p.userData.life-=dt;p.visible=p.userData.life>0;p.position.addScaledVector(p.userData.v,dt);p.userData.v.y-=6*dt;}
+    const crownY = isTall ? 2.75 : 0.25;
+    for (let k = 0; k < 7; k++) {
+      const a = (k / 7) * Math.PI * 2;
+      const frond = new THREE.Group();
+      frond.position.set(0, crownY, 0);
+      frond.rotation.y = a;
+      pg.add(frond);
+      const blade = addPart(frond, boxGeo, k % 2 ? leafLight : leafMid, 0, 0.25, 0.75, 0.26, 0.04, 1.55);
+      blade.rotation.x = 0.42;
+    }
   }
-  renderer.render(scene,camera);
-}
-function resize(){const w=innerWidth,h=innerHeight;renderer.setSize(w,h);camera.aspect=w/h;camera.position.set(0,w/h<.8?9:7,w/h<.8?15:14);camera.lookAt(0,1,-14);camera.updateProjectionMatrix();}
-addEventListener('resize',resize);resize();
-rows.forEach((r,i)=>placeRow(r,-16-i*12));
-renderer.domElement.tabIndex=0;
-$('start').disabled=false;$('start').textContent='Mulai Mendayung';$('start').onclick=start;
-raf=requestAnimationFrame(tick);
-renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();pause();panel('Grafis terhenti','Muat ulang game untuk menyiapkan sungai kembali.','Muat Ulang',()=>location.reload());});
-addEventListener('pagehide',()=>{cancelAnimationFrame(raf);geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());waterTexture.dispose();waterMat.dispose();skyMat.dispose();sunMat.dispose();wakes.forEach(w=>w.material.dispose());renderer.dispose();audio?.close();},{once:true});
+
+  function addMelayuHouse(parent, side, zOffset) {
+    const hg = new THREE.Group();
+    const x = side * 11.4;
+    hg.position.set(x, 0, zOffset);
+    if (side > 0) hg.rotation.y = Math.PI;
+    parent.add(hg);
+    // Tiang panggung kayu ulin
+    for (const dx of [-1.0, 0, 1.0]) for (const dz of [-1.1, 1.1]) {
+      addPart(hg, cylGeo, darkWoodMat, dx, 0.85, dz, 0.09, 1.8, 0.09);
+    }
+    // Lantai & Serambi Melayu
+    addPart(hg, boxGeo, woodMat, 0, 1.65, 0, 2.5, 0.12, 2.7);
+    // Dinding Hijau Zamrud & Kuning Emas khas Melayu Ketapang
+    addPart(hg, boxGeo, stdMat('#ffffff', 0.7, 0.05, melayuWallTex), 0, 2.42, 0, 2.2, 1.42, 2.35);
+    // Pintu & Jendela berbingkai emas
+    addPart(hg, boxGeo, darkWoodMat, 1.12, 2.35, 0, 0.05, 0.95, 0.52);
+    addPart(hg, boxGeo, goldMat, 1.13, 2.85, 0, 0.06, 0.08, 0.58);
+    for (const dz of [-0.72, 0.72]) {
+      addPart(hg, boxGeo, goldMat, 1.12, 2.45, dz, 0.05, 0.52, 0.42);
+      addPart(hg, boxGeo, stdMat('#203d35', 0.5), 1.13, 2.45, dz, 0.05, 0.42, 0.32);
+    }
+    // Atap Limas Bertingkat Melayu + Ornamen Selembayung (Tanduk Emas Menyilang di Bubungan)
+    const roof1 = addPart(hg, pyrGeo, stdMat('#7a3e28', 0.75), 0, 3.55, 0, 2.25, 0.95, 2.35);
+    roof1.rotation.y = Math.PI / 4;
+    const roof2 = addPart(hg, pyrGeo, stdMat('#8c472e', 0.72), 0, 4.05, 0, 1.45, 0.75, 1.55);
+    roof2.rotation.y = Math.PI / 4;
+    addPart(hg, boxGeo, goldMat, 0, 4.38, 0, 0.12, 0.12, 0.95);
+    for (const sz of [-0.45, 0.45]) {
+      for (const s of [-1, 1]) {
+        const horn = addPart(hg, coneGeo, goldMat, 0, 4.55, sz, 0.045, 0.42, 0.045);
+        horn.rotation.x = s * 0.55;
+      }
+    }
+    // Dermaga Lanting Kayu & Lentera Tepian Sungai
+    addPart(hg, boxGeo, woodMat, 1.95, 0.52, 0, 1.8, 0.10, 1.35);
+    for (const dz of [-0.55, 0.55]) {
+      addPart(hg, cylGeo, darkWoodMat, 2.65, 0.45, dz, 0.06, 1.1, 0.06);
+    }
+    addPart(hg, cylGeo, darkWoodMat, 2.65, 1.15, 0.55, 0.035, 0.9, 0.035);
+    addPart(hg, sphGeo, new THREE.MeshBasicMaterial({color: '#ffe28a'}), 2.65, 1.58, 0.55, 0.11, 0.14, 0.11);
+  }
+
+  function addDayakBetang(parent, side, zOffset) {
+    const dg = new THREE.Group();
+    const x = side * 11.8;
+    dg.position.set(x, 0, zOffset);
+    if (side > 0) dg.rotation.y = Math.PI;
+    parent.add(dg);
+    // Tiang-tiang tinggi Rumah Betang Dayak
+    for (const dx of [-0.95, 0.95]) for (let dz = -1.6; dz <= 1.6; dz += 1.05) {
+      addPart(dg, cylGeo, darkWoodMat, dx, 1.0, dz, 0.10, 2.1, 0.10);
+    }
+    // Lantai panggung & serambi terbuka (pante)
+    addPart(dg, boxGeo, woodMat, 0.2, 1.95, 0, 2.6, 0.12, 3.8);
+    addPart(dg, boxGeo, goldMat, 1.42, 2.32, 0, 0.06, 0.06, 3.75);
+    // Dinding berukir Motif Aso Dayak
+    addPart(dg, boxGeo, stdMat('#ffffff', 0.75, 0.05, dayakWallTex), -0.15, 2.68, 0, 1.85, 1.38, 3.55);
+    // Atap Pelana Panjang Rumah Betang + Ukiran Burung Enggang di Puncak Atap
+    for (const s of [-1, 1]) {
+      const slope = addPart(dg, boxGeo, stdMat('#593522', 0.8), s * 0.62 - 0.15, 3.72, 0, 1.55, 0.10, 3.95);
+      slope.rotation.z = -s * 0.52;
+    }
+    addPart(dg, boxGeo, goldMat, -0.15, 4.12, 0, 0.10, 0.10, 4.05);
+    for (const sz of [-1.92, 1.92]) {
+      addPart(dg, coneGeo, goldMat, -0.15, 4.42, sz, 0.08, 0.48, 0.14).rotation.x = sz > 0 ? 0.4 : -0.4;
+      addPart(dg, sphGeo, redMat, -0.15, 4.58, sz, 0.09, 0.09, 0.12);
+    }
+    // Tangga Balok Berukir (Tangga Rumah Betang) & Tiang Sandung / Umbul-Umbul Adat di Tepian
+    const ladder = addPart(dg, boxGeo, woodMat, 1.85, 1.05, 0, 0.22, 2.15, 0.12);
+    ladder.rotation.z = 0.48;
+    // Tiang Sandung / Totem Dayak & Umbul-Umbul Merah-Emas
+    addPart(dg, cylGeo, darkWoodMat, 2.15, 1.25, -1.45, 0.09, 2.4, 0.09);
+    addPart(dg, boxGeo, redMat, 2.15, 2.15, -1.45, 0.32, 0.42, 0.32);
+    addPart(dg, pyrGeo, goldMat, 2.15, 2.55, -1.45, 0.28, 0.35, 0.28);
+  }
+
+  for (let i = 0; i < 12; i++) {
+    const segment = new THREE.Group();
+    segment.position.z = 15 - i * 10;
+    scene.add(segment); banks.push(segment);
+
+    for (const side of [-1, 1]) {
+      // Tebing tanah berlapis rumput & lumpur tepian sungai
+      addPart(segment, boxGeo, bankGrassMat, side * 15.2, -0.15, 0, 11.2, 0.55, 10.1);
+      addPart(segment, boxGeo, bankMudMat, side * 9.5, -0.28, 0, 0.9, 0.45, 10.1);
+
+      // Pohon hutan tropis berlapis tajuk & nipah di tepi sungai
+      for (let j = 0; j < 3; j++) {
+        const x = side * (10.6 + ((i * 3 + j * 7) % 5) * 1.05), z = (j - 1) * 3.3;
+        const h = 3.0 + ((i + j) % 3) * 0.65;
+        addPart(segment, cylGeo, darkWoodMat, x, h * 0.5, z, 0.20, h, 0.20);
+        const cMat = j % 2 ? leafMid : leafDark;
+        addPart(segment, icoGeo, cMat, x, h + 0.7, z, 1.75, 1.65, 1.65);
+        addPart(segment, icoGeo, leafLight, x - side * 0.5, h + 1.3, z + 0.3, 1.25, 1.15, 1.2);
+        if (j === 0) {
+          addPalmOrNipah(segment, side * 9.4, 0.05, z, 0.85, false);
+        } else if (j === 2 && i % 2 === 0) {
+          addPalmOrNipah(segment, side * 10.2, 0.05, z, 0.9, true);
+        }
+      }
+
+      // Umbul-umbul budaya (Merah-Emas Dayak & Hijau-Emas Melayu) di sepanjang tepi sungai
+      if (i % 2 === 1) {
+        const bx = side * 9.3, bz = (side < 0 ? -2.2 : 2.2);
+        addPart(segment, cylGeo, goldMat, bx, 1.45, bz, 0.03, 2.8, 0.03);
+        addPart(segment, boxGeo, side < 0 ? redMat : emeraldMat, bx - side * 0.18, 1.85, bz, 0.32, 1.35, 0.02);
+        addPart(segment, boxGeo, goldMat, bx - side * 0.18, 1.85, bz + 0.012, 0.12, 1.25, 0.02);
+      }
+
+      // Permukiman Tepian Sungai: Sisi Kiri & Kanan bergantian Rumah Panggung Melayu & Rumah Betang Dayak
+      if (i % 3 === 0) {
+        if ((i / 3 + (side > 0 ? 1 : 0)) % 2 === 0) {
+          addMelayuHouse(segment, side, 0);
+        } else {
+          addDayakBetang(segment, side, 0);
+        }
+      }
+    }
+  }
+
+  // 5. Pool Objek: 4 Varian Artefak Budaya (Dayak & Melayu) dan 3 Rintangan Sungai Realistis
+  const lanes = [-3.3, 0, 3.3], rows = [], particles = [];
+  const ARTIFACT_NAMES = [
+    '✦ Perisai Talawang Dayak (+1 Artefak)',
+    '✦ Mahkota Emas Kerajaan Matan (+1 Artefak)',
+    '✦ Tajau Pusaka Borneo (+1 Artefak)',
+    '✦ Kerang Emas Ale-Ale Ketapang (+1 Artefak)'
+  ];
+
+  function makeArtifact(variantIndex) {
+    const g = new THREE.Group();
+    g.userData.kind = 'coin';
+    g.userData.variant = variantIndex % 4;
+    g.userData.label = ARTIFACT_NAMES[g.userData.variant];
+
+    // Cincin aura berkilau di sekeliling artefak
+    const halo = addPart(g, cylGeo, new THREE.MeshBasicMaterial({color: '#ffe58f', transparent: true, opacity: 0.28}), 0, 0.18, 0, 0.58, 0.02, 0.58);
+    halo.name = 'aura';
+
+    const item = new THREE.Group();
+    item.position.y = 0.92;
+    g.add(item);
+
+    const v = g.userData.variant;
+    if (v === 0) {
+      // 0: Perisai Talawang Dayak (Perisai segi enam memanjang merah-emas berukir Aso)
+      addPart(item, boxGeo, redMat, 0, 0, 0, 0.46, 0.88, 0.08);
+      addPart(item, boxGeo, goldMat, 0, 0, 0, 0.50, 0.62, 0.06);
+      addPart(item, boxGeo, redMat, 0, 0, 0, 0.36, 0.56, 0.09);
+      addPart(item, sphGeo, goldMat, 0, 0, 0.05, 0.12, 0.12, 0.06);
+      addPart(item, sphGeo, goldMat, 0, 0, -0.05, 0.12, 0.12, 0.06);
+    } else if (v === 1) {
+      // 1: Mahkota / Pucuk Rebung Emas Kerajaan Matan Melayu
+      addPart(item, cylGeo, goldMat, 0, -0.18, 0, 0.36, 0.16, 0.36);
+      addPart(item, cylGeo, emeraldMat, 0, -0.18, 0, 0.37, 0.07, 0.37);
+      for (let k = 0; k < 6; k++) {
+        const a = (k / 6) * Math.PI * 2;
+        addPart(item, coneGeo, goldMat, Math.cos(a) * 0.28, 0.06, Math.sin(a) * 0.28, 0.09, 0.34, 0.09);
+      }
+      addPart(item, sphGeo, redMat, 0, 0.12, 0, 0.16, 0.20, 0.16);
+    } else if (v === 2) {
+      // 2: Tempayan / Tajau Pusaka Dayak & Melayu
+      addPart(item, sphGeo, stdMat('#b55428', 0.4, 0.2), 0, -0.06, 0, 0.36, 0.42, 0.36);
+      addPart(item, cylGeo, goldMat, 0, 0.02, 0, 0.37, 0.08, 0.37);
+      addPart(item, cylGeo, stdMat('#8f3d19', 0.4, 0.2), 0, 0.28, 0, 0.18, 0.18, 0.18);
+      addPart(item, cylGeo, goldMat, 0, 0.36, 0, 0.24, 0.05, 0.24);
+    } else {
+      // 3: Kerang Emas Ale-Ale Ikon Ketapang
+      addPart(item, sphGeo, goldMat, 0, 0, 0, 0.46, 0.38, 0.22);
+      for (let r = -2; r <= 2; r++) {
+        const rib = addPart(item, boxGeo, stdMat('#fff0a8', 0.3, 0.7), r * 0.09, 0.02, 0, 0.04, 0.52, 0.26);
+        rib.rotation.z = -r * 0.16;
+      }
+    }
+    return g;
+  }
+
+  function makeHazard(kind) {
+    const g = new THREE.Group();
+    g.userData.kind = kind;
+    if (kind === 'log') {
+      // Batang kayu ulin hanyut berlumut dengan cabang patah
+      const trunk = addPart(g, cylGeo, darkWoodMat, 0, 0.24, 0, 0.36, 2.15, 0.36);
+      trunk.rotation.z = Math.PI / 2;
+      for (const s of [-1, 1]) {
+        const ring = addPart(g, cylGeo, stdMat('#d4a66a', 0.8), s * 1.08, 0.24, 0, 0.33, 0.03, 0.33);
+        ring.rotation.z = Math.PI / 2;
+      }
+      addPart(g, sphGeo, leafMid, -0.25, 0.52, 0.05, 0.38, 0.12, 0.24);
+      const branch = addPart(g, cylGeo, darkWoodMat, 0.35, 0.52, -0.08, 0.10, 0.48, 0.10);
+      branch.rotation.z = -0.45;
+    } else if (kind === 'rock') {
+      // Gugusan batu sungai berlumut
+      addPart(g, icoGeo, stdMat('#6d7368', 0.85, 0.05), 0, 0.28, 0, 0.82, 0.72, 0.78);
+      addPart(g, icoGeo, stdMat('#585e54', 0.88, 0.05), -0.48, 0.18, 0.22, 0.46, 0.42, 0.45);
+      addPart(g, icoGeo, stdMat('#7c8276', 0.82, 0.05), 0.46, 0.16, -0.18, 0.42, 0.38, 0.42);
+      addPart(g, sphGeo, leafDark, 0.05, 0.68, 0.05, 0.42, 0.14, 0.38);
+    } else {
+      // Rumpun Eceng Gondok berbunga ungu & daun mengapung
+      for (let i = 0; i < 7; i++) {
+        const a = (i / 7) * Math.PI * 2, r = i === 0 ? 0 : 0.56;
+        const lx = Math.cos(a) * r, lz = Math.sin(a) * r;
+        addPart(g, sphGeo, i % 2 ? leafLight : leafMid, lx, 0.18, lz, 0.42, 0.14, 0.38);
+        if (i % 2 === 0) {
+          addPart(g, coneGeo, stdMat('#a97cd9', 0.5), lx, 0.52, lz, 0.12, 0.42, 0.12);
+          addPart(g, sphGeo, stdMat('#e3c8ff', 0.4), lx, 0.62, lz, 0.08, 0.12, 0.08);
+        }
+      }
+    }
+    return g;
+  }
+
+  for (let i = 0; i < 9; i++) {
+    const g = new THREE.Group();
+    scene.add(g);
+    const objects = [
+      makeArtifact(i * 2),
+      makeArtifact(i * 2 + 1),
+      makeHazard('log'),
+      makeHazard('rock'),
+      makeHazard('plant')
+    ];
+    objects.forEach(o => g.add(o));
+    rows.push({g, objects});
+  }
+
+  function placeRow(row, z) {
+    row.g.position.z = z;
+    row.objects.forEach(o => o.visible = false);
+    const safe = Math.floor(Math.random() * 3);
+    const blocked = (safe + 1 + Math.floor(Math.random() * 2)) % 3;
+    const hazard = row.objects[2 + Math.floor(Math.random() * 3)];
+    hazard.visible = true;
+    hazard.position.set(lanes[blocked], 0, 0);
+    // Kadang tambahkan rintangan kedua di jalur ketiga agar lebih menantang setelah jarak jauh
+    if (distance > 180 && Math.random() > 0.55) {
+      const thirdLane = 3 - safe - blocked;
+      const secondHazard = row.objects[2 + (( rows.indexOf(row) + 1 ) % 3)];
+      if (secondHazard !== hazard) {
+        secondHazard.visible = true;
+        secondHazard.position.set(lanes[thirdLane], 0, 0);
+      }
+    }
+    row.objects[0].visible = true;
+    row.objects[0].position.set(lanes[safe], 0, 0);
+    if (Math.random() > 0.45) {
+      row.objects[1].visible = true;
+      row.objects[1].position.set(lanes[safe], 0, -2.6);
+    }
+  }
+
+  // Partikel kilau emas artefak & cipratan air dayung
+  const splashParticles = [];
+  for (let i = 0; i < 20; i++) {
+    const p = addPart(scene, sphGeo, new THREE.MeshBasicMaterial({color: '#ffe49a'}), 0, -10, 0, 0.075, 0.075, 0.075);
+    p.visible = false; particles.push(p);
+  }
+  for (let i = 0; i < 12; i++) {
+    const sp = addPart(scene, sphGeo, new THREE.MeshBasicMaterial({color: '#e8f4e8', transparent: true, opacity: 0.75}), 0, -10, 0, 0.055, 0.055, 0.055);
+    sp.visible = false; splashParticles.push(sp);
+  }
+
+  // 6. Kontrol, Audio & Status Permainan
+  let state = 'ready', lane = 1, distance = 0, items = 0, speed = 9, last = 0, time = 0, raf = 0, audio, feedbackTimer = 0;
+
+  function showFeedback(text) {
+    const el = $('feedback');
+    el.textContent = text;
+    el.classList.add('show');
+    clearTimeout(feedbackTimer);
+    feedbackTimer = setTimeout(() => el.classList.remove('show'), 1600);
+  }
+
+  function move(dir) {
+    if (state === 'running') lane = THREE.MathUtils.clamp(lane + dir, 0, 2);
+  }
+  $('left').onclick = () => move(-1);
+  $('right').onclick = () => move(1);
+
+  let pointer = null;
+  $('river').addEventListener('pointerdown', e => {
+    if (!e.isPrimary) return;
+    pointer = {id: e.pointerId, x: e.clientX, y: e.clientY};
+    $('river').setPointerCapture(e.pointerId);
+  });
+  $('river').addEventListener('pointerup', e => {
+    if (!pointer || e.pointerId !== pointer.id) return;
+    const dx = e.clientX - pointer.x, dy = e.clientY - pointer.y;
+    pointer = null;
+    if (Math.abs(dx) > 25 && Math.abs(dx) > Math.abs(dy)) move(Math.sign(dx));
+    else if (Math.hypot(dx, dy) < 20) move(e.clientX < innerWidth / 2 ? -1 : 1);
+  });
+  $('river').addEventListener('pointercancel', () => pointer = null);
+
+  addEventListener('keydown', e => {
+    if (['ArrowLeft', 'ArrowRight', 'KeyA', 'KeyD', 'Escape', 'KeyP', 'Space'].includes(e.code)) e.preventDefault();
+    if (e.code === 'Escape') { if (state === 'running') pause(); else returnToStory(); }
+    if (e.repeat) return;
+    if (e.code === 'ArrowLeft' || e.code === 'KeyA') move(-1);
+    if (e.code === 'ArrowRight' || e.code === 'KeyD') move(1);
+    if (e.code === 'KeyP' || (e.code === 'Space' && e.target.tagName !== 'BUTTON')) {
+      if (state === 'running') pause(); else if (state === 'paused') resume();
+    }
+  });
+
+  function panel(title, description, label, action) {
+    $('overlay').hidden = false;
+    $('title').innerHTML = title;
+    $('description').textContent = description;
+    $('start').textContent = label;
+    $('start').onclick = action;
+    $('start').focus();
+  }
+  function pause() {
+    if (state !== 'running') return;
+    state = 'paused';
+    $('pause').disabled = true;
+    $('pause').setAttribute('aria-label', 'Permainan dijeda');
+    $('feedback').classList.remove('show');
+    panel('Sejenak<br><em>di Tepian Pawan</em>', 'Perahu adatmu bersandar sejenak. Lanjutkan saat siap mendayung kembali menyusuri warisan Dayak dan Melayu.', 'Lanjut Mendayung', resume);
+  }
+  function resume() {
+    state = 'running';
+    last = 0;
+    $('overlay').hidden = true;
+    $('pause').disabled = false;
+    $('pause').setAttribute('aria-label', 'Jeda permainan');
+    renderer.domElement.focus();
+  }
+  $('pause').onclick = pause;
+  document.addEventListener('visibilitychange', () => { if (document.hidden) pause(); last = 0; });
+  window.addEventListener('blur', pause);
+
+  function start() {
+    distance = items = 0; speed = 9; lane = 1; boat.position.x = 0; time = 0;
+    rows.forEach((r, i) => placeRow(r, -16 - i * 12));
+    particles.forEach(p => p.visible = false);
+    splashParticles.forEach(sp => sp.visible = false);
+    wakes.forEach((w, i) => { w.userData.age = i / 14; w.position.set(0, 0.14, 6.8); w.material.opacity = 0; });
+    $('distance').textContent = '0';
+    $('items').textContent = '0';
+    $('feedback').classList.remove('show');
+    document.querySelector('.controls').hidden = false;
+    try { audio ||= new (window.AudioContext || window.webkitAudioContext)(); audio.resume().catch(() => {}); } catch {}
+    resume();
+  }
+
+  // Nada pentatonik Sape Dayak / Gamelan saat mengumpulkan artefak
+  function sound(variant = 0) {
+    if (!audio || audio.state !== 'running') return;
+    const notes = [523.25, 587.33, 659.25, 783.99, 880.0, 1046.5];
+    const f1 = notes[variant % notes.length], f2 = notes[(variant + 2) % notes.length];
+    [f1, f2].forEach((freq, idx) => {
+      const osc = audio.createOscillator(), gain = audio.createGain();
+      osc.type = idx === 0 ? 'triangle' : 'sine';
+      osc.connect(gain); gain.connect(audio.destination);
+      const t0 = audio.currentTime + idx * 0.055;
+      osc.frequency.setValueAtTime(freq, t0);
+      osc.frequency.exponentialRampToValueAtTime(freq * 1.25, t0 + 0.16);
+      gain.gain.setValueAtTime(0.05, t0);
+      gain.gain.exponentialRampToValueAtTime(0.001, t0 + 0.24);
+      osc.start(t0); osc.stop(t0 + 0.25);
+    });
+  }
+
+  function finish() {
+    state = 'over';
+    $('pause').disabled = true;
+    document.querySelector('.controls').hidden = true;
+    $('feedback').classList.remove('show');
+    const score = Math.floor(distance);
+    panel(
+      'Perjalanan<br><em>yang Berkesah</em>',
+      `Sampan menyentuh rintangan sungai. Kamu telah mengayuh sejauh ${score} meter melewati kampung Dayak dan Melayu serta mengumpulkan ${items} artefak pusaka. Ayo berlayar kembali!`,
+      'Main Lagi',
+      start
+    );
+    try { onGameOver(score, items); } catch (e) { console.warn('Callback game over gagal.'); }
+    notify('pawan:gameover', {finalScore: score, collectedItems: items});
+  }
+
+  // 7. Deteksi Tabrakan & Pengumpulan Artefak Budaya
+  function updateRows(dt) {
+    for (const row of rows) {
+      const oldZ = row.g.position.z;
+      row.g.position.z += speed * dt;
+      for (const o of row.objects) {
+        if (!o.visible) continue;
+        if (o.userData.kind === 'coin') {
+          o.rotation.y += dt * 2.4;
+          o.children[1].position.y = 0.92 + Math.sin(time * 4 + row.g.position.z) * 0.08;
+        }
+        const z = row.g.position.z + o.position.z, prev = oldZ + o.position.z;
+        const isCoin = o.userData.kind === 'coin';
+        if (prev < 6.25 && z > 3.75 && Math.abs(boat.position.x - o.position.x) < (isCoin ? 0.92 : 1.12)) {
+          if (!isCoin) { finish(); return; }
+          o.visible = false;
+          items++;
+          $('items').textContent = items;
+          sound(o.userData.variant || 0);
+          if (o.userData.label) showFeedback(o.userData.label);
+          for (const p of particles) {
+            p.visible = true;
+            p.position.set(boat.position.x, 1.0, 4.8);
+            p.userData.life = 0.58;
+            p.userData.v = new THREE.Vector3((Math.random() - 0.5) * 4.2, 2.2 + Math.random() * 2.2, (Math.random() - 0.5) * 4.2);
+          }
+          try { onArtifactCollected(items); } catch (e) { console.warn('Callback artefak gagal.'); }
+          notify('pawan:artifact', {totalItems: items});
+        }
+      }
+      if (row.g.position.z > 15) {
+        const farthest = Math.min(...rows.map(r => r.g.position.z));
+        placeRow(row, farthest - 12);
+      }
+    }
+  }
+
+  // 8. Loop Animasi Utama
+  let lastSplashCycle = 0;
+  function tick(now) {
+    raf = requestAnimationFrame(tick);
+    const dt = last ? Math.min((now - last) / 1000, 0.05) : 0;
+    last = now;
+
+    if (state === 'running') {
+      time += dt;
+      speed = Math.min(23, 9 + distance / 180);
+      distance += speed * dt;
+      $('distance').textContent = Math.floor(distance);
+
+      // Pergerakan mulus sampan berpindah jalur
+      const delta = lanes[lane] - boat.position.x;
+      boat.position.x += delta * (1 - Math.exp(-11 * dt));
+      boat.rotation.z = THREE.MathUtils.lerp(boat.rotation.z, -delta * 0.11, 1 - Math.exp(-8 * dt));
+      boat.rotation.y = delta * 0.055;
+      boat.position.y = Math.sin(time * 3.2) * 0.06;
+
+      // Animasi kayuhan pendayung Dayak & gerak lembut penumpang Melayu
+      const stroke = time * 7.2;
+      paddleRig.rotation.x = Math.sin(stroke) * 0.58;
+      paddleRig.rotation.z = Math.cos(stroke) * 0.16;
+      rowerTorso.rotation.x = 0.08 + Math.sin(stroke) * 0.10;
+      rowerTorso.rotation.y = Math.cos(stroke) * 0.08;
+      melayuChar.rotation.z = Math.sin(time * 2.6) * 0.035;
+      mHead.rotation.y = Math.sin(time * 1.1) * 0.15;
+
+      // Cipratan air saat bilah dayung menyentuh permukaan sungai
+      const currentCycle = Math.floor((stroke + 1.2) / (Math.PI * 2));
+      if (currentCycle > lastSplashCycle) {
+        lastSplashCycle = currentCycle;
+        splashParticles.forEach(sp => {
+          sp.visible = true;
+          sp.position.set(boat.position.x + 0.95, 0.22, 5.2 + (Math.random() - 0.5) * 0.4);
+          sp.userData.life = 0.36;
+          sp.userData.v = new THREE.Vector3(0.4 + Math.random() * 1.1, 1.4 + Math.random() * 1.2, 1.2 + Math.random() * 1.5);
+        });
+      }
+
+      // Pergerakan tepi sungai, tekstur arus, awan & burung Enggang di langit
+      for (const bank of banks) {
+        bank.position.z += speed * dt;
+        if (bank.position.z > 25) bank.position.z -= 120;
+      }
+      waterTex.offset.y -= speed * dt * 0.015;
+      waterTex.offset.x = Math.sin(time * 0.25) * 0.03;
+
+      for (const cloud of clouds) {
+        cloud.position.x += dt * 0.2;
+        if (cloud.position.x > 62) cloud.position.x = -62;
+      }
+      for (const b of skyBirds) {
+        const p = time * 4.5 + b.userData.phase;
+        b.position.x = b.userData.baseX + Math.sin(time * 0.35 + b.userData.phase) * 6;
+        b.position.y = b.userData.baseY + Math.sin(p * 0.5) * 0.35;
+        b.userData.wL.rotation.z = Math.sin(p) * 0.42;
+        b.userData.wR.rotation.z = -Math.sin(p) * 0.42;
+      }
+
+      // Jejak riak air di belakang perahu
+      for (const wake of wakes) {
+        wake.userData.age += dt * 0.68;
+        if (wake.userData.age >= 1) {
+          wake.userData.age %= 1;
+          wake.position.set(boat.position.x, 0.14, 6.8);
+        }
+        const age = wake.userData.age;
+        wake.position.z += speed * dt * 0.52;
+        wake.scale.set(0.48 + age * 1.85, 1, 0.36 + age * 1.45);
+        wake.material.opacity = (1 - age) * 0.46;
+        wake.position.y = 0.14 + Math.sin(time * 3.2 + age * 5) * 0.025;
+      }
+
+      // Gelombang permukaan Sungai Pawan
+      const positions = waterGeo.attributes.position;
+      for (let i = 0; i < positions.count; i++) {
+        const x = waterBase[i * 3], z = waterBase[i * 3 + 2];
+        positions.setY(i, Math.sin(z * 0.65 + time * 3.2 + x * 0.6) * 0.075 + Math.cos(x * 1.6 - z * 0.3 + time * 1.9) * 0.035);
+      }
+      positions.needsUpdate = true;
+      waterGeo.computeVertexNormals();
+
+      updateRows(dt);
+
+      for (const p of particles) if (p.visible) {
+        p.userData.life -= dt;
+        p.visible = p.userData.life > 0;
+        p.position.addScaledVector(p.userData.v, dt);
+        p.userData.v.y -= 6 * dt;
+      }
+      for (const sp of splashParticles) if (sp.visible) {
+        sp.userData.life -= dt;
+        sp.visible = sp.userData.life > 0;
+        sp.position.addScaledVector(sp.userData.v, dt);
+        sp.userData.v.y -= 5.5 * dt;
+      }
+    }
+    renderer.render(scene, camera);
+  }
+
+  function resize() {
+    const w = innerWidth, h = innerHeight;
+    renderer.setSize(w, h);
+    camera.aspect = w / h;
+    camera.position.set(0, w / h < 0.8 ? 8.8 : 6.8, w / h < 0.8 ? 14.8 : 13.6);
+    camera.lookAt(0, 1.0, -14);
+    camera.updateProjectionMatrix();
+  }
+  addEventListener('resize', resize);
+  resize();
+
+  rows.forEach((r, i) => placeRow(r, -16 - i * 12));
+  renderer.domElement.tabIndex = 0;
+  $('start').disabled = false;
+  $('start').textContent = 'Mulai Mendayung';
+  $('start').onclick = start;
+  raf = requestAnimationFrame(tick);
+
+  renderer.domElement.addEventListener('webglcontextlost', e => {
+    e.preventDefault();
+    pause();
+    panel('Grafis terhenti', 'Muat ulang game untuk menyiapkan sungai kembali.', 'Muat Ulang', () => location.reload());
+  });
+  addEventListener('pagehide', () => {
+    cancelAnimationFrame(raf);
+    geometries.forEach(g => g.dispose());
+    textures.forEach(t => t.dispose());
+    materials.forEach(m => m.dispose());
+    waterMat.dispose(); skyMat.dispose(); sunMat.dispose(); haloMat.dispose();
+    wakes.forEach(w => w.material.dispose());
+    renderer.dispose();
+    audio?.close();
+  }, {once: true});
 }
 </script>
 </body>
