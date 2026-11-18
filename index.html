@@ -524,9 +524,22 @@ slab(2.25,.018,.22,0,.27,.49,0x518f91);
 [[-.95,-.35,.95],[-.6,.08,1.15],[-.12,-.45,1.3],[.85,-.3,1.1],[1,.17,.85],[-.8,.44,.65]].forEach(([x,z,h],i)=>{
 g.add(part(new C(.035,.06,h*.65,7),wood,x,.26+h*.325,z));
 const crown=part(new THREE.IcosahedronGeometry(.28,1),[0x3b6547,0x5b7e43,0x355a44][i%3],x,.26+h*.7,z);crown.scale.y=1.35;g.add(crown)});
-// Orang utan kecil di cabang: tubuh cokelat jingga dan lengan panjang.
-g.add(part(new S(.13,12,8),0x9d542e,-.55,.94,.14),part(new S(.095,10,8),0xb56b3c,-.55,1.1,.16),part(new S(.06,10,8),0x69503b,-.55,1.1,.23));
-[-1,1].forEach(side=>{const a=part(new C(.034,.045,.36,8),0x9d542e,-.55+side*.14,1.02,.16);a.rotation.z=-side*.5;g.add(a)});
+// Orang utan kecil di cabang: tubuh cokelat jingga, wajah bermoncong, dan lengan panjang memegang dahan.
+{const miniOu=new THREE.Group();miniOu.position.set(-.55,.93,.15);miniOu.rotation.y=.25;g.add(miniOu);
+const mBr=part(new C(.022,.028,.42,8),wood,0,-.09,-.03);mBr.rotation.z=1.35;miniOu.add(mBr);
+const mBd=part(new S(.11,14,12),0xa8471b,0,.02,0);mBd.scale.set(.95,1.22,.88);miniOu.add(mBd);
+const mBl=part(new S(.095,12,10),0xb85222,0,-.01,.025);miniOu.add(mBl);
+const mHd=part(new S(.078,14,12),0xa8471b,0,.155,.02);miniOu.add(mHd);
+const mFc=part(new S(.058,12,10),0x4a3024,0,.15,.055);mFc.scale.set(.95,.95,.65);miniOu.add(mFc);
+const mMz=part(new S(.042,12,10),0x6b4735,0,.132,.085);mMz.scale.set(.95,.78,.82);miniOu.add(mMz);
+[-1,1].forEach(side=>{
+miniOu.add(part(new S(.011,8,6),0x140c08,side*.022,.162,.098),part(new S(.018,8,6),0x4a3024,side*.076,.155,.015));
+const uA=part(new C(.024,.028,.22,10),0x9d4218,side*.11,.14,.01);uA.rotation.z=-side*.55;miniOu.add(uA);
+const fA=part(new C(.02,.024,.22,10),0x9d4218,side*.17,.28,.02);fA.rotation.z=-side*.2;miniOu.add(fA);
+miniOu.add(part(new S(.024,8,6),0x4a3024,side*.19,.38,.025));
+const lg=part(new C(.025,.022,.16,10),0x9d4218,side*.07,-.07,.02);lg.rotation.z=side*.45;lg.rotation.x=-.4;miniOu.add(lg);
+miniOu.add(part(new S(.024,8,6),0x4a3024,side*.1,-.13,.05));
+})}
 plaque(['TAMAN NASIONAL','GUNUNG PALUNG'],2.35,.48,0,1.92,-.48);
 slab(.04,1.5,.04,-1.04,1,-.5,gold);slab(.04,1.5,.04,1.04,1,-.5,gold);
 plaque(['1937 • Konservasi','1990 • Taman nasional','±108.044 ha'],1.25,.45,0,.32,.86);
@@ -713,29 +726,380 @@ f.add(part(new S(.05,8,6),0x17110d,0,.51,-.012));const fe=part(new THREE.ConeGeo
 [-1,1].forEach(s=>{const am=new THREE.Group();am.position.set(0,.41,s*.06);f.add(am);const ar=part(new C(.016,.014,.18,6),skin,0,-.07,0);am.add(ar);am.rotation.x=s*1.05;am.userData.s=s});
 D.push(f)}
 g.userData.anim=t=>{ring.rotation.y=-t*.32;D.forEach((f,i)=>{const p=t*3.2+i*.8;f.position.y=.06+Math.abs(Math.sin(p))*.025;f.rotation.z=Math.sin(p)*.06;f.children.forEach(o=>{if(o.userData.s)o.rotation.x=o.userData.s*(1.05+Math.sin(p)*.25)})})}}
-if(k=='orangutan'){const fur=0xb5531f,fd=0x8a3a14,face=0x5a3a2a;const fz=(geo,c)=>new THREE.Mesh(geo,new THREE.MeshPhongMaterial({color:c,flatShading:true,shininess:4,specular:0x111111}));
-const ground=flat(new THREE.CylinderGeometry(.95,1,.12,10),0x4f6b2a);ground.position.y=.06;g.add(ground);
-[[-.5,.5,.16],[.55,.45,.13],[.2,-.6,.15],[-.62,-.3,.12]].forEach(q=>{const b=flat(new THREE.IcosahedronGeometry(q[2],0),0x3f7a3a);b.position.set(q[0],.15,q[1]);g.add(b)});
-for(let i=0;i<5;i++){const lf=flat(new THREE.ConeGeometry(.05,.22,4),0x5a9a3a);lf.position.set(Math.cos(i*1.7)*.7,.2,Math.sin(i*1.7)*.7);lf.rotation.z=Math.cos(i)*.3;g.add(lf)}
-g.add(lathe([[.2,0],[.14,.2],[.12,.9],[.1,1.8],[.08,2.3]],0x5e4029));g.children[g.children.length-1].position.set(-.35,.1,-.25);
-const brn=part(new C(.045,.065,1.2,7),0x5e4029,.2,1.75,-.25);brn.rotation.z=-1.25;g.add(brn);
-[[-.35,2.5,-.25,.5,0x2f7a3f],[.1,2.25,-.2,.42,0x3f9a4f],[-.75,2.2,-.2,.4,0x378a47],[.6,2.0,-.25,.38,0x4aa95a],[-.3,2.05,.15,.34,0x56b565]].forEach(q=>{const m=flat(new THREE.IcosahedronGeometry(q[3],1),q[4]);m.position.set(q[0],q[1],q[2]);g.add(m)});
-[[.45,1.98,-.12],[.62,1.9,-.3],[-.1,2.0,.05],[.3,1.88,-.38]].forEach(q=>g.add(part(new S(.035,8,6),0xb3261e,q[0],q[1],q[2])));
-const ou=new THREE.Group();ou.position.set(.3,0,-.15);g.add(ou);
-const bd=fz(new THREE.SphereGeometry(.22,10,8),fur);bd.scale.set(1,1.3,.85);bd.position.set(0,1.18,0);ou.add(bd);
-const hd=fz(new THREE.SphereGeometry(.13,10,8),fur);hd.position.set(0,1.55,.04);ou.add(hd);
-const fc=part(new S(.09,10,8),face,0,1.53,.12);fc.scale.set(1,1.05,.6);ou.add(fc);
-[-1,1].forEach(s=>{ou.add(part(new S(.016,6,4),0x17110d,s*.035,1.57,.17));
-const ar=new THREE.Group();ar.position.set(s*.17,1.32,0);ou.add(ar);const al=fz(new THREE.CylinderGeometry(.045,.055,.6,7),fur);al.position.y=s>0?.3:-.25;ar.add(al);ar.rotation.z=s>0?-.25:.5;
-const hn=fz(new THREE.SphereGeometry(.05,6,5),fd);hn.position.y=s>0?.6:-.55;ar.add(hn);
-const lg=new THREE.Group();lg.position.set(s*.1,.95,0);ou.add(lg);const ll=fz(new THREE.CylinderGeometry(.05,.045,.36,7),fur);ll.position.y=-.18;lg.add(ll);lg.rotation.z=s*.35;lg.rotation.x=-.5;
-const ft=fz(new THREE.SphereGeometry(.05,6,5),fd);ft.position.y=-.38;lg.add(ft)});
-ou.add(part(new S(.03,6,4),fd,0,1.5,.17));
-const bb=new THREE.Group();bb.position.set(.02,1.12,.17);ou.add(bb);const bbd=fz(new THREE.SphereGeometry(.08,8,6),fur);bbd.scale.y=1.2;bb.add(bbd);
-const bh=fz(new THREE.SphereGeometry(.06,8,6),fur);bh.position.set(0,.11,.03);bb.add(bh);const bf=part(new S(.04,8,6),face,0,.11,.07);bf.scale.z=.6;bb.add(bf);
-[-1,1].forEach(s=>{const a=fz(new THREE.CylinderGeometry(.018,.018,.16,5),fur);a.position.set(s*.08,.02,-.02);a.rotation.z=s*1.2;bb.add(a)});
-ou.rotation.y=-.35;ou.position.y=.05;
-g.userData.anim=t=>{ou.rotation.z=Math.sin(t*.8)*.04;bb.rotation.x=Math.sin(t*1.6)*.08}}
+if(k=='orangutan'){
+/* Tekstur bulu lebat orangutan Kalimantan, kulit kayu berlumut, dan dedaunan hutan hujan */
+const furMaps=(()=>{
+const c=document.createElement('canvas'),b=document.createElement('canvas');c.width=c.height=b.width=b.height=256;
+const x=c.getContext('2d'),bx=b.getContext('2d');
+x.fillStyle='#8c3512';x.fillRect(0,0,256,256);bx.fillStyle='#707070';bx.fillRect(0,0,256,256);
+const tones=['#6e260b','#8a3312','#a64219','#bf5222','#d4662f','#993b15','#4f1a07'];
+for(let i=0;i<2400;i++){
+const px=Math.random()*256,py=Math.random()*256,len=12+Math.random()*22,sw=(Math.random()-.5)*6;
+x.strokeStyle=tones[i%tones.length];x.lineWidth=1+Math.random()*1.6;x.lineCap='round';
+bx.strokeStyle=i%2?'rgba(235,235,235,.45)':'rgba(30,30,30,.45)';bx.lineWidth=x.lineWidth;bx.lineCap='round';
+for(const ox of[-256,0,256])for(const oy of[-256,0,256]){
+x.beginPath();x.moveTo(px+ox,py+oy);x.quadraticCurveTo(px+ox+sw,py+oy+len*.5,px+ox+sw*.4,py+oy+len);x.stroke();
+bx.beginPath();bx.moveTo(px+ox,py+oy);bx.quadraticCurveTo(px+ox+sw,py+oy+len*.5,px+ox+sw*.4,py+oy+len);bx.stroke();
+}}
+const map=new THREE.CanvasTexture(c),bump=new THREE.CanvasTexture(b);
+map.wrapS=map.wrapT=bump.wrapS=bump.wrapT=THREE.RepeatWrapping;map.repeat.set(2,2);bump.repeat.set(2,2);
+return {map,bump};
+})();
+const barkMaps=(()=>{
+const c=document.createElement('canvas'),b=document.createElement('canvas');c.width=c.height=b.width=b.height=256;
+const x=c.getContext('2d'),bx=b.getContext('2d');
+x.fillStyle='#4d3522';x.fillRect(0,0,256,256);bx.fillStyle='#808080';bx.fillRect(0,0,256,256);
+for(let i=0;i<420;i++){
+const px=Math.random()*256,py=Math.random()*256,w=2+Math.random()*5,h=24+Math.random()*55;
+x.fillStyle=i%3===0?'rgba(28,18,10,.45)':i%3===1?'rgba(105,76,50,.35)':'rgba(56,82,36,.28)';
+bx.fillStyle=i%2?'rgba(220,220,220,.38)':'rgba(35,35,35,.42)';
+for(const dy of[-256,0,256]){x.fillRect(px,py+dy,w,h);bx.fillRect(px,py+dy,w,h)}
+}
+const map=new THREE.CanvasTexture(c),bump=new THREE.CanvasTexture(b);
+map.wrapS=map.wrapT=bump.wrapS=bump.wrapT=THREE.RepeatWrapping;map.repeat.set(2,4);bump.repeat.set(2,4);
+return {map,bump};
+})();
+const std=(opts)=>new THREE.MeshStandardMaterial(opts);
+const furMat=std({color:0xd86b34,map:furMaps.map,bumpMap:furMaps.bump,bumpScale:.028,roughness:.86,metalness:.02});
+const darkFurMat=std({color:0xb54e20,map:furMaps.map,bumpMap:furMaps.bump,bumpScale:.032,roughness:.88,metalness:.02});
+const lightFurMat=std({color:0xe88245,map:furMaps.map,bumpMap:furMaps.bump,bumpScale:.024,roughness:.84,metalness:.02});
+const babyFurMat=std({color:0xe57a3c,map:furMaps.map,bumpMap:furMaps.bump,bumpScale:.022,roughness:.82,metalness:.02});
+const faceSkin=std({color:0x36241d,roughness:.58,metalness:.05,bumpMap:furMaps.bump,bumpScale:.004});
+const muzzleSkin=std({color:0x52372b,roughness:.62,metalness:.04,bumpMap:furMaps.bump,bumpScale:.005});
+const chestSkin=std({color:0x472d22,roughness:.68,metalness:.03,bumpMap:furMaps.bump,bumpScale:.008});
+const handSkin=std({color:0x2e1f19,roughness:.64,metalness:.04});
+const babyPaleSkin=std({color:0xd19c78,roughness:.64,metalness:.02});
+const babyMuzzleSkin=std({color:0xc28b68,roughness:.62,metalness:.03});
+const lipDark=std({color:0x221410,roughness:.5,metalness:.05});
+const scleraMat=std({color:0x2b1911,roughness:.25,metalness:.08});
+const irisMat=std({color:0x6e3312,roughness:.2,metalness:.1});
+const pupilMat=std({color:0x0a0604,roughness:.12,metalness:.15});
+const gleamMat=new THREE.MeshBasicMaterial({color:0xfff9eb});
+const barkMat=std({color:0x7a5a40,map:barkMaps.map,bumpMap:barkMaps.bump,bumpScale:.035,roughness:.92,metalness:0});
+const vineMat=std({color:0x5c422c,map:barkMaps.map,bumpMap:barkMaps.bump,bumpScale:.02,roughness:.88,metalness:0});
+const mossMat=std({color:0x486e2d,bumpMap:furMaps.bump,bumpScale:.02,roughness:.95});
+
+const addMesh=(geo,m,x=0,y=0,z=0,par=g)=>{const o=new THREE.Mesh(geo,m);o.position.set(x,y,z);par.add(o);return o};
+const piv=(x=0,y=0,z=0,par=g)=>{const o=new THREE.Group();o.position.set(x,y,z);par.add(o);return o};
+const ball=(r,m,x=0,y=0,z=0,sx=1,sy=1,sz=1,par=g)=>{const o=addMesh(new S(r,22,16),m,x,y,z,par);o.scale.set(sx,sy,sz);return o};
+const tube=(pts,r,m,par=g,seg=20,rad=8)=>{const curve=new THREE.CatmullRomCurve3(pts.map(p=>new THREE.Vector3(...p)));return addMesh(new THREE.TubeGeometry(curve,seg,r,rad,false),m,0,0,0,par)};
+/* Untaian rambut meruncing untuk membentuk siluet bulu panjang khas orangutan */
+const furLock=(pts,r0,m,par=g)=>{
+const curve=new THREE.CatmullRomCurve3(pts.map(p=>new THREE.Vector3(...p))),geo=new THREE.TubeGeometry(curve,12,r0,6,false),pos=geo.attributes.position,v=new THREE.Vector3();
+for(let i=0;i<pos.count;i++){
+const t=Math.min(1,Math.floor(i/7)/12), cPt=curve.getPointAt(t);
+v.fromBufferAttribute(pos,i).sub(cPt).multiplyScalar(1-t*.78).add(cPt);
+pos.setXYZ(i,v.x,v.y,v.z);
+}
+geo.computeVertexNormals();return addMesh(geo,m,0,0,0,par);
+};
+const limbSeg=(r1,r2,len,m,par)=>{const o=addMesh(new C(r1,r2,len,16,4),m,0,-len/2,0,par);return o};
+
+/* 1. Alas Diorama Lantai Hutan Hujan Gunung Palung */
+addMesh(new C(1.06,1.12,.09,32),std({color:0x4a3220,roughness:.8}),0,.045,0);
+const rim=addMesh(new THREE.TorusGeometry(1.06,.02,8,40),std({color:0xc99b46,roughness:.4,metalness:.5}),0,.09,0);rim.rotation.x=Math.PI/2;
+const soil=addMesh(new C(1.02,1.05,.12,32),mossMat,0,.07,0);
+[[-.48,.46,.22,.09],[.52,.42,.19,.08],[.22,-.56,.24,.1],[-.58,-.32,.18,.08],[.08,.58,.16,.07]].forEach(([x,z,r,h])=>{
+ball(r,std({color:0x3b6326,roughness:.92}),x,.11,z,1.2,h/r,1.1);
+});
+[[-.65,.18,.11],[.64,-.18,.09],[-.15,-.68,.1]].forEach(([x,z,r])=>{
+const rk=addMesh(new THREE.IcosahedronGeometry(r,1),std({color:0x6d6a61,roughness:.9}),x,.11,z);rk.scale.set(1.2,.65,1);
+});
+/* Pakis lantai hutan */
+for(let i=0;i<7;i++){
+const fa=i*.9+(.2*(i%2)),fd=.62+(i%3)*.11,fx=Math.cos(fa)*fd,fz=Math.sin(fa)*fd,fg=piv(fx,.11,fz);
+for(let j=0;j<5;j++){
+const a=j*1.25+.3,fl=tube([[0,0,0],[Math.cos(a)*.12,.11,Math.sin(a)*.12],[Math.cos(a)*.22,.07,Math.sin(a)*.22]],.012,std({color:j%2?0x3e7a2e:0x52943b,roughness:.8}),fg,8,5);
+fl.scale.z=1.8;
+}}
+
+/* 2. Pohon Hutan Hujan Berbanir, Dahan Duduk, dan Akar Gantung (Liana) */
+const treeGrp=piv(0,0,0);
+/* Batang utama sedikit meliuk organik */
+tube([[-.38,.06,-.24],[-.34,.55,-.22],[-.28,1.12,-.18],[-.29,1.72,-.21],[-.35,2.38,-.25]],.155,barkMat,treeGrp,24,14);
+tube([[-.35,.06,-.22],[-.31,.85,-.19],[-.27,1.55,-.19],[-.33,2.25,-.24]],.125,barkMat,treeGrp,20,12);
+/* Empat akar papan (banir) di pangkal pohon */
+[[[-.34,.62,-.20],[-.52,.28,-.08],[-.72,.08,.08]],
+ [[-.32,.58,-.18],[-.12,.26,-.04],[.08,.08,.12]],
+ [[-.40,.55,-.26],[-.62,.25,-.38],[-.80,.08,-.48]],
+ [[-.34,.52,-.26],[-.16,.24,-.42],[.02,.08,-.56]]].forEach(pts=>{
+const r=tube(pts,.055,barkMat,treeGrp,12,8);r.scale.set(1,1.35,.75);
+});
+/* Dahan utama tempat induk duduk & bersandar */
+tube([[-.28,1.04,-.18],[-.04,.96,-.08],[.24,.94,-.01],[.54,.99,.04],[.78,1.08,.07]],.082,barkMat,treeGrp,20,12);
+/* Cabang bawah tempat kaki prehensil berpijak & mencengkeram */
+tube([[-.18,.88,-.06],[-.02,.70,.14],[.26,.65,.14],[.56,.67,.10]],.052,barkMat,treeGrp,16,10);
+/* Dahan kanopi atas tempat tangan kiri induk bergelantungan */
+tube([[-.30,1.82,-.21],[-.02,1.95,-.09],[.28,1.98,-.03],[.62,2.04,-.06],[.86,2.14,-.10]],.068,barkMat,treeGrp,20,10);
+/* Cabang kanopi kiri-belakang */
+tube([[-.32,1.92,-.23],[-.58,2.08,-.16],[-.82,2.20,-.08]],.052,barkMat,treeGrp,14,8);
+/* Lumut pada percabangan pohon */
+[[-.16,1.02,-.12,.11,.04,.09],[.22,.99,-.01,.14,.035,.09],[-.02,1.99,-.09,.12,.035,.08]].forEach(([x,y,z,sx,sy,sz])=>{
+ball(1,mossMat,x,y,z,sx,sy,sz,treeGrp);
+});
+/* Pakis sarang burung (epifit) di pangkal dahan */
+{const ep=piv(-.22,1.08,-.12,treeGrp);ball(.065,std({color:0x4a3520,roughness:.9}),0,0,0,1.2,.8,1.1,ep);
+for(let i=0;i<9;i++){const a=i*.7,leaf=tube([[0,.01,0],[Math.cos(a)*.11,.10,Math.sin(a)*.11],[Math.cos(a)*.19,.16,Math.sin(a)*.19]],.016,std({color:i%2?0x468834:0x5ba344,roughness:.7}),ep,8,6);leaf.scale.y=.55}}
+/* Akar liana menggantung dari dahan atas (seperti pada foto referensi) */
+const vineL=tube([[-.01,1.95,-.06],[-.03,1.58,-.03],[-.07,1.15,-.05],[-.12,.62,-.09],[-.15,.12,-.11]],.018,vineMat,treeGrp,20,7);
+const vineR=tube([[.52,2.01,-.04],[.54,1.62,.02],[.51,1.24,.05],[.55,.82,.09]],.015,vineMat,treeGrp,16,7);
+tube([[-.36,.35,-.14],[-.22,.78,-.12],[-.24,1.35,-.12],[-.28,1.82,-.16]],.016,vineMat,treeGrp,16,6);
+
+/* 3. Tajuk Kanopi Daun Rimbun & Buah Hutan (Ara / Durian Hutan) */
+const canopy=piv(0,0,0,treeGrp);
+const leafCols=[0x2d6e36,0x398241,0x48964d,0x58a856,0x255c2d];
+[[-.36,2.46,-.24,.46],[.08,2.28,-.14,.42],[-.72,2.24,-.14,.38],[.58,2.16,-.10,.40],[-.28,2.14,.10,.35],[.34,2.38,-.22,.36],[.78,2.18,-.08,.30]].forEach(([cx,cy,cz,r],idx)=>{
+const cl=piv(cx,cy,cz,canopy);
+for(let j=0;j<7;j++){
+const a=j*.9,d=j?r*.42:0,sub=ball(r*(j?.62:.78),std({color:leafCols[(idx+j)%leafCols.length],roughness:.78,bumpMap:furMaps.bump,bumpScale:.015}),Math.cos(a)*d,(j%3-.8)*r*.22,Math.sin(a)*d,1.15,.72,1.05,cl);
+sub.rotation.set((j%2-.5)*.3,a,(j%3-1)*.25);
+}});
+/* Gugusan buah ara / buah hutan Kalimantan di cabang */
+[[.44,1.93,-.04],[.49,1.90,-.08],[.39,1.91,-.01],[-.10,1.90,-.08],[-.14,1.87,-.12],[.62,.96,.06],[.66,.94,.03]].forEach(([fx,fy,fz],i)=>{
+ball(.032,std({color:i%2?0xc83e1b:0xe06a24,roughness:.45}),fx,fy,fz,1,1.15,1,treeGrp);
+});
+
+/* 4. Induk Orangutan Kalimantan (Pongo pygmaeus) */
+const ou=piv(.22,.97,.01);ou.rotation.y=-.16;
+const bodyPiv=piv(0,0,0,ou);
+/* Panggul & perut buncit alami */
+ball(.19,darkFurMat,0,.05,-.02,1.08,.86,.96,bodyPiv);
+const torso=piv(0,.06,0,bodyPiv);torso.rotation.x=.07;
+const belly=ball(.225,furMat,0,.17,.035,1.05,1.10,.98,torso);
+/* Dada bidang & kulit dada gelap */
+const chest=ball(.235,darkFurMat,0,.38,-.01,1.18,.96,.88,torso);
+ball(.15,chestSkin,0,.37,.082,.96,.92,.62,torso);
+ball(.13,muzzleSkin,0,.22,.125,.92,.95,.55,torso);
+/* Punuk bahu & leher tebal */
+ball(.195,darkFurMat,0,.45,-.055,1.16,.84,.86,torso);
+ball(.115,darkFurMat,0,.52,.01,1.05,.9,1,torso);
+
+/* Jumbai bulu panjang (shaggy fur) di bahu, punggung, dan pinggul induk */
+for(const s of[-1,1]){
+furLock([[s*.21,.46,0],[s*.27,.30,-.02],[s*.29,.12,-.03],[s*.26,-.04,-.02]],.048,furMat,torso);
+furLock([[s*.18,.44,-.08],[s*.24,.26,-.12],[s*.25,.08,-.11]],.045,darkFurMat,torso);
+furLock([[s*.20,.38,.06],[s*.25,.22,.05],[s*.24,.06,.03]],.04,lightFurMat,torso);
+furLock([[s*.17,.14,-.04],[s*.22,-.02,-.05],[s*.20,-.16,-.03]],.042,furMat,torso);
+}
+for(let i=-2;i<=2;i++){
+furLock([[i*.065,.47,-.11],[i*.075,.28,-.16],[i*.07,.08,-.15]],.044,darkFurMat,torso);
+}
+
+/* Kepala & Wajah Induk yang Ekspresif dan Anatomis */
+const head=piv(0,.56,.045,torso);
+/* Kantong leher (throat pouch) berlipat di bawah dagu */
+ball(.098,muzzleSkin,0,-.082,.058,1.12,.78,.92,head);
+ball(.082,faceSkin,0,-.115,.045,1.18,.65,.85,head);
+/* Tempurung kepala & rambut mahkota */
+ball(.148,furMat,0,.045,-.015,.98,1.08,1.02,head);
+/* Jumbai rambut panjang di puncak kepala & pelipis (sesuai foto32.jpg) */
+for(let i=-3;i<=3;i++){
+const x=i*.028,z=-.02+Math.abs(i)*.008;
+furLock([[x,.15,z],[x*1.45,.23,z-.02],[x*1.85,.20,z-.05]],.026,lightFurMat,head);
+}
+for(const s of[-1,1]){
+furLock([[s*.12,.10,.02],[s*.165,-.01,.02],[s*.175,-.13,0]],.036,furMat,head);
+furLock([[s*.11,.06,-.04],[s*.15,-.06,-.05],[s*.14,-.16,-.04]],.032,darkFurMat,head);
+/* Daun telinga gelap melengkung */
+const ear=piv(s*.144,.018,-.005,head);
+ball(.032,faceSkin,0,0,0,.55,1.15,.8,ear);
+ball(.018,lipDark,s*-.004,0,.008,.45,.85,.5,ear);
+/* Tulang pipi */
+ball(.074,faceSkin,s*.082,-.002,.076,.82,1.02,.68,head);
+}
+/* Wajah bagian atas & cekungan mata */
+ball(.116,faceSkin,0,.022,.052,.98,1.02,.76,head);
+/* Busur alis (supraorbital brow ridge) menonjol khas orangutan */
+tube([[-.082,.064,.112],[-.042,.082,.132],[0,.076,.136],[.042,.082,.132],[.082,.064,.112]],.021,faceSkin,head,16,8);
+/* Batang hidung & cuping hidung */
+ball(.024,faceSkin,0,.022,.132,.62,1.25,.58,head);
+/* Moncong (muzzle) menonjol bulat ke depan */
+ball(.092,muzzleSkin,0,-.038,.112,.96,.88,.95,head);
+ball(.076,muzzleSkin,0,-.022,.135,.88,.76,.78,head);
+const jaw=piv(0,-.065,.095,head);
+ball(.068,muzzleSkin,0,-.016,.012,.90,.72,.88,jaw);
+/* Lubang hidung miring khas Pongo pygmaeus */
+for(const s of[-1,1]){
+ball(.025,muzzleSkin,s*.022,-.004,.162,1.05,.78,.72,head);
+const ns=ball(.012,pupilMat,s*.018,-.006,.178,.75,1.15,.45,head);ns.rotation.z=-s*.35;
+}
+/* Garis philtrum & bibir bervolume */
+tube([[0,-.012,.178],[0,-.044,.182]],.006,faceSkin,head,6,6);
+tube([[-.056,-.048,.145],[-.028,-.044,.175],[0,-.046,.182],[.028,-.044,.175],[.056,-.048,.145]],.011,muzzleSkin,head,14,8);
+tube([[-.052,.010,.048],[-.025,.006,.076],[0,.005,.082],[.025,.006,.076],[.052,.010,.048]],.011,muzzleSkin,jaw,14,8);
+tube([[-.050,-.051,.146],[-.024,-.049,.175],[0,-.050,.181],[.024,-.049,.175],[.050,-.051,.146]],.0045,lipDark,head,12,6);
+
+/* Sepasang mata ekspresif dengan kilau & kelopak mata berkedip */
+const momEyes=[-1,1].map(s=>{
+const ep=piv(s*.042,.038,.122,head);
+ball(.027,faceSkin,0,0,-.004,1.15,1.05,.6,ep);
+ball(.022,scleraMat,0,0,0,1,.92,.68,ep);
+ball(.015,irisMat,0,0,.008,1,1,.48,ep);
+ball(.0085,pupilMat,0,0,.013,1,1,.38,ep);
+ball(.004,gleamMat,-.0045,.005,.017,1,1,.3,ep);
+ball(.0022,gleamMat,.004,-.0035,.016,1,1,.3,ep);
+const lid=ball(.024,faceSkin,0,.008,.002,1.08,.55,.76,ep);lid.rotation.x=-.35;
+return {ep,lid};
+});
+
+/* Fungsi pembuat tangan & kaki prehensil berjari melengkung */
+const makeHand=(par,s,isFoot=false,openGrip=false)=>{
+const hg=piv(0,0,0,par);
+ball(isFoot?.046:.048,handSkin,0,-.035,isFoot?.025:.01,.88,1.18,.62,hg);
+for(let f=0;f<4;f++){
+const fx=(f-1.5)*.019,curl=openGrip?.35:.75;
+const fg=tube([[fx,-.065,.01],[fx,-.105,.028+curl*.015],[fx,-.125,-.005],[fx,-.112,-.035]],.0085,handSkin,hg,10,6);
+}
+const th=tube([[s*(isFoot?.038:.036),-.035,.015],[s*(isFoot?.058:.052),-.062,.035],[s*(isFoot?.048:.044),-.078,.012]],.0095,handSkin,hg,8,6);
+return hg;
+};
+
+/* Lengan Kiri Induk: Mengangkat tinggi mencengkeram dahan atas & liana (seperti foto32.jpg) */
+const armL=piv(-.22,.44,0,torso);
+ball(.072,darkFurMat,0,0,0,1.05,1.1,1,armL);
+limbSeg(.062,.052,.36,furMat,armL);
+for(let i=0;i<4;i++){
+furLock([[-.03,-.06-i*.07,-.01],[-.11,-.12-i*.07,-.03],[-.15,-.22-i*.07,-.02]],.032,furMat,armL);
+}
+const elbowL=piv(0,-.36,0,armL);
+ball(.052,furMat,0,0,0,1,1,1,elbowL);
+limbSeg(.050,.040,.36,darkFurMat,elbowL);
+for(let i=0;i<3;i++){
+furLock([[-.025,-.08-i*.08,-.01],[-.09,-.16-i*.08,-.02]],.026,lightFurMat,elbowL);
+}
+const wristL=piv(0,-.36,0,elbowL);
+const handL=makeHand(wristL,-1,false,false);
+/* Rotasi lengan kiri agar tangan tepat menggenggam dahan kanopi atas di y≈1.96 */
+armL.rotation.set(-.18,0,-2.58);
+elbowL.rotation.set(.22,0,-.36);
+wristL.rotation.set(.35,.4,0);
+
+/* Lengan Kanan Induk: Merangkul & mendekap anak orangutan dengan lembut */
+const armR=piv(.22,.43,.01,torso);
+ball(.072,darkFurMat,0,0,0,1.05,1.1,1,armR);
+limbSeg(.062,.052,.31,furMat,armR);
+for(let i=0;i<4;i++){
+furLock([[.035,-.06-i*.065,0],[.095,-.16-i*.065,-.02],[.08,-.28-i*.065,-.03]],.034,furMat,armR);
+}
+const elbowR=piv(0,-.31,0,armR);
+ball(.052,furMat,0,0,0,1,1,1,elbowR);
+limbSeg(.048,.038,.28,darkFurMat,elbowR);
+for(let i=0;i<3;i++){
+furLock([[.02,-.08-i*.07,0],[.05,-.19-i*.07,-.02]],.026,lightFurMat,elbowR);
+}
+const wristR=piv(0,-.28,0,elbowR);
+const handR=makeHand(wristR,1,false,true);
+armR.rotation.set(-.24,0,-.15);
+elbowR.rotation.set(-.55,-.25,-1.18);
+wristR.rotation.set(.2,-.5,-.35);
+
+/* Kedua Kaki Induk: Lutut ditekuk membuka alami, telapak kaki mencengkeram dahan */
+const legs=[-1,1].map(s=>{
+const hip=piv(s*.14,.05,.02,bodyPiv);
+ball(.068,darkFurMat,0,0,0,1.05,1,1,hip);
+limbSeg(.062,.050,.24,furMat,hip);
+furLock([[s*.03,-.05,0],[s*.08,-.15,-.02],[s*.07,-.25,-.03]],.032,furMat,hip);
+const knee=piv(0,-.24,0,hip);
+ball(.050,furMat,0,0,0,1,1,1,knee);
+limbSeg(.048,.038,.22,darkFurMat,knee);
+const ankle=piv(0,-.22,0,knee);
+const foot=makeHand(ankle,s,true,false);
+if(s<0){
+hip.rotation.set(-1.05,.38,-.52);
+knee.rotation.set(1.38,0,.22);
+ankle.rotation.set(-.25,.2,.15);
+}else{
+hip.rotation.set(-.78,-.32,.48);
+knee.rotation.set(1.18,0,-.20);
+ankle.rotation.set(-.30,-.2,-.12);
+}
+return {hip,knee,ankle};
+});
+
+/* 5. Anak Orangutan (Baby Orangutan) Memeluk Dada/Sisi Kiri Induk */
+const bb=piv(-.055,.22,.165,torso);bb.rotation.set(-.08,.24,-.10);
+ball(.092,babyFurMat,0,0,0,.96,1.22,.88,bb);
+ball(.072,muzzleSkin,0,.01,.052,.85,1.02,.55,bb);
+for(const s of[-1,1]){
+furLock([[s*.075,.05,0],[s*.11,-.02,-.01],[s*.10,-.10,-.02]],.024,babyFurMat,bb);
+}
+const bHead=piv(0,.135,.025,bb);
+ball(.078,babyFurMat,0,.015,0,.98,1.05,.96,bHead);
+/* Rambut jambul bayi orangutan yang berdiri lembut (khas bayi Pongo pygmaeus di foto32.jpg) */
+for(let i=-3;i<=3;i++){
+const bx=i*.018;
+furLock([[bx,.075,0],[bx*1.5,.135,-.01],[bx*1.9,.155,-.03]],.016,lightFurMat,bHead);
+}
+ball(.064,faceSkin,0,.008,.034,.96,.96,.72,bHead);
+/* Lingkar mata pucat (kacamata terang khas anak orangutan) & moncong cerah */
+for(const s of[-1,1]){
+ball(.028,babyPaleSkin,s*.023,.016,.056,1.08,.96,.48,bHead);
+const bEar=piv(s*.076,.008,0,bHead);
+ball(.020,babyMuzzleSkin,0,0,0,.5,1.1,.75,bEar);
+}
+ball(.048,babyPaleSkin,0,-.024,.064,.96,.82,.86,bHead);
+ball(.036,babyMuzzleSkin,0,-.042,.058,.88,.68,.80,bHead);
+/* Hidung & bibir mungil bayi */
+for(const s of[-1,1])ball(.007,pupilMat,s*.010,-.008,.098,.8,1.1,.45,bHead);
+tube([[-.026,-.032,.088],[0,-.030,.102],[.026,-.032,.088]],.0045,faceSkin,bHead,10,6);
+/* Mata bulat besar anak orangutan */
+const babyEyes=[-1,1].map(s=>{
+const ep=piv(s*.023,.016,.068,bHead);
+ball(.014,scleraMat,0,0,0,1,.95,.65,ep);
+ball(.010,irisMat,0,0,.005,1,1,.45,ep);
+ball(.006,pupilMat,0,0,.008,1,1,.35,ep);
+ball(.0028,gleamMat,-.003,.003,.011,1,1,.3,ep);
+const lid=ball(.0155,babyPaleSkin,0,.005,.001,1.06,.52,.72,ep);lid.rotation.x=-.35;
+return {ep,lid};
+});
+/* Lengan & kaki bayi mendekap erat bulu induknya */
+for(const s of[-1,1]){
+tube([[s*.068,.055,0],[s*.115,.075,-.055],[s*.095,.105,-.125]],.021,babyFurMat,bb,10,7);
+ball(.022,handSkin,s*.092,.108,-.132,.9,.8,1.1,bb);
+tube([[s*.058,-.065,.01],[s*.098,-.085,-.045],[s*.085,-.075,-.105]],.022,babyFurMat,bb,10,7);
+ball(.022,handSkin,s*.082,-.075,-.112,.9,.8,1.1,bb);
+}
+
+/* Bayangan halus untuk seluruh bagian model */
+g.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});
+
+/* 6. Animasi Multi-Sendi yang Alami & Hidup */
+g.userData.anim=t=>{
+const breath=Math.sin(t*2.1),sway=Math.sin(t*.75),slow=Math.sin(t*.38);
+/* Pernapasan alami pada perut & dada induk */
+belly.scale.set(1.05+breath*.022,1.10+breath*.018,.98+breath*.028);
+chest.scale.set(1.18+breath*.015,.96+breath*.015,.88+breath*.02);
+/* Ayunan tubuh halus dengan kompensasi bahu/siku kiri agar tangan tetap mencengkeram dahan atas */
+bodyPiv.position.x=sway*.012;
+bodyPiv.position.y=breath*.005;
+torso.rotation.z=sway*.028;
+torso.rotation.x=.07+breath*.015;
+armL.rotation.z=-2.58-sway*.032;
+elbowL.rotation.z=-.36+sway*.025;
+/* Tangan kanan induk mengelus/menimang punggung bayi dengan lembut */
+armR.rotation.x=-.24+Math.sin(t*1.3)*.035;
+elbowR.rotation.x=-.55+Math.sin(t*1.3+.6)*.045;
+wristR.rotation.z=-.35+Math.sin(t*2.6)*.06;
+/* Kepala induk menoleh lembut & sesekali menunduk menatap anaknya dengan kasih sayang */
+const lookDown=Math.max(0,Math.sin(t*.45-.8));
+head.rotation.y=slow*.18-lookDown*.12;
+head.rotation.x=lookDown*.16+Math.sin(t*1.1)*.03;
+head.rotation.z=Math.sin(t*.6)*.04+lookDown*.05;
+jaw.rotation.x=Math.max(0,Math.sin(t*2.8))*.045;
+/* Kedipan mata alami induk & anak (tidak bersamaan) */
+const momBlink=((t+.4)%4.2)<.13,babyBlink=((t+1.9)%3.5)<.12;
+momEyes.forEach(e=>{e.lid.scale.y=momBlink?1.15:.55;e.lid.position.y=momBlink?0:.008});
+babyEyes.forEach(e=>{e.lid.scale.y=babyBlink?1.15:.52;e.lid.position.y=babyBlink?0:.005});
+/* Anak orangutan bergerak manja & menoleh ingin tahu */
+bb.position.y=.22+breath*.006;
+bb.rotation.x=-.08+Math.sin(t*1.4)*.035;
+bHead.rotation.y=.15+Math.sin(t*.9+.5)*.22;
+bHead.rotation.x=-.08+Math.cos(t*1.2)*.06;
+bHead.rotation.z=Math.sin(t*.8)*.05;
+/* Hembusan angin lembut pada tajuk daun & liana */
+canopy.rotation.z=Math.sin(t*1.2)*.012;
+vineR.rotation.z=Math.sin(t*1.5)*.018;
+}}
 if(k=='aleale'||k=='lempok'||k=='amplang'){
 const tbl=(w,d,h)=>{g.add(part(new B(w,.06,d),0x6b4328,0,h,0),part(new B(w+.04,.02,d+.04),0xe0a81f,0,h+.035,0));[[-1,-1],[1,-1],[-1,1],[1,1]].forEach(q=>g.add(part(new C(.035,.04,h,8),0x4a3220,q[0]*(w/2-.08),h/2,q[1]*(d/2-.08))));g.add(part(new B(w-.1,.03,.03),0x4a3220,0,h*.35,d/2-.08),part(new B(w-.1,.03,.03),0x4a3220,0,h*.35,-d/2+.08))};
 const cloth=(w,d,y,c1,c2)=>{const m=new THREE.Mesh(new B(w,.012,d),new THREE.MeshLambertMaterial({map:tex(64,64,(x,W,H)=>{x.fillStyle=c1;x.fillRect(0,0,W,H);x.fillStyle=c2;for(let i=0;i<W;i+=16){x.fillRect(i,0,6,H);x.fillRect(0,i,W,6)}},3,2)}));m.position.y=y;g.add(m)};
