@@ -152,10 +152,14 @@ body.ig.dlgon #mini,body.ig.minioff #mini{display:none}
 /* ===== ISI MUSEUM: ganti teks / tambah foto di sini =====
    img: alamat foto, misalnya 'foto/pohon.webp' (kosongkan jika belum ada) */
 const EXHIBITS=[
-{id:'l1',room:'Legenda Ale-Ale',kind:'tree',title:'Pohon Ketapang Raksasa',img:'',text:'Menurut cerita rakyat, dahulu terdapat pohon Ketapang raksasa yang menaungi permukiman hingga masyarakat kesulitan mendapatkan sinar matahari dan bercocok tanam.'},
-{id:'l2',room:'Legenda Ale-Ale',kind:'axe',title:'Kapak Perak',img:'',text:'Berbagai upaya menebang pohon itu gagal, hingga akhirnya sebuah kapak perak berhasil merobohkannya.'},
-{id:'l3',room:'Legenda Ale-Ale',kind:'river',title:'Sungai Pawan',img:'',text:'Konon, pohon yang roboh itu menjelma menjadi Sungai Pawan.'},
-{id:'l4',room:'Legenda Ale-Ale',kind:'shell',title:'Kerang Ale-Ale',img:'',text:'Buah pohon itu berubah menjadi kerang Ale-Ale, dan wilayah tersebut kemudian dikenal sebagai Ketapang.'},
+{id:'l1',room:'Legenda Ale-Ale',kind:'ketapang_legend',base:false,still:true,pos:[-15.5,-3.2,0],gp:[-13.7,-2.4],wide:[[-16.2,-3.2,.8],[-14.8,-3.2,.8]],title:'Legenda Ale-Ale: Kisah Pohon Ketapang Raksasa',img:'foto/ketapang4.jpeg',collection:'Legenda Ale-Ale • Koleksi 1 / 4',illustration:true,
+text:'Jauh sebelum Ketapang berkembang menjadi sebuah kota seperti sekarang, masyarakat mengenal sebuah cerita tentang pohon Ketapang raksasa yang konon pernah tumbuh di wilayah ini. Pohon tersebut dipercaya memiliki ukuran yang luar biasa besar, dengan dahan dan dedaunan yang membentang luas hingga menutupi kawasan permukiman dari hulu sampai ke hilir.\n\nMenurut cerita rakyat yang diwariskan secara turun-temurun, rimbunnya pohon itu membuat cahaya matahari sulit menembus tanah. Masyarakat mengalami kesulitan dalam menjalankan aktivitas sehari-hari. Padi hasil ladang sulit dijemur, pakaian tidak mudah kering, dan kehidupan di bawah naungan pohon besar itu semakin terasa tidak nyaman.\n\nAkhirnya, masyarakat sepakat untuk menebang pohon tersebut. Namun, berbagai usaha yang dilakukan tidak membuahkan hasil. Setiap kali ditebang, pohon itu dipercaya kembali seperti semula. Hingga suatu hari, seseorang mendapatkan petunjuk melalui sebuah mimpi bahwa pohon tersebut hanya dapat ditebang menggunakan kapak yang terbuat dari perak.\n\nSetelah kapak perak dibuat, masyarakat kembali berusaha menebang pohon raksasa itu. Kali ini, usaha mereka berhasil. Akan tetapi, ketika pohon tersebut tumbang, terjadilah keajaiban. Batangnya menghilang dan dipercaya berubah menjadi aliran sungai besar yang kemudian dikenal sebagai Sungai Pawan. Sementara buah-buahnya berubah menjadi kerang kecil yang disebut ale-ale.\n\nMasyarakat kemudian menghubungkan kisah tersebut dengan nama Ketapang dan keberadaan Sungai Pawan serta ale-ale yang hingga kini dikenal sebagai kekayaan daerah.'},
+{id:'l2',room:'Legenda Ale-Ale',kind:'tugu_lama',base:false,still:true,pos:[-8.5,-3.2,0],gp:[-10.3,-2.4],wide:[[-9.2,-3.2,.8],[-7.8,-3.2,.8]],title:'Tugu Ale-Ale: Lahirnya Simbol Kota Ketapang',img:'foto/tugu2.jpg',collection:'Legenda Ale-Ale • Koleksi 2 / 4',illustration:true,
+text:'Di salah satu persimpangan jalan Kota Ketapang, berdiri sebuah monumen yang tidak asing bagi masyarakat setempat. Bentuknya menyerupai kerang dengan ukuran besar, yang kemudian dikenal dengan nama Tugu Ale-Ale. Monumen ini menjadi salah satu penanda kota sekaligus simbol yang mengingatkan masyarakat pada kekayaan alam daerahnya.\n\nTugu tersebut berada di kawasan pertemuan Jalan R. Suprapto dan Jalan K.H. Murni, tidak jauh dari Jembatan Pawan I. Kawasan bundaran ini dikenal masyarakat sebagai Bundaran Ale-Ale. Letaknya yang strategis membuat tugu tersebut mudah dikenali oleh masyarakat maupun pendatang yang memasuki kawasan kota.\n\nPemilihan ale-ale sebagai bentuk monumen bukan tanpa alasan. Kerang ini merupakan salah satu hasil perairan yang dikenal luas di Ketapang. Kehadirannya berkaitan erat dengan kehidupan nelayan dan masyarakat yang menggantungkan sebagian aktivitas ekonominya pada hasil perairan.\n\nDokumentasi foto lama memperlihatkan bahwa Tugu Ale-Ale telah menjadi bagian dari wajah Kota Ketapang setidaknya sejak tahun 2006. Foto yang dipublikasikan pada tahun 2010 memperlihatkan bentuk tugu pada masa itu, dengan warna kecokelatan, pagar sederhana, dan ornamen penerangan di bagian atasnya.\n\nSeiring waktu, bentuk dan tampilan kawasan tugu mengalami perubahan. Namun, nama Bundaran Ale-Ale tetap dikenal oleh masyarakat. Monumen tersebut bukan sekadar penghias persimpangan jalan, melainkan penanda yang memiliki hubungan dengan kehidupan dan identitas daerah.\n\nKini, Tugu Ale-Ale menjadi pengingat bahwa kekayaan sebuah kota tidak selalu harus digambarkan melalui bangunan megah. Sesuatu yang dekat dengan kehidupan masyarakat, seperti kerang ale-ale, juga dapat menjadi simbol kebanggaan yang dikenang dari generasi ke generasi.'},
+{id:'l3',room:'Legenda Ale-Ale',kind:'jejak_aleale',base:false,still:true,rot:Math.PI,pos:[-15.5,3.2,0],gp:[-13.7,2.4],wide:[[-16.2,3.2,.8],[-14.8,3.2,.8]],title:'Jejak Ale-Ale dalam Kehidupan Masyarakat Ketapang',img:'foto/foto21.jpg',collection:'Legenda Ale-Ale • Koleksi 3 / 4',illustration:true,
+text:'Di balik nama ale-ale yang dikenal sebagai salah satu identitas Kabupaten Ketapang, terdapat kehidupan masyarakat yang telah lama berhubungan dengan hasil perairan tersebut. Bagi sebagian masyarakat, ale-ale bukan sekadar kerang yang dikonsumsi, melainkan juga sumber penghidupan dan bagian dari aktivitas ekonomi sehari-hari.\n\nKawasan muara Sungai Pawan dan perairan pantai di sekitarnya menjadi salah satu habitat kerang ale-ale. Masyarakat, khususnya nelayan di wilayah sekitar, memanfaatkan keberadaan kerang ini dengan melakukan kegiatan pencarian dan pengumpulan hasil perairan.\n\nAktivitas tersebut melibatkan berbagai pekerjaan. Ada nelayan yang mencari ale-ale, pedagang yang menjual hasil tangkapan, masyarakat yang mengupas cangkangnya, hingga pelaku usaha yang mengolahnya menjadi berbagai produk. Dengan demikian, keberadaan ale-ale turut menggerakkan kegiatan ekonomi masyarakat.\n\nPenelitian mengenai komoditas kerang ale-ale di Kabupaten Ketapang mencatat bahwa hasil perairan ini memiliki nilai ekonomi dan menjadi salah satu komoditas yang diusahakan masyarakat. Bahkan, penelitian tersebut menjelaskan bahwa keberadaan ale-ale memiliki peranan dalam penyerapan tenaga kerja, baik dalam kegiatan penangkapan maupun pengolahan dan perdagangan.\n\nHubungan masyarakat dengan ale-ale juga tercermin dalam bahasa sehari-hari para nelayan. Sebuah penelitian Universitas Tanjungpura tahun 2022 mendokumentasikan istilah-istilah khusus yang digunakan nelayan ale-ale di Desa Suka Bangun, Kecamatan Delta Pawan. Penelitian tersebut menemukan 32 istilah atau register yang digunakan dalam aktivitas mereka.\n\nHal ini memperlihatkan bahwa ale-ale tidak hanya hadir dalam kehidupan ekonomi, tetapi juga membentuk pengetahuan, kebiasaan, dan kosakata khusus dalam lingkungan masyarakat nelayan.'},
+{id:'l4',room:'Legenda Ale-Ale',kind:'bundaran_aleale',base:false,still:true,rot:Math.PI,pos:[-8.5,3.2,0],gp:[-10.3,2.4],wide:[[-9.2,3.2,.8],[-7.8,3.2,.8]],title:'Bundaran Ale-Ale: Ruang, Ingatan, dan Identitas Kota Ketapang',img:'foto/tugu.jpg',collection:'Legenda Ale-Ale • Koleksi 4 / 4',illustration:true,
+text:'Setiap kota memiliki tempat yang menyimpan kenangan bagi masyarakatnya. Ada jalan yang menjadi saksi perkembangan zaman, jembatan yang menghubungkan wilayah, dan persimpangan yang menjadi penanda perjalanan. Di Ketapang, salah satu tempat yang memiliki makna tersebut adalah Bundaran Ale-Ale.\n\nBerada di kawasan Jalan R. Suprapto dan Jalan K.H. Murni, dekat Jembatan Pawan I, bundaran ini dikenal melalui keberadaan Tugu Ale-Ale. Letaknya yang strategis menjadikannya salah satu titik yang mudah dikenali ketika masyarakat melintasi kawasan tersebut.\n\nBagi sebagian orang, bundaran ini mungkin hanya persimpangan jalan. Namun, bagi masyarakat Ketapang, tempat tersebut memiliki makna lebih dari itu. Tugu Ale-Ale menjadi pengingat tentang kekayaan alam daerah, kehidupan masyarakat nelayan, serta cerita rakyat yang berkembang mengenai asal-usul ale-ale dan Sungai Pawan.\n\nDalam perkembangannya, kawasan ini juga menjadi bagian dari perubahan wajah Kota Ketapang. Kendaraan yang melintas, aktivitas masyarakat, dan perkembangan bangunan di sekitarnya memperlihatkan bagaimana kota terus tumbuh mengikuti perubahan zaman.\n\nMeski bentuk fisik kawasan dapat berubah, nama Bundaran Ale-Ale tetap hidup dalam ingatan masyarakat. Nama tersebut menjadi bagian dari cara orang mengenali tempat, menunjukkan arah, dan menceritakan kembali ruang-ruang yang memiliki arti bagi kota mereka.\n\nTugu Ale-Ale mengajarkan bahwa identitas sebuah kota tidak hanya dibangun melalui gedung pemerintahan atau bangunan modern. Identitas juga tumbuh dari simbol yang dekat dengan kehidupan masyarakat dan diwariskan melalui cerita, kebiasaan, serta ingatan bersama.\n\nPada akhirnya, Bundaran Ale-Ale bukan hanya sebuah persimpangan. Ia menjadi salah satu pengingat bahwa Ketapang memiliki cerita yang tumbuh dari alam, masyarakat, dan perjalanan panjang sebuah kota.'},
 {"id": "u1", "room": "Galeri Lantai 2", "rot": Math.PI, "kind": "gunungpalung", "pos": [-12, 0, 4.3], "gp": [-10.2, 1.1], "title": "Taman Nasional Gunung Palung: Rumah Kehidupan di Jantung Hutan Kalimantan", "img": 'foto/foto34.jpg', "text": "Di antara wilayah Kabupaten Ketapang dan Kabupaten Kayong Utara, terdapat kawasan hutan tropis yang menyimpan kekayaan alam luar biasa, yaitu Taman Nasional Gunung Palung atau yang dikenal dengan singkatan TNGP.\n\nKawasan ini telah ditetapkan sebagai kawasan konservasi sejak 4 Februari 1937. Seiring perjalanan waktu, statusnya mengalami beberapa perubahan hingga resmi dinyatakan sebagai taman nasional pada 24 Maret 1990. Saat ini, luas kawasan yang tercatat pada profil resmi Kementerian Kehutanan adalah sekitar 108.044 hektare.\n\nGunung Palung memiliki beragam ekosistem, mulai dari hutan mangrove, hutan rawa air tawar, rawa gambut, hutan dataran rendah, hingga hutan pegunungan. Keanekaragaman ekosistem tersebut menjadikannya rumah bagi berbagai jenis tumbuhan dan satwa liar.\n\nSalah satu penghuni paling terkenal adalah orang utan Kalimantan. Selain itu, kawasan ini juga menjadi habitat bekantan, beruang madu, rangkong, berbagai jenis primata, serta tumbuhan khas hutan tropis.\n\nNamun, hutan Gunung Palung bukan hanya penting bagi satwa liar. Kawasan ini juga memiliki hubungan erat dengan kehidupan masyarakat di sekitarnya. Hutan menyediakan sumber air, menjaga keseimbangan lingkungan, menyimpan karbon, dan menjadi bagian dari ruang hidup masyarakat yang telah lama tinggal di sekitarnya.\n\nAncaman seperti kebakaran hutan, pembukaan lahan, perburuan, dan kerusakan habitat menjadi tantangan bagi kelestarian kawasan ini.\n\nTaman Nasional Gunung Palung mengingatkan kita bahwa hutan bukan sekadar kumpulan pepohonan. Di dalamnya terdapat kehidupan yang saling terhubung, mulai dari satwa, tumbuhan, sungai, hingga manusia yang bergantung pada kelestariannya.\n\nMenjaga Gunung Palung berarti menjaga salah satu warisan alam paling berharga yang dimiliki Ketapang dan Kalimantan Barat.", "base": false, "still": true, "wide": [[-12.85, 0, 0.8], [-11.15, 0, 0.8]]},
 {"id": "u2", "room": "Galeri Lantai 2", "rot": Math.PI, "kind": "rumahpanjang", "pos": [0, 2, 4.3], "gp": [2, 1.1], "title": "Rumah Panjang Masyarakat Dayak: Tempat Tinggal, Kebersamaan, dan Warisan Leluhur", "img": 'foto/foto35.jpg', "text": "Bagi masyarakat Dayak, rumah bukan hanya tempat untuk berlindung dari panas dan hujan. Dalam kehidupan masyarakat dahulu, rumah juga menjadi pusat kehidupan bersama, tempat keluarga berkumpul, bermusyawarah, melaksanakan kegiatan adat, dan menjaga hubungan antarsesama.\n\nSalah satu bentuk permukiman tradisional yang dikenal adalah rumah panjang atau rumah betang. Bangunan ini memiliki ukuran memanjang dengan banyak ruang yang dapat ditempati oleh beberapa keluarga.\n\nRumah panjang umumnya dibangun menggunakan kayu dengan konstruksi panggung. Lantainya ditinggikan dari permukaan tanah untuk menyesuaikan kondisi lingkungan, termasuk menghadapi genangan air, pasang sungai, serta gangguan binatang liar.\n\nDi dalam rumah panjang, setiap keluarga memiliki ruang tinggal masing-masing, sementara bagian tertentu digunakan bersama. Kehidupan di dalamnya mengajarkan nilai kebersamaan, saling membantu, dan tanggung jawab terhadap komunitas.\n\nBerbagai kegiatan seperti memasak, menyimpan hasil panen, menerima tamu, hingga membicarakan persoalan kampung dapat menjadi bagian dari kehidupan sehari-hari di rumah panjang.\n\nBagi masyarakat Dayak, rumah panjang juga memiliki makna sosial dan budaya. Di tempat inilah nilai adat, cerita leluhur, pengetahuan alam, dan kebiasaan masyarakat diwariskan kepada generasi berikutnya.\n\nMeskipun saat ini banyak masyarakat Dayak telah tinggal di rumah-rumah keluarga yang lebih modern, rumah panjang tetap menjadi simbol penting identitas dan kebersamaan masyarakat Dayak.\n\nKeberadaannya mengingatkan kita bahwa kehidupan bersama, gotong royong, dan penghormatan terhadap adat merupakan nilai yang telah lama menjadi bagian dari kebudayaan masyarakat Kalimantan.", "base": false, "still": true, "wide": [[-0.85, 2, 0.8], [0.85, 2, 0.8]]},
 {"id": "u3", "room": "Galeri Lantai 2", "rot": Math.PI, "kind": "pawan", "pos": [12, 0, 4.3], "gp": [10.2, 1.1], "title": "Sungai Pawan: Nadi Kehidupan dan Sejarah Kota Ketapang", "img": "foto/ketapang4.jpeg", "text": "Sungai Pawan merupakan salah satu bagian penting dari kehidupan masyarakat Kabupaten Ketapang. Sungai ini mengalir melewati wilayah pedalaman hingga ke kawasan pesisir dan bermuara di Laut Natuna. Sejak dahulu, sungai menjadi jalur penghubung antarkampung, tempat masyarakat mencari penghidupan, sekaligus jalur perdagangan.\n\nSebelum jalan darat berkembang seperti sekarang, perahu dan sampan menjadi sarana transportasi utama bagi masyarakat yang tinggal di sepanjang aliran Sungai Pawan. Berbagai hasil hutan, hasil pertanian, ikan, dan kebutuhan sehari-hari diangkut melalui sungai untuk diperdagangkan atau dibawa ke kampung lain.\n\nKehidupan masyarakat Ketapang pun tumbuh berdampingan dengan aliran sungai. Permukiman, kegiatan ekonomi, tempat ibadah, dan pusat pemerintahan pada masa kerajaan berkembang di kawasan yang memiliki akses terhadap sungai.\n\nSungai Pawan juga memiliki hubungan erat dengan sejarah Kerajaan Matan. Keberadaan pusat kerajaan dan permukiman masyarakat di sekitar aliran sungai memperlihatkan pentingnya jalur air dalam perkembangan wilayah Ketapang. Salah satu peninggalan sejarah yang berada dekat sungai adalah Masjid Jami yang menjadi cikal bakal Masjid At-Taqwa.\n\nSelain memiliki nilai sejarah, Sungai Pawan juga hidup dalam cerita rakyat masyarakat Ketapang. Salah satunya adalah legenda pohon Ketapang raksasa yang konon tumbang dan membentuk aliran Sungai Pawan. Dalam cerita yang sama, buah pohon tersebut dipercaya berubah menjadi kerang ale-ale yang kemudian dikenal sebagai salah satu makanan khas Ketapang.\n\nCerita tersebut merupakan bagian dari folklor atau legenda lokal, bukan penjelasan ilmiah mengenai terbentuknya sungai.\n\nHingga sekarang, Sungai Pawan masih menjadi bagian dari identitas masyarakat Ketapang. Alirannya menyimpan cerita tentang perdagangan, kerajaan, kehidupan kampung, dan perjalanan sebuah daerah yang tumbuh bersama sungai.\n\nSungai Pawan bukan sekadar aliran air yang membelah wilayah Ketapang. Ia adalah saksi perjalanan masyarakat, tempat sejarah bertemu dengan kehidupan sehari-hari.", "base": false, "still": true, "wide": [[11.15, 0, 0.8], [12.85, 0, 0.8]]}
@@ -169,10 +173,10 @@ MATAN_STORIES.forEach((story,i)=>EXHIBITS.splice(4+i,0,{
 }));
 /* Percakapan pemandu: tiap koleksi (id) berisi beberapa kalimat pendek. Ganti sesuai materi. */
 const DIALOGS={
-l1:['Selamat datang! Aku pemandu di ruang ini. Mau dengar asal-usul nama Ketapang?','Menurut cerita rakyat, dahulu ada pohon Ketapang yang sangat besar.','Saking besarnya, pohon itu menaungi permukiman. Warga jadi sulit mendapat sinar matahari dan sulit bercocok tanam.'],
-l2:['Warga sudah berusaha menebang pohon raksasa itu, tapi semua usaha gagal.','Sampai akhirnya, sebuah kapak perak berhasil merobohkannya.'],
-l3:['Nah, ini kelanjutan ceritanya.','Konon, pohon yang roboh itu menjelma menjadi Sungai Pawan.'],
-l4:['Ini bagian terakhir dari legendanya.','Konon, buah pohon itu berubah menjadi kerang Ale-Ale.','Dan wilayah itu kemudian dikenal sebagai Ketapang. Begitulah asal-usul namanya!'],
+l1:['Selamat datang di ruang Legenda Ale-Ale! Lihat diorama pohon besar dengan kapak perak dan aliran sungai ini—inilah kisah asal-usul nama Ketapang.','Konon, dahulu tumbuh sebuah pohon Ketapang raksasa yang dahan dan daunnya membentang luas menutupi permukiman dari hulu hingga ke hilir.','Karena terlalu rimbun, sinar matahari sulit menembus tanah. Warga kesulitan menjemur padi dan mengeringkan pakaian sehari-hari.','Berbagai upaya menebang pohon itu selalu gagal; setiap ditebang, batangnya kembali utuh. Hingga seseorang bermimpi bahwa pohon itu hanya bisa ditebang dengan kapak perak.','Setelah ditebang dengan kapak perak, terjadilah keajaiban: batangnya menjelma menjadi Sungai Pawan, dan buahnya berubah menjadi kerang kecil bernama ale-ale!'],
+l2:['Lihat miniatur air mancur berkerang besar di atas meja ini! Ini menggambarkan Tugu Ale-Ale masa awal, sekitar tahun 2006 hingga 2010.','Tugu Ale-Ale berdiri di pertemuan Jalan R. Suprapto dan Jalan K.H. Murni, tak jauh dari Jembatan Pawan I—kawasan yang dikenal sebagai Bundaran Ale-Ale.','Bentuk kerang dipilih karena ale-ale dekat sekali dengan kehidupan nelayan dan ekonomi perairan masyarakat Ketapang.','Pada foto dokumentasi tahun 2010, tugu ini berwarna kecokelatan dengan pagar kolam sederhana, air mancur, dan penerangan di bagian atasnya.','Meski tampilannya terus berkembang mengikuti zaman, Tugu Ale-Ale tetap menjadi simbol kebanggaan bahwa kekayaan daerah bisa lahir dari sesuatu yang dekat dengan rakyat.'],
+l3:['Nah, kalau diorama pesisir ini menceritakan jejak ale-ale dalam kehidupan sehari-hari masyarakat Ketapang!','Di kawasan muara Sungai Pawan dan perairan pantai Delta Pawan, para nelayan mencari dan mengumpulkan kerang ale-ale sebagai sumber penghidupan.','Keberadaannya menggerakkan banyak pekerjaan: mulai dari nelayan pencari kerang, pengupas cangkang, pedagang, hingga pengolah beragam kuliner khas.','Menariknya lagi, penelitian Universitas Tanjungpura tahun 2022 di Desa Suka Bangun mencatat ada 32 istilah khusus atau register yang dipakai para nelayan ale-ale dalam keseharian mereka!','Jadi ale-ale bukan sekadar hidangan laut, melainkan juga penggerak ekonomi, pengetahuan lokal, dan budaya kerja masyarakat pesisir Ketapang.'],
+l4:['Selamat datang di sudut Bundaran Ale-Ale! Miniatur menara jam berkerang empat ini menggambarkan wajah Bundaran Ale-Ale masa kini di jantung Kota Ketapang.','Berada di simpang Jalan R. Suprapto dan Jalan K.H. Murni dekat Jembatan Pawan I, bundaran ini jadi penanda ruang yang paling mudah dikenali warga maupun pendatang.','Seiring pertumbuhan kota, kendaraan terus melintas dan bangunan di sekitarnya berkembang, tetapi nama Bundaran Ale-Ale selalu hidup dalam ingatan bersama.','Tugu ini mengingatkan kita bahwa identitas kota bukan hanya gedung megah, melainkan cerita alam, kerja keras nelayan, dan warisan budaya yang dijaga lintas generasi.'],
 u1:["Selamat datang di galeri lantai 2! Diorama hutan ini memperkenalkan Taman Nasional Gunung Palung. Lihat pepohonan, aliran air, dan orang utan di dalamnya.", "Di antara wilayah Kabupaten Ketapang dan Kabupaten Kayong Utara, terdapat kawasan hutan tropis yang menyimpan kekayaan alam luar biasa, yaitu Taman Nasional Gunung Palung atau yang dikenal dengan singkatan TNGP.", "Kawasan ini telah ditetapkan sebagai kawasan konservasi sejak 4 Februari 1937. Seiring perjalanan waktu, statusnya mengalami beberapa perubahan hingga resmi dinyatakan sebagai taman nasional pada 24 Maret 1990. Saat ini, luas kawasan yang tercatat pada profil resmi Kementerian Kehutanan adalah sekitar 108.044 hektare.", "Gunung Palung memiliki beragam ekosistem, mulai dari hutan mangrove, hutan rawa air tawar, rawa gambut, hutan dataran rendah, hingga hutan pegunungan. Keanekaragaman ekosistem tersebut menjadikannya rumah bagi berbagai jenis tumbuhan dan satwa liar.", "Salah satu penghuni paling terkenal adalah orang utan Kalimantan. Selain itu, kawasan ini juga menjadi habitat bekantan, beruang madu, rangkong, berbagai jenis primata, serta tumbuhan khas hutan tropis.", "Namun, hutan Gunung Palung bukan hanya penting bagi satwa liar. Kawasan ini juga memiliki hubungan erat dengan kehidupan masyarakat di sekitarnya. Hutan menyediakan sumber air, menjaga keseimbangan lingkungan, menyimpan karbon, dan menjadi bagian dari ruang hidup masyarakat yang telah lama tinggal di sekitarnya.", "Ancaman seperti kebakaran hutan, pembukaan lahan, perburuan, dan kerusakan habitat menjadi tantangan bagi kelestarian kawasan ini.", "Taman Nasional Gunung Palung mengingatkan kita bahwa hutan bukan sekadar kumpulan pepohonan. Di dalamnya terdapat kehidupan yang saling terhubung, mulai dari satwa, tumbuhan, sungai, hingga manusia yang bergantung pada kelestariannya.", "Menjaga Gunung Palung berarti menjaga salah satu warisan alam paling berharga yang dimiliki Ketapang dan Kalimantan Barat."],
 u2:["Miniatur rumah panjang ini memperlihatkan konstruksi panggung, ruang keluarga, dan serambi bersama. Bentuknya merupakan ilustrasi, bukan replika rumah dari komunitas tertentu.", "Bagi masyarakat Dayak, rumah bukan hanya tempat untuk berlindung dari panas dan hujan. Dalam kehidupan masyarakat dahulu, rumah juga menjadi pusat kehidupan bersama, tempat keluarga berkumpul, bermusyawarah, melaksanakan kegiatan adat, dan menjaga hubungan antarsesama.", "Salah satu bentuk permukiman tradisional yang dikenal adalah rumah panjang atau rumah betang. Bangunan ini memiliki ukuran memanjang dengan banyak ruang yang dapat ditempati oleh beberapa keluarga.", "Rumah panjang umumnya dibangun menggunakan kayu dengan konstruksi panggung. Lantainya ditinggikan dari permukaan tanah untuk menyesuaikan kondisi lingkungan, termasuk menghadapi genangan air, pasang sungai, serta gangguan binatang liar.", "Di dalam rumah panjang, setiap keluarga memiliki ruang tinggal masing-masing, sementara bagian tertentu digunakan bersama. Kehidupan di dalamnya mengajarkan nilai kebersamaan, saling membantu, dan tanggung jawab terhadap komunitas.", "Berbagai kegiatan seperti memasak, menyimpan hasil panen, menerima tamu, hingga membicarakan persoalan kampung dapat menjadi bagian dari kehidupan sehari-hari di rumah panjang.", "Bagi masyarakat Dayak, rumah panjang juga memiliki makna sosial dan budaya. Di tempat inilah nilai adat, cerita leluhur, pengetahuan alam, dan kebiasaan masyarakat diwariskan kepada generasi berikutnya.", "Meskipun saat ini banyak masyarakat Dayak telah tinggal di rumah-rumah keluarga yang lebih modern, rumah panjang tetap menjadi simbol penting identitas dan kebersamaan masyarakat Dayak.", "Keberadaannya mengingatkan kita bahwa kehidupan bersama, gotong royong, dan penghormatan terhadap adat merupakan nilai yang telah lama menjadi bagian dari kebudayaan masyarakat Kalimantan."],
 u3:["Lihat perahu, permukiman panggung, dan dermaga pada diorama Sungai Pawan ini. Diorama ini menggambarkan kehidupan sungai secara simbolis, bukan peta geografis.", "Sungai Pawan merupakan salah satu bagian penting dari kehidupan masyarakat Kabupaten Ketapang. Sungai ini mengalir melewati wilayah pedalaman hingga ke kawasan pesisir dan bermuara di Laut Natuna. Sejak dahulu, sungai menjadi jalur penghubung antarkampung, tempat masyarakat mencari penghidupan, sekaligus jalur perdagangan.", "Sebelum jalan darat berkembang seperti sekarang, perahu dan sampan menjadi sarana transportasi utama bagi masyarakat yang tinggal di sepanjang aliran Sungai Pawan. Berbagai hasil hutan, hasil pertanian, ikan, dan kebutuhan sehari-hari diangkut melalui sungai untuk diperdagangkan atau dibawa ke kampung lain.", "Kehidupan masyarakat Ketapang pun tumbuh berdampingan dengan aliran sungai. Permukiman, kegiatan ekonomi, tempat ibadah, dan pusat pemerintahan pada masa kerajaan berkembang di kawasan yang memiliki akses terhadap sungai.", "Sungai Pawan juga memiliki hubungan erat dengan sejarah Kerajaan Matan. Keberadaan pusat kerajaan dan permukiman masyarakat di sekitar aliran sungai memperlihatkan pentingnya jalur air dalam perkembangan wilayah Ketapang. Salah satu peninggalan sejarah yang berada dekat sungai adalah Masjid Jami yang menjadi cikal bakal Masjid At-Taqwa.", "Selain memiliki nilai sejarah, Sungai Pawan juga hidup dalam cerita rakyat masyarakat Ketapang. Salah satunya adalah legenda pohon Ketapang raksasa yang konon tumbang dan membentuk aliran Sungai Pawan. Dalam cerita yang sama, buah pohon tersebut dipercaya berubah menjadi kerang ale-ale yang kemudian dikenal sebagai salah satu makanan khas Ketapang.", "Cerita tersebut merupakan bagian dari folklor atau legenda lokal, bukan penjelasan ilmiah mengenai terbentuknya sungai.", "Hingga sekarang, Sungai Pawan masih menjadi bagian dari identitas masyarakat Ketapang. Alirannya menyimpan cerita tentang perdagangan, kerajaan, kehidupan kampung, dan perjalanan sebuah daerah yang tumbuh bersama sungai.", "Sungai Pawan bukan sekadar aliran air yang membelah wilayah Ketapang. Ia adalah saksi perjalanan masyarakat, tempat sejarah bertemu dengan kehidupan sehari-hari."]
@@ -617,6 +621,281 @@ plaque(['JEJAK ISLAM KETAPANG','Abad ke-16 • 1876–1908 • 1952'],2.5,.42,0,
 
 if(k=='tree'){g.add(lathe([[.3,0],[.2,.3],[.15,.8],[.12,1.4]],M.wood));
 [[0,1.75,0,.62,0x3f9a4f],[.45,1.5,.1,.42,0x4aa95a],[-.42,1.55,-.15,.46,0x378a47],[.1,2.15,.05,.42,0x56b565],[-.1,1.5,.42,.38,0x3f9a4f]].forEach(q=>{const m=flat(new THREE.IcosahedronGeometry(q[3],1),q[4]);m.position.set(q[0],q[1],q[2]);g.add(m)})}
+
+/* ===== 4 DIORAMA RUANG LEGENDA ALE-ALE ===== */
+if(k=='ketapang_legend'||k=='tugu_lama'||k=='jejak_aleale'||k=='bundaran_aleale'){
+const std=o=>new THREE.MeshStandardMaterial(o);
+const woodUlin=std({color:0x4b3220,roughness:.74,metalness:.05});
+const goldTrim=std({color:0xd8a846,roughness:.35,metalness:.58});
+const greenBase=std({color:0x1f473c,roughness:.68,metalness:.05});
+const creamMat=std({color:0xefe4ca,roughness:.62,metalness:.04});
+const barkMat=std({color:0x5c3e26,roughness:.88,metalness:.02});
+const silverMat=std({color:0xe8eff5,roughness:.18,metalness:.88});
+const waterTex=tex(256,256,(x,w,h)=>{
+x.fillStyle='#2b7585';x.fillRect(0,0,w,h);
+for(let i=0;i<90;i++){const px=Math.random()*w,py=Math.random()*h,l=12+Math.random()*24;x.strokeStyle=i%2?'rgba(185,235,240,.35)':'rgba(25,80,95,.35)';x.lineWidth=1.5;x.beginPath();x.moveTo(px,py);x.quadraticCurveTo(px+l*.5,py+3,px+l,py);x.stroke()}
+},2,2);
+const waterMat=std({color:0x7fd2dc,map:waterTex,roughness:.2,metalness:.25});
+const addM=(geo,m,x=0,y=0,z=0,par=g)=>{const o=new THREE.Mesh(geo,m);o.position.set(x,y,z);par.add(o);return o};
+const piv=(x=0,y=0,z=0,par=g)=>{const o=new THREE.Group();o.position.set(x,y,z);par.add(o);return o};
+const ball=(r,m,x=0,y=0,z=0,sx=1,sy=1,sz=1,par=g)=>{const o=addM(new S(r,18,14),m,x,y,z,par);o.scale.set(sx,sy,sz);return o};
+const tube=(pts,r,m,par=g,seg=20,rad=8)=>addM(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts.map(p=>new THREE.Vector3(...p))),seg,r,rad,false),m,0,0,0,par);
+const card=(lines,w,h,x,y,z,par=g)=>{
+const cvTex=tex(768,Math.round(768*h/w),(c,W,H)=>{
+c.fillStyle='#1d3b32';c.fillRect(0,0,W,H);c.strokeStyle='#d8a846';c.lineWidth=8;c.strokeRect(10,10,W-20,H-20);
+c.textAlign='center';c.textBaseline='middle';
+lines.forEach((line,i)=>{let sz=i===0?42:27;c.font=(i===0?'bold ':'')+sz+'px Georgia,serif';while(c.measureText(line).width>W-48&&sz>14){sz--;c.font=(i===0?'bold ':'')+sz+'px Georgia,serif'}c.fillStyle=i===0?'#f6e0ae':'#dce6dc';c.fillText(line,W/2,H*(i+1)/(lines.length+1))});
+},1,1);
+return addM(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({map:cvTex}),x,y,z,par);
+};
+
+/* Meja Koleksi Museum Khas Melayu-Dayak */
+const H=.48,T=H+.045;
+[[-1,-1],[1,-1],[-1,1],[1,1]].forEach(([sx,sz])=>{
+addM(new C(.042,.048,H,12),woodUlin,sx*.88,H/2,sz*.48);
+addM(new C(.052,.052,.04,12),goldTrim,sx*.88,.02,sz*.48);
+});
+addM(new B(1.88,.32,1.22),greenBase,0,.28,0);
+const band=addM(new B(1.90,.10,1.24),new THREE.MeshLambertMaterial({map:dykTex(256,64,'#2b1a10','#e0a81f','#b3261e',4,1)}),0,.39,0);
+addM(new B(2.16,.065,1.48),woodUlin,0,H,0);
+addM(new B(2.20,.024,1.52),goldTrim,0,H+.034,0);
+
+/* 1. DIORAMA l1: KISAH POHON KETAPANG RAKSASA, KAPAK PERAK, SUNGAI PAWAN & ALE-ALE */
+if(k=='ketapang_legend'){
+/* Lanskap tanah desa & aliran Sungai Pawan yang berkelok */
+addM(new B(2.04,.04,1.36),std({color:0x4b703a,roughness:.9}),0,T+.02,0);
+const river=tube([[-.95,T+.035,-.35],[-.35,T+.035,.05],[.25,T+.035,-.12],[.96,T+.035,.32]],.12,waterMat,g,32,10);
+river.scale.y=.18;river.position.y=(T+.035)*(1-.18);
+
+/* Pohon Ketapang Raksasa dengan akar banir & tajuk bertingkat lebar menaungi permukiman */
+const treeG=piv(-.48,T+.04,-.12);
+tube([[0,0,0],[.03,.42,.02],[0,.88,-.02],[-.02,1.28,0]],.16,barkMat,treeG,16,12);
+/* Akar menjalar dari pangkal pohon */
+for(let r=0;r<5;r++){
+const a=r*Math.PI*2/5+.3;
+tube([[0,.24,0],[Math.cos(a)*.22,.08,Math.sin(a)*.22],[Math.cos(a)*.42,.01,Math.sin(a)*.42]],.045,barkMat,treeG,10,8);
+}
+/* Takik bekas tebangan pohon yang bersinar magis */
+addM(new C(.13,.13,.08,12),std({color:0xd8b278,roughness:.6}),.06,.34,.04,treeG).rotation.z=.2;
+/* Dahan & kanopi bertingkat khas pohon Ketapang (Terminalia catappa) */
+[[0,1.24,0,.58,0x2c6e34],[.34,1.08,.12,.38,0x3a843f],[-.36,1.12,-.10,.40,0x28622f],[.12,1.44,-.04,.42,0x489649],[-.18,1.02,.28,.34,0x357a3b]].forEach(([cx,cy,cz,cr,cc])=>{
+const lf=ball(cr,std({color:cc,roughness:.8}),cx,cy,cz,1.35,.55,1.25,treeG);
+});
+/* Buah ketapang di cabang & kerang ale-ale yang bermunculan di tepi Sungai Pawan */
+for(let i=0;i<7;i++){
+const sx=.10+i*.12,sz=-.08+(i%3)*.16;
+ball(.038,creamMat,sx,T+.048,sz,1.25,.55,.95);
+}
+
+/* Permukiman kecil & jemuran padi/kain warga di bawah bayangan pohon */
+[[-.78,.32,.18],[-.56,.42,-.18],[-.12,-.40,.22]].forEach(([hx,hz,ry])=>{
+const hm=piv(hx,T+.04,hz);hm.rotation.y=ry;
+addM(new B(.16,.09,.12),barkMat,0,.06,0,hm);
+const rf=addM(new THREE.ConeGeometry(.13,.09,4),std({color:0x734a2e,roughness:.8}),0,.145,0,hm);rf.rotation.y=Math.PI/4;
+});
+/* Para-para penjemuran padi */
+addM(new B(.20,.015,.12),barkMat,-.28,T+.09,.34);
+addM(new B(.17,.012,.09),std({color:0xd9b84a,roughness:.7}),-.28,T+.10,.34);
+
+/* Kapak Perak Berkilau di atas batu tumpuan (Fokus Legenda di Kanan Depan) */
+addM(new THREE.IcosahedronGeometry(.13,1),std({color:0x7d8078,roughness:.85}),.42,T+.08,.22).scale.set(1.2,.65,1);
+const axeG=piv(.44,T+.14,.22);axeG.rotation.set(.15,-.4,.55);
+addM(new C(.022,.028,.62,10),barkMat,0,.22,0,axeG);
+addM(new C(.032,.032,.08,10),silverMat,0,.44,0,axeG);
+const ash=new THREE.Shape();ash.moveTo(.02,.52);ash.lineTo(.22,.57);ash.quadraticCurveTo(.28,.41,.22,.26);ash.lineTo(.02,.32);ash.closePath();
+const aBlade=addM(new THREE.ExtrudeGeometry(ash,{depth:.026,bevelEnabled:true,bevelSize:.004,bevelThickness:.004}),silverMat,0,0,-.013,axeG);
+/* Partikel kilau magis kapak perak & sungai */
+const spk=[];
+for(let i=0;i<6;i++){const s=ball(.016,std({color:0xfff3b0,emissive:0xe6b44c,emissiveIntensity:.8}),.42+Math.cos(i)*.16,T+.22+(i%3)*.12,.22+Math.sin(i)*.12);spk.push(s)}
+
+card(['LEGENDA POHON KETAPANG RAKSASA','Kapak Perak • Sungai Pawan • Kerang Ale-Ale'],1.72,.24,0,.28,.625);
+g.userData.anim=t=>{
+waterTex.offset.x=(t*.08)%1;
+axeG.rotation.z=.55+Math.sin(t*2)*.04;
+spk.forEach((s,i)=>{s.position.y=T+.22+((t*.3+i/6)%1)*.35;s.scale.setScalar(.6+Math.sin(t*5+i)*.35)});
+};
+}
+
+/* 2. DIORAMA l2: TUGU ALE-ALE ERA 2006–2010 (Kolam Air Mancur, Cangkang Kecokelatan, Pagar & Lampu Atas - foto/tugu2.jpg) */
+if(k=='tugu_lama'){
+addM(new B(2.04,.04,1.36),std({color:0x666a65,roughness:.88}),0,T+.02,0);
+/* Tepi bundaran aspal & rambu panah bundaran biru */
+const road=addM(new C(.64,.66,.025,36),std({color:0x424548,roughness:.85}),0,T+.042,0);
+const basinWall=addM(new C(.52,.55,.14,36),std({color:0xc97b62,roughness:.75}),0,T+.11,0);
+addM(new C(.46,.46,.13,36),waterMat,0,T+.12,0);
+/* Rambu bundaran biru kecil di sisi depan kolam (sesuai foto/tugu2.jpg) */
+addM(new C(.026,.026,.008,16),std({color:0x1b62b8,roughness:.4}),-.28,T+.11,.46).rotation.x=Math.PI/2;
+/* Pagar besi putih sederhana mengelilingi kolam (sesuai foto/tugu2.jpg) */
+const railTop=addM(new THREE.TorusGeometry(.51,.012,8,36),std({color:0xdde4e6,roughness:.4,metalness:.5}),0,T+.26,0);railTop.rotation.x=Math.PI/2;
+for(let i=0;i<24;i++){
+const a=i*Math.PI*2/24;
+addM(new C(.008,.008,.11,6),silverMat,Math.cos(a)*.51,T+.21,Math.sin(a)*.51);
+}
+/* Penyangga Tugu Gelap Bertingkat (Chalice Pedestal) di Tengah Kolam */
+const ped=lathe([[0,0],[.11,0],[.10,.18],[.14,.28],[.28,.40],[.30,.44],[0,.44]],0x26292c);
+ped.position.set(0,T+.12,0);g.add(ped);
+/* Sepasang Cangkang Kerang Ale-Ale Besar Kecokelatan Terbuka di Puncak Tugu (foto/tugu2.jpg) */
+const shellBrown=std({color:0xc6985e,roughness:.58,metalness:.06,side:THREE.DoubleSide});
+const shellInner=std({color:0xf2e8d4,roughness:.38,metalness:.08,side:THREE.DoubleSide});
+[-1,1].forEach(s=>{
+const sh=piv(s*.08,T+.56,0);sh.rotation.set(0,s*.25,-s*.52);
+const geo=new S(.17,22,10,0,Math.PI*2,0,Math.PI/2),pos=geo.attributes.position;
+for(let i=0;i<pos.count;i++){const x=pos.getX(i),z=pos.getZ(i),an=Math.atan2(z,x),r=1+.06*Math.sin(an*14);pos.setX(i,x*r);pos.setZ(i,z*r)}
+geo.computeVertexNormals();
+const outer=addM(geo,shellBrown,0,0,0,sh);outer.scale.set(1.2,.45,.95);
+const inner=addM(geo,shellInner,0,.008,0,sh);inner.scale.set(1.12,.38,.88);
+});
+/* Pancuran Air Mancur di belakang cangkang + Lampu Taman Klasik di kanan & kiri */
+const jets=[];
+for(let i=0;i<10;i++){
+const j=ball(.018,std({color:0xeaf8fc,transparent:true,opacity:.75}),(i-4.5)*.022,T+.65,-.06,.7,2.4,.7);
+jets.push(j);
+}
+for(const sx of[-.72,.72]){
+addM(new C(.016,.022,.62,10),std({color:0x2b3033,metalness:.6}),sx,T+.35,-.28);
+ball(.045,std({color:0xfff1b0,emissive:0xffd86b,emissiveIntensity:.7}),sx,T+.68,-.28);
+}
+/* Pohon kelapa/palem latar belakang (foto/tugu2.jpg) */
+for(const px of[-.82,.82]){
+addM(new C(.022,.03,.55,8),barkMat,px,T+.30,-.45);
+for(let k=0;k<5;k++){const lf=addM(new B(.07,.01,.26),std({color:0x3f7d3a,roughness:.8}),px+Math.cos(k*1.25)*.12,T+.58,-.45+Math.sin(k*1.25)*.12);lf.rotation.set(.3,k*1.25,0)}
+}
+card(['TUGU ALE-ALE (ERA 2006–2010)','Jl. R. Suprapto – K.H. Murni • Simbol Awal Kota'],1.72,.24,0,.28,.625);
+g.userData.anim=t=>{
+waterTex.offset.y=(t*.05)%1;
+jets.forEach((j,i)=>{const p=(t*2.4+i*.19)%1;j.position.y=T+.58+Math.sin(p*Math.PI)*.42;j.material.opacity=.85*(1-Math.abs(p-.5)*1.6)});
+};
+}
+
+/* 3. DIORAMA l3: JEJAK ALE-ALE DALAM KEHIDUPAN MASYARAKAT KETAPANG (Muara Sungai Pawan & Delta Pawan) */
+if(k=='jejak_aleale'){
+/* Separuh Perairan Muara Sungai Pawan & Separuh Beting Pasir / Dermaga Nelayan Suka Bangun */
+addM(new B(2.04,.04,1.36),std({color:0xd8c196,roughness:.9}),0,T+.02,0);
+addM(new B(1.06,.048,1.36),waterMat,-.49,T+.024,0);
+
+/* Sampan Kayu Nelayan Ale-Ale di Muara Sungai (Kiri) */
+const boat=piv(-.56,T+.065,.08);boat.rotation.y=.28;
+ball(.24,barkMat,0,.04,0,1.65,.28,.52,boat);
+addM(new B(.46,.016,.14),std({color:0xa87846,roughness:.7}),0,.07,0,boat);
+/* Tangguk / Ayakan Bambu & Keranjang Hasil Tangkapan di atas sampan */
+addM(new C(.09,.07,.08,14),std({color:0xb88b4a,roughness:.8}),-.08,.11,0,boat);
+addM(new C(.008,.008,.48,6),barkMat,.14,.14,.06,boat).rotation.set(.3,0,-.95);
+
+/* Pelantar Kayu Nelayan & Aktivitas Ekonomi Pesisir (Kanan) */
+for(const px of[.08,.56,.88])for(const pz of[-.42,.42])addM(new C(.022,.025,.24,8),barkMat,px,T+.12,pz);
+addM(new B(.96,.032,.96),std({color:0x8a5e36,roughness:.75}),.48,T+.24,0);
+/* Nyiru / Nampan Anyaman Penuh Kerang Ale-Ale & Baskom Pengupas Cangkang */
+const nyiru=piv(.26,T+.27,-.12);
+addM(new C(.20,.18,.025,20),std({color:0xc9a05e,roughness:.78}),0,0,0,nyiru);
+for(let i=0;i<16;i++){
+const a=i*2.4,d=Math.sqrt(i/16)*.14;
+ball(.024,i%3?creamMat:std({color:0xb09670,roughness:.6}),Math.cos(a)*d,.02,Math.sin(a)*d,1.25,.55,1,nyiru);
+}
+/* Baskom pengupasan cangkang & lapak olahan kerang ale-ale */
+const tub=lathe([[0,0],[.09,0],[.13,.07],[.14,.08]],0x2f6f8f);tub.position.set(.26,T+.26,.24);g.add(tub);
+addM(new C(.10,.10,.01,16),creamMat,.26,T+.30,.24);
+/* Meja pedagang & toples produk olahan ale-ale */
+addM(new B(.36,.12,.26),woodUlin,.72,T+.32,-.16);
+for(let j=0;j<3;j++)addM(new C(.038,.038,.09,12),std({color:0xd87a38,roughness:.4}),.60+j*.11,T+.42,-.16);
+/* Tenda lapak pesisir */
+addM(new C(.012,.012,.42,8),barkMat,.72,T+.46,-.16);
+addM(new THREE.ConeGeometry(.32,.14,6),std({color:0xb3261e,roughness:.7}),.72,T+.68,-.16);
+
+/* Papan Info 32 Register Nelayan Desa Suka Bangun (Untan 2022) */
+card(['32 Istilah Nelayan','Desa Suka Bangun','Delta Pawan • 2022'],.48,.24,.72,T+.40,.28);
+addM(new B(.03,.18,.03),woodUlin,.72,T+.31,.27);
+
+card(['JEJAK ALE-ALE DI DELTA PAWAN','Nelayan • Pengupas • Pedagang • 32 Istilah Lokal'],1.72,.24,0,.28,.625);
+g.userData.anim=t=>{
+waterTex.offset.x=(t*.06)%1;
+boat.position.y=T+.065+Math.sin(t*2.4)*.008;
+boat.rotation.z=Math.sin(t*1.9)*.04;
+};
+}
+
+/* 4. DIORAMA l4: BUNDARAN ALE-ALE MODERN (Ruang, Ingatan & Identitas Kota - foto/tugu.jpg) */
+if(k=='bundaran_aleale'){
+/* Persimpangan Jalan Aspal Jl. R. Suprapto & Jl. K.H. Murni */
+addM(new B(2.04,.04,1.36),std({color:0x3e4246,roughness:.88}),0,T+.02,0);
+/* Marka jalan putih */
+for(const x of[-.84,-.66,.66,.84])addM(new B(.11,.044,.025),creamMat,x,T+.022,0);
+for(const z of[-.54,.54])addM(new B(.025,.044,.12),creamMat,0,T+.022,z);
+
+/* Bundaran Kanstin Hitam-Putih & Taman Semak Rimbun (Persis foto/tugu.jpg) */
+addM(new C(.44,.46,.05,36),std({color:0x2b2e30,roughness:.8}),0,T+.06,0);
+for(let i=0;i<16;i++){
+const a=i*Math.PI*2/16;
+addM(new B(.07,.055,.04),i%2?creamMat:std({color:0x1b1d1f,roughness:.8}),Math.cos(a)*.44,T+.065,Math.sin(a)*.44).rotation.y=-a;
+}
+addM(new C(.38,.40,.07,32),std({color:0x2e3330,roughness:.85}),0,T+.11,0);
+/* Semak hijau melingkar di kaki tugu (sesuai foto/tugu.jpg) */
+for(let i=0;i<10;i++){
+const a=i*Math.PI*2/10;
+ball(.09,std({color:i%2?0x2e6b32:0x3f823e,roughness:.88}),Math.cos(a)*.28,T+.17,Math.sin(a)*.28,1.15,.85,1.15);
+}
+/* Rambu bundaran biru di tepi taman */
+addM(new C(.008,.008,.18,8),silverMat,-.38,T+.14,.24);
+addM(new C(.032,.032,.01,16),std({color:0x1b62b8,roughness:.4}),-.38,T+.23,.24).rotation.x=Math.PI/2;
+
+/* MENARA TUGU ALE-ALE KHAS MELAYU (Hijau & Kuning Kerajaan, 4 Kerang Terbuka, Jam 4 Sisi, & Atap Limas Silang - foto/tugu.jpg) */
+const tGreen=std({color:0x78b852,roughness:.6}),tYellow=std({color:0xefc43c,roughness:.55}),tRoof=std({color:0x222629,roughness:.75});
+const tower=piv(0,T+.15,0);
+/* Balkon bawah berpagar kuning-hijau & 4 kerang ale-ale terbuka di keempat sudutnya */
+addM(new B(.46,.16,.46),tGreen,0,.08,0,tower);
+addM(new B(.48,.04,.48),tYellow,0,.17,0,tower);
+addM(new B(.44,.12,.44),tYellow,0,.25,0,tower);
+/* 4 cangkang ale-ale terbuka (luar cokelat keemasan, dalam putih mutiara) */
+for(let i=0;i<4;i++){
+const a=i*Math.PI/2+Math.PI/4,cg=piv(Math.cos(a)*.29,.26,Math.sin(a)*.29,tower);
+cg.rotation.y=-a+Math.PI/2;
+for(const side of[-1,1]){
+const v=piv(0,0,side*.015,cg);v.rotation.x=side*.52;
+const sh=addM(new S(.085,16,8,0,Math.PI*2,0,Math.PI/2),side>0?std({color:0xc99342,roughness:.45}):creamMat,0,0,0,v);
+sh.scale.set(1.1,.45,.9);
+}
+}
+/* 4 Pilar Menara Tengah & Bilik Jam 4 Sisi */
+[[-.13,-.13],[.13,-.13],[-.13,.13],[.13,.13]].forEach(([px,pz])=>{
+addM(new B(.07,.54,.07),tGreen,px,.48,pz,tower);
+addM(new B(.08,.04,.08),tYellow,px,.56,pz,tower);
+});
+addM(new B(.28,.22,.28),std({color:0x1b5e46,roughness:.55}),0,.64,0,tower);
+/* Wajah jam bulat putih di 4 sisi menara */
+const clockHands=[];
+[[0,0,.145,0],[0,0,-.145,Math.PI],[.145,0,0,Math.PI/2],[-.145,0,0,-Math.PI/2]].forEach(([cx,cy,cz,ry])=>{
+const clk=piv(cx,.64,cz,tower);clk.rotation.y=ry;
+addM(new C(.065,.065,.01,18),creamMat,0,0,0,clk).rotation.x=Math.PI/2;
+const hand=addM(new B(.008,.045,.006),tRoof,0,.015,.008,clk);
+clockHands.push(hand);
+});
+/* Atap Silang Khas Melayu Berlis Kuning Cerah (Sesuai foto/tugu.jpg) */
+for(let r=0;r<2;r++){
+const rg=piv(0,.84,0,tower);rg.rotation.y=r*Math.PI/2;
+for(const s of[-1,1]){
+const sl=addM(new B(.34,.025,.42),tRoof,s*.11,.07,0,rg);sl.rotation.z=-s*.65;
+const tr=addM(new B(.34,.03,.02),tYellow,s*.11,.05,.21,rg);tr.rotation.z=-s*.65;
+const tr2=addM(new B(.34,.03,.02),tYellow,s*.11,.05,-.21,rg);tr2.rotation.z=-s*.65;
+}
+}
+
+/* Kendaraan Miniatur Mengelilingi Bundaran Ale-Ale (Melambangkan Ruang & Aktivitas Kota) */
+const cars=[];
+[[0xdf3b32,0],[0xf2f2ec,2.1],[0x2b6eb5,4.2]].forEach(([col,ang])=>{
+const cp=piv(0,T+.05,0);
+const car=piv(.56,0,0,cp);
+addM(new B(.08,.04,.14),std({color:col,roughness:.4,metalness:.2}),0,.024,0,car);
+addM(new B(.068,.028,.075),std({color:0xdde6ea,roughness:.3}),0,.054,-.01,car);
+cars.push({cp,ang});
+});
+
+card(['BUNDARAN ALE-ALE KETAPANG','Ruang, Ingatan & Identitas Kota Ketapang'],1.72,.24,0,.28,.625);
+g.userData.anim=t=>{
+cars.forEach(c=>{c.cp.rotation.y=c.ang+t*.55});
+clockHands.forEach(h=>{h.rotation.z=-t*.5});
+};
+}
+g.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});
+}
 if(k=='axe'){g.add(part(new C(.035,.045,1.3,8),M.wood,0,.65,0),part(new C(.055,.055,.35,8),0x2b2b33,0,.25,0),part(new C(.06,.06,.1,8),M.silver,0,.7,0));
 const sh=new THREE.Shape();sh.moveTo(.04,1.2);sh.lineTo(.46,1.3);sh.quadraticCurveTo(.6,.95,.46,.6);sh.lineTo(.04,.72);sh.lineTo(.04,1.2);
 const hd=new THREE.Mesh(new THREE.ExtrudeGeometry(sh,{depth:.05,bevelEnabled:false}),new THREE.MeshLambertMaterial({color:0xe8eef2,emissive:0x2a3438}));hd.position.z=-.025;g.add(hd)}

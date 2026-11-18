@@ -1,4 +1,4 @@
-const V='museum-ketapang-v101';
+const V='museum-ketapang-v102';
 const SHELL=['./','matan-content.js','matan-gallery.js','pawan-game.css','pawan-game.js','pawan-game.html','https://unpkg.com/three@0.160.0/build/three.module.js','gamelan-game.css','gamelan-game.js','batik-game.css','batik-game.js','index.html','manifest.webmanifest','icon-192.png','icon-512.png','https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js','https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js','model/bakul_anyaman.glb','model/batik_rak.glb'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(c=>Promise.all(SHELL.map(u=>c.add(u).catch(()=>{})))).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==V).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});
