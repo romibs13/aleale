@@ -211,11 +211,11 @@ const _depth = _enggang ? _enggang.pos[1] : -16.2;
 EXHIBITS.push({id:'d10',room:'Alam Ketapang',kind:'orangutan',base:false,still:true,pos:[14.8,-8.2,0],gp:[16.2,-8.8],wide:[[13.9,-8.2],[15.7,-8.2]],title:'Orangutan Kalimantan Barat: Penjaga Hutan dari Jantung Borneo',img:'foto/foto32.jpg',text:'Orangutan Kalimantan (Pongo pygmaeus) merupakan salah satu satwa liar endemik Pulau Kalimantan yang menjadi kekayaan keanekaragaman hayati Indonesia. Di Kalimantan Barat, salah satu habitat pentingnya berada di Taman Nasional Gunung Palung, yang terletak di wilayah Kabupaten Ketapang dan Kabupaten Kayong Utara.\n\nHutan Gunung Palung menyediakan berbagai sumber pakan dan tempat berlindung bagi orangutan. Satwa ini dikenal memiliki kecerdasan tinggi, kehidupan arboreal (banyak menghabiskan waktu di atas pohon), serta hubungan erat antara induk dan anaknya. Orangutan juga berperan penting dalam menjaga keseimbangan ekosistem hutan melalui penyebaran biji-bijian dari buah yang dikonsumsinya.\n\nNamun, keberadaan orangutan menghadapi berbagai ancaman, mulai dari kehilangan dan fragmentasi habitat akibat alih fungsi lahan, kebakaran hutan, hingga perburuan dan konflik dengan manusia. Terpisahnya kawasan hutan juga dapat membatasi ruang jelajah dan pergerakan orangutan untuk mencari makanan serta pasangan.\n\nDi Ketapang, upaya menjaga habitat orangutan juga dilakukan melalui pengelolaan koridor orangutan Sungai Putri–Gunung Tarak–Gunung Palung. Koridor seluas sekitar 12.918 hektare ini ditetapkan pada 2017 untuk menghubungkan kawasan-kawasan habitat yang terpisah akibat perubahan penggunaan lahan.'});
 DIALOGS.d10=['Lihat induk orangutan dan anaknya di pohon ini! Ini orangutan Kalimantan, Pongo pygmaeus.','Orangutan Kalimantan adalah satwa endemik Pulau Kalimantan. Di Kalimantan Barat, salah satu habitat pentingnya ada di Taman Nasional Gunung Palung, di Ketapang dan Kayong Utara.','Hutan Gunung Palung menyediakan pakan dan tempat berlindung. Orangutan sangat cerdas, banyak hidup di atas pohon, dan induknya sangat dekat dengan anaknya.','Orangutan juga menjaga keseimbangan hutan, karena menyebarkan biji dari buah yang dimakannya.','Sayangnya, mereka terancam kehilangan habitat akibat alih fungsi lahan, kebakaran hutan, perburuan, dan konflik dengan manusia.','Hutan yang terpisah-pisah juga membatasi ruang jelajah mereka untuk mencari makan dan pasangan.','Karena itu di Ketapang ada koridor orangutan Sungai Putri–Gunung Tarak–Gunung Palung, seluas sekitar 12.918 hektare, yang ditetapkan pada 2017 untuk menghubungkan habitat yang terpisah.'];
 GN_EXTRA['Kesenian']='Pemandu Seni';GN_EXTRA['Alam Ketapang']='Pemandu Alam';
-/* Koleksi Kerajinan: Anyaman Pandan (model/bakul_anyaman.glb) dan Batik Pelangi (model/batik_rak.glb).
+/* Koleksi Kerajinan: Anyaman Pandan (d4, diorama tikar, tas, tudung saji & bakul pandan) dan Batik Pelangi (model/batik_rak.glb).
    size = ukuran model, still = tidak berputar, base:false = tanpa alas, gp = posisi pemandu, wide = titik penghalang tambahan */
-{const e=EXHIBITS.find(x=>x.id=='d4');Object.assign(e,{img:'foto/foto28.jpeg',kind:'pot',glb:'model/bakul_anyaman.glb',size:1.5,pos:[7.2,-8.1,0],gp:[8.4,-7.5],title:'Anyaman Pandan Khas Ketapang',
+{const e=EXHIBITS.find(x=>x.id=='d4');Object.assign(e,{img:'foto/foto28.jpeg',kind:'anyaman',base:false,still:true,pos:[7.2,-8.1,0],gp:[8.4,-7.5],wide:[[6.3,-8.1],[8.1,-8.1]],title:'Anyaman Pandan Khas Ketapang',
 text:'Anyaman pandan merupakan salah satu kerajinan tradisional masyarakat Desa Sungai Bakau, Kabupaten Ketapang. Dengan memanfaatkan daun pandan berduri yang tumbuh di sekitar lingkungan mereka, masyarakat mengolahnya menjadi berbagai produk kerajinan seperti tikar, tas, dan keranjang.\n\nProses pembuatannya membutuhkan ketelitian dan keterampilan tangan, mulai dari pengolahan daun hingga menyusunnya menjadi anyaman yang indah dan bernilai guna. Kerajinan ini bukan sekadar produk rumah tangga, tetapi juga mencerminkan kearifan lokal masyarakat dalam memanfaatkan kekayaan alam serta menjaga keterampilan yang diwariskan secara turun-temurun.'})}
-DIALOGS.d4=['Selamat datang di ruang Kerajinan! Lihat bakul ini, ini anyaman pandan khas Ketapang.','Anyaman pandan adalah kerajinan tradisional masyarakat Desa Sungai Bakau, Kabupaten Ketapang.','Mereka memanfaatkan daun pandan berduri yang tumbuh di sekitar lingkungan, lalu mengolahnya menjadi tikar, tas, dan keranjang.','Pembuatannya butuh ketelitian dan keterampilan tangan, mulai dari mengolah daun sampai menyusunnya menjadi anyaman yang indah.','Kerajinan ini mencerminkan kearifan lokal dalam memanfaatkan alam, sekaligus keterampilan yang diwariskan turun-temurun.'];
+DIALOGS.d4=['Selamat datang di ruang Kerajinan! Lihat hamparan tikar, tas, tudung saji, dan bakul bertingkat ini—inilah kerajinan anyaman pandan khas Ketapang.','Anyaman pandan adalah kerajinan tradisional masyarakat Desa Sungai Bakau, Kabupaten Ketapang.','Mereka memanfaatkan daun pandan berduri yang tumbuh di sekitar lingkungan, lalu mengolahnya menjadi tikar, tas, tudung saji, dan keranjang.','Pembuatannya butuh ketelitian dan keterampilan tangan, mulai dari merebus, menjemur, dan mengirat daun pandan sampai menyusunnya menjadi anyaman yang indah.','Kerajinan ini mencerminkan kearifan lokal dalam memanfaatkan alam, sekaligus keterampilan yang diwariskan turun-temurun.'];
 EXHIBITS.push({id:'d6',room:'Kerajinan',kind:'flag',glb:'model/batik_rak.glb',size:3.4,still:true,base:false,pos:[7.2,-15.6,0],gp:[9.2,-15.6],wide:[[6.3,-16.6],[8.1,-16.6]],title:'Batik Pelangi Khas Ketapang',img:'foto/pelangi.jpg',
 text:'Kain Pelangi merupakan salah satu warisan tekstil tradisional Kabupaten Ketapang yang memiliki hubungan erat dengan sejarah Kerajaan Matan. Dahulu, kain ini dikenal sebagai bagian dari tradisi perempuan bangsawan di lingkungan keraton.\n\nKeistimewaannya terletak pada teknik pewarnaan tradisional yang disebut melangi, serta ragam motif yang terinspirasi dari alam dan lingkungan sekitar. Proses pembuatannya membutuhkan ketelitian dan kesabaran, sehingga setiap kain memiliki nilai seni dan budaya tersendiri.\n\nKini, Kain Pelangi terus dilestarikan sebagai bagian dari identitas budaya Ketapang. Lebih dari sekadar kain, setiap motif dan warna menyimpan cerita tentang sejarah, tradisi, dan keterampilan leluhur yang patut dijaga oleh generasi mendatang.'});
 DIALOGS.d6=['Halo! Kain-kain berwarna di rak ini adalah Kain Pelangi, batik khas Ketapang.','Kain ini punya hubungan erat dengan sejarah Kerajaan Matan. Dahulu, kain ini bagian dari tradisi perempuan bangsawan di lingkungan keraton.','Keistimewaannya ada pada teknik pewarnaan tradisional yang disebut melangi, dengan motif yang terinspirasi dari alam sekitar.','Membuatnya butuh ketelitian dan kesabaran, jadi setiap kain punya nilai seni dan budaya tersendiri.','Kini Kain Pelangi terus dilestarikan sebagai identitas budaya Ketapang. Setiap motif dan warnanya menyimpan cerita tentang sejarah dan keterampilan leluhur.'];
@@ -250,7 +250,7 @@ text:'Dokter Agoesdjam, yang juga ditulis Agusjam, merupakan seorang dokter kela
 DIALOGS.u9=['Tugu dengan figur dokter dan tas medis ini mengenang dr. Agoesdjam. Simbol-simbolnya mengingatkan kita pada pengabdiannya untuk kesehatan dan kemanusiaan.','Dokter Agoesdjam, juga ditulis Agusjam, lahir di Pacitan, Jawa Timur, pada 28 Januari 1888. Ia belajar kedokteran di STOVIA, cikal bakal Fakultas Kedokteran Universitas Indonesia.','Ia pernah bertugas menangani penyakit kusta di Singkawang dan Sambas, lalu bertugas di Ngawi dan memperdalam keahlian kesehatan mata.','Pada 1921 ia ditugaskan ke Pontianak. Ia sering mendatangi kampung-kampung Dayak di pedalaman, berjalan kaki berhari-hari atau naik perahu menyusuri sungai.','Agustus 1943, ia datang ke Ketapang menggantikan menantunya, Dokter Suharso, yang sedang cuti ke Jawa. Saat itu Kalimantan Barat dalam pendudukan Jepang yang penuh ketakutan.','Terakhir tercatat melayani pasien pada 31 Desember 1943, ia menghilang setelah dipanggil militer Jepang, dan dilaporkan menjadi korban Peristiwa Mandor tahun 1944.','Untuk mengenangnya, namanya diabadikan sebagai RSUD dr. Agoesdjam, yang resmi berdiri pada 16 Juli 1984.','Kisahnya tentang pengabdian tanpa batas: menjangkau mereka yang sulit mendapat layanan kesehatan, demi kemanusiaan.'];
 EXHIBITS.push({id:'u10',room:'Tokoh dan Pahlawan',kind:'keraton',base:false,still:true,pos:[-15.8,-16.3,4.3],gp:[-14.2,-14.5],wide:[[-16.4,-16.3],[-15.2,-16.3]],title:'Panembahan Gusti Muhammad Saunan: Raja Terakhir Kerajaan Matan',img:'foto/foto37.jpg',
 text:'Panembahan Gusti Muhammad Saunan merupakan salah satu tokoh penting dalam sejarah Kerajaan Matan di Ketapang. Ia dikenal sebagai penguasa terakhir Kerajaan Matan dan memimpin pada masa ketika pengaruh kolonial Belanda semakin kuat di Kalimantan Barat.\n\nGusti Muhammad Saunan diangkat menjadi Panembahan pada tahun 1922. Ia dikenal sebagai sosok pemimpin yang berpendidikan dan memiliki pemikiran modern untuk zamannya. Di bawah kepemimpinannya, Keraton Matan mengalami perubahan besar, termasuk renovasi Istana Muliakerta dengan sentuhan arsitektur Eropa.\n\nBangunan keraton tersebut menjadi salah satu peninggalan penting sejarah Kerajaan Matan. Di dalamnya tersimpan berbagai benda bersejarah, seperti singgasana, foto keluarga kerajaan, kain tenun, batik kuno, serta benda-benda peninggalan Kesultanan Tanjungpura.\n\nNamun, masa pemerintahannya berakhir di tengah situasi kelam pendudukan Jepang. Pada masa Peristiwa Mandor, banyak tokoh kerajaan, pemimpin masyarakat, dan kaum intelektual di Kalimantan Barat menjadi korban penangkapan serta pembunuhan oleh militer Jepang. Gusti Muhammad Saunan termasuk tokoh yang dilaporkan menjadi korban tragedi tersebut pada 1944.\n\nKisah Gusti Muhammad Saunan menjadi pengingat bahwa sejarah Ketapang bukan hanya tentang kerajaan dan kejayaan masa lalu, tetapi juga tentang hilangnya banyak pemimpin dan tokoh masyarakat akibat kekejaman masa pendudukan Jepang.\n\nHingga kini, Keraton Matan di Desa Mulia Kerta, Kecamatan Benua Kayong, menjadi salah satu tempat penting untuk mengenang perjalanan panjang kerajaan tersebut.'});
-DIALOGS.u10=['Tugu dengan figur berpeci dan selempang ini mengenang Panembahan Gusti Muhammad Saunan. Figur simbolis ini mengajak kita mengingat kepemimpinan dan perjalanan sejarah Kerajaan Matan.','Gusti Muhammad Saunan dikenal sebagai penguasa terakhir Kerajaan Matan di Ketapang, saat pengaruh kolonial Belanda makin kuat di Kalimantan Barat.','Ia diangkat menjadi Panembahan pada tahun 1922. Ia pemimpin yang berpendidikan dan berpikiran modern untuk zamannya.','Di bawah kepemimpinannya, Istana Muliakerta direnovasi dengan sentuhan arsitektur Eropa.','Di dalam keraton tersimpan singgasana, foto keluarga kerajaan, kain tenun, batik kuno, dan peninggalan Kesultanan Tanjungpura.','Masa pemerintahannya berakhir di masa kelam pendudukan Jepang. Pada Peristiwa Mandor, banyak tokoh kerajaan, pemimpin masyarakat, dan kaum intelektual ditangkap dan dibunuh.','Gusti Muhammad Saunan dilaporkan termasuk korban tragedi itu pada 1944.','Hingga kini, Keraton Matan di Desa Mulia Kerta, Kecamatan Benua Kayong, menjadi tempat penting untuk mengenang perjalanan panjang kerajaan ini.'];
+DIALOGS.u10=['Monumen dengan figur bertanjak bangsawan Melayu, berkain sampin songket, dan berpending emas ini mengenang Panembahan Gusti Muhammad Saunan.','Gusti Muhammad Saunan dikenal sebagai penguasa terakhir Kerajaan Matan di Ketapang, saat pengaruh kolonial Belanda makin kuat di Kalimantan Barat.','Ia diangkat menjadi Panembahan pada tahun 1922. Ia pemimpin yang berpendidikan dan berpikiran modern untuk zamannya.','Di bawah kepemimpinannya, Istana Muliakerta direnovasi dengan sentuhan arsitektur Eropa.','Di dalam keraton tersimpan singgasana, foto keluarga kerajaan, kain tenun, batik kuno, dan peninggalan Kesultanan Tanjungpura.','Masa pemerintahannya berakhir di masa kelam pendudukan Jepang. Pada Peristiwa Mandor, banyak tokoh kerajaan, pemimpin masyarakat, dan kaum intelektual ditangkap dan dibunuh.','Gusti Muhammad Saunan dilaporkan termasuk korban tragedi itu pada 1944.','Hingga kini, Keraton Matan di Desa Mulia Kerta, Kecamatan Benua Kayong, menjadi tempat penting untuk mengenang perjalanan panjang kerajaan ini.'];
 /* Koleksi Sejarah dan Budaya, lantai 2. Pajangan merupakan ilustrasi simbolis. */
 Object.assign(EXHIBITS.find(e=>e.id==='u5'),{"id": "u5", "kind": "rebana", "pos": [-3.6, -15.8, 4.3], "gp": [-2, -14.7], "title": "Kesenian Rebana Melayu Ketapang: Irama Tradisi yang Menjaga Warisan", "text": "Di tengah kehidupan masyarakat Melayu Ketapang, rebana bukan sekadar alat musik yang menghasilkan irama. Kesenian ini menjadi bagian dari tradisi keagamaan, kebersamaan, dan perayaan dalam kehidupan masyarakat.\n\nKesenian rebana Melayu di Ketapang telah dikenal sejak masa Kesultanan Tanjungpura. Pada masa itu, rebana dimainkan dalam berbagai kegiatan masyarakat, seperti acara perkawinan, gunting rambut, peringatan hari-hari besar Islam, dan kegiatan adat lainnya.\n\nDalam pertunjukannya, bunyi tabuhan rebana berpadu dengan lantunan syair atau pujian yang bernuansa Islami. Irama yang dihasilkan menjadi pengiring suasana acara sekaligus sarana menyampaikan pesan keagamaan dan nasihat kehidupan.\n\nDi beberapa kelompok hadrah, terdapat pembagian peran alat musik, seperti Bawa sebagai pengatur irama, Ganjil atau Seling sebagai pengisi tabuhan, dan Gedug sebagai penguat ketukan dasar.\n\nLebih dari sekadar pertunjukan, rebana menjadi ruang berkumpul bagi masyarakat. Dari generasi ke generasi, kesenian ini diwariskan melalui latihan, kegiatan keagamaan, dan berbagai acara keluarga.\n\nHingga kini, rebana menjadi salah satu identitas kesenian Melayu Kayong yang memperlihatkan bagaimana nilai agama, seni, dan kebersamaan tumbuh berdampingan dalam kehidupan masyarakat Ketapang.", "room": "Sejarah dan Budaya", "base": false, "still": true, "img": 'foto/foto41.jpg', "wide": [[-4.4, -15.8, 0.75], [-2.8, -15.8, 0.75]]});
 DIALOGS.u5=["Lihat tiga rebana di atas dudukan ini: Bawa, Ganjil atau Seling, dan Gedug. Mari mengenal kesenian rebana Melayu Ketapang.", "Di tengah kehidupan masyarakat Melayu Ketapang, rebana bukan sekadar alat musik yang menghasilkan irama. Kesenian ini menjadi bagian dari tradisi keagamaan, kebersamaan, dan perayaan dalam kehidupan masyarakat.", "Kesenian rebana Melayu di Ketapang telah dikenal sejak masa Kesultanan Tanjungpura. Pada masa itu, rebana dimainkan dalam berbagai kegiatan masyarakat, seperti acara perkawinan, gunting rambut, peringatan hari-hari besar Islam, dan kegiatan adat lainnya.", "Dalam pertunjukannya, bunyi tabuhan rebana berpadu dengan lantunan syair atau pujian yang bernuansa Islami. Irama yang dihasilkan menjadi pengiring suasana acara sekaligus sarana menyampaikan pesan keagamaan dan nasihat kehidupan.", "Di beberapa kelompok hadrah, terdapat pembagian peran alat musik, seperti Bawa sebagai pengatur irama, Ganjil atau Seling sebagai pengisi tabuhan, dan Gedug sebagai penguat ketukan dasar.", "Lebih dari sekadar pertunjukan, rebana menjadi ruang berkumpul bagi masyarakat. Dari generasi ke generasi, kesenian ini diwariskan melalui latihan, kegiatan keagamaan, dan berbagai acara keluarga.", "Hingga kini, rebana menjadi salah satu identitas kesenian Melayu Kayong yang memperlihatkan bagaimana nilai agama, seni, dan kebersamaan tumbuh berdampingan dalam kehidupan masyarakat Ketapang."];
@@ -645,6 +645,228 @@ if(k=='drum'){g.add(lathe([[.16,0],[.28,.12],[.33,.3],[.28,.48],[.2,.55]],M.wood
 const rg=part(new THREE.TorusGeometry(.21,.015,6,20),M.gold,0,.56,0);rg.rotation.x=Math.PI/2;g.add(rg)}
 if(k=='pot'){g.add(lathe([[0,0],[.25,.05],[.38,.25],[.4,.4],[.32,.6],[.2,.72],[.22,.8]],0xb5532f));
 const bd=part(new THREE.TorusGeometry(.39,.025,6,24),M.gold,0,.35,0);bd.rotation.x=Math.PI/2;g.add(bd)}
+if(k=='anyaman'){
+/* Tekstur prosedural anyaman pandan Desa Sungai Bakau: anyaman kepang natural, anyaman motif berwarna, & kerawang segi enam */
+const weaveMaps=(()=>{
+const make=(draw,rx,ry)=>{const c=document.createElement('canvas'),b=document.createElement('canvas');c.width=c.height=b.width=b.height=256;
+draw(c.getContext('2d'),b.getContext('2d'),256,256);
+const map=new THREE.CanvasTexture(c),bump=new THREE.CanvasTexture(b);
+map.wrapS=map.wrapT=bump.wrapS=bump.wrapT=THREE.RepeatWrapping;map.repeat.set(rx,ry);bump.repeat.set(rx,ry);map.anisotropy=4;
+return {map,bump}};
+/* 1. Anyaman pandan natural (kepang / sasak rapat) */
+const nat=make((x,bx,w,h)=>{
+x.fillStyle='#cfa968';x.fillRect(0,0,w,h);bx.fillStyle='#606060';bx.fillRect(0,0,w,h);
+const st=16,tones=['#dfc082','#c8a15d','#e7cd96','#b88f4a'];
+for(let r=0;r<w/st;r++)for(let c=0;c<h/st;c++){
+const px=r*st,py=c*st,horiz=(r+c)%2===0;
+x.fillStyle=tones[(r*3+c)%4];x.fillRect(px+1,py+1,st-2,st-2);
+x.fillStyle='rgba(75,48,18,.28)';
+if(horiz){x.fillRect(px,py,st,1.5);x.fillRect(px,py+st-1.5,st,1.5)}
+else{x.fillRect(px,py,1.5,st);x.fillRect(px+st-1.5,py,1.5,st)}
+x.fillStyle='rgba(255,248,220,.22)';
+if(horiz)x.fillRect(px+2,py+5,st-4,4);else x.fillRect(px+5,py+2,4,st-4);
+bx.fillStyle=horiz?'#d8d8d8':'#989898';bx.fillRect(px+2,py+2,st-4,st-4);
+}},5,5);
+/* 2. Anyaman pandan bermotif belah ketupat & pucuk rebung (hijau zamrud, merah marun, cokelat tua & pandan emas) */
+const motif=make((x,bx,w,h)=>{
+x.fillStyle='#d8b778';x.fillRect(0,0,w,h);bx.fillStyle='#707070';bx.fillRect(0,0,w,h);
+const st=8,N=w/st;
+for(let r=0;r<N;r++)for(let c=0;c<N;c++){
+const px=r*st,py=c*st,dx=Math.abs((r%16)-7.5),dy=Math.abs((c%16)-7.5),md=dx+dy;
+let col=(r+c)%2?'#dec084':'#c7a05c';
+if(c<3||c>=N-3)col=(r+c)%2?'#9e2a22':'#d8b778';
+else if(c===3||c===N-4)col='#261810';
+else if(Math.abs(md-6)<1.2)col='#1f5e42';
+else if(Math.abs(md-3)<1.1)col='#a62b22';
+else if(md<1.6)col='#e8b948';
+x.fillStyle=col;x.fillRect(px+.6,py+.6,st-1.2,st-1.2);
+x.fillStyle='rgba(50,30,12,.22)';x.fillRect(px,py,st,.8);x.fillRect(px,py,.8,st);
+bx.fillStyle=(r+c)%2?'#d0d0d0':'#909090';bx.fillRect(px+1,py+1,st-2,st-2);
+}},3,2);
+/* 3. Anyaman kerawang berlubang (tutup bakul & tudung saji sesuai foto28.jpeg) */
+const hex=make((x,bx,w,h)=>{
+x.fillStyle='#5c4326';x.fillRect(0,0,w,h);bx.fillStyle='#303030';bx.fillRect(0,0,w,h);
+x.strokeStyle='#dfc082';x.lineWidth=6;bx.strokeStyle='#e0e0e0';bx.lineWidth=6;
+for(let i=-w;i<w*2;i+=32){
+[[i,0,i+h,h],[i,h,i+h,0]].forEach(([x0,y0,x1,y1])=>{
+x.beginPath();x.moveTo(x0,y0);x.lineTo(x1,y1);x.stroke();
+bx.beginPath();bx.moveTo(x0,y0);bx.lineTo(x1,y1);bx.stroke();
+});
+}
+for(let y=16;y<h;y+=32){
+x.strokeStyle='#c9a25e';x.lineWidth=5;x.beginPath();x.moveTo(0,y);x.lineTo(w,y);x.stroke();
+bx.beginPath();bx.moveTo(0,y);bx.lineTo(w,y);bx.stroke();
+}},3,3);
+return {nat,motif,hex};
+})();
+
+const std=o=>new THREE.MeshStandardMaterial(o);
+const pNat=std({color:0xf5e8cf,map:weaveMaps.nat.map,bumpMap:weaveMaps.nat.bump,bumpScale:.018,roughness:.76,metalness:.02,side:THREE.DoubleSide});
+const pWarm=std({color:0xe8cfa2,map:weaveMaps.nat.map,bumpMap:weaveMaps.nat.bump,bumpScale:.02,roughness:.78,metalness:.02,side:THREE.DoubleSide});
+const pMotif=std({color:0xffffff,map:weaveMaps.motif.map,bumpMap:weaveMaps.motif.bump,bumpScale:.02,roughness:.74,metalness:.03,side:THREE.DoubleSide});
+const pHex=std({color:0xf5e6c8,map:weaveMaps.hex.map,bumpMap:weaveMaps.hex.bump,bumpScale:.024,roughness:.78,metalness:.02,side:THREE.DoubleSide});
+const rattanMat=std({color:0xb8894a,roughness:.58,metalness:.04});
+const darkRattan=std({color:0x6b4724,roughness:.65,metalness:.04});
+const woodTbl=std({color:0x5c3a21,roughness:.72,metalness:.04});
+const goldTrim=std({color:0xd9a83e,roughness:.38,metalness:.45});
+const leafFresh=std({color:0x3f7d34,roughness:.62,metalness:.02,side:THREE.DoubleSide});
+
+const addM=(geo,m,x=0,y=0,z=0,par=g)=>{const o=new THREE.Mesh(geo,m);o.position.set(x,y,z);par.add(o);return o};
+const piv=(x=0,y=0,z=0,par=g)=>{const o=new THREE.Group();o.position.set(x,y,z);par.add(o);return o};
+const tube=(pts,r,m,par=g,seg=20,rad=8)=>addM(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts.map(p=>new THREE.Vector3(...p))),seg,r,rad,false),m,0,0,0,par);
+
+/* 1. Meja Pameran Berundak Kayu Ulin & Alas Tikar Pandan Lebar */
+const H=.48,T=H+.04;
+/* Tikar pandan besar tergelar di lantai di bawah/depan meja */
+const floorMat=addM(new B(2.05,.014,1.35),pMotif,0,.008,.06);
+[[-1.025,0,0,.02,1.36],[1.025,0,0,.02,1.36],[0,0,-.615,2.06,.02],[0,0,.735,2.06,.02]].forEach(([x,y,z,w,d])=>{
+addM(new B(w,.018,d),darkRattan,x,.01,z);
+});
+/* Kaki meja, rak bawah, dan daun meja utama */
+[[-1,-1],[1,-1],[-1,1],[1,1]].forEach(([sx,sz])=>{
+addM(new C(.038,.044,H,12),woodTbl,sx*.80,H/2,sz*.44);
+addM(new C(.046,.046,.04,12),goldTrim,sx*.80,.02,sz*.44);
+});
+addM(new B(1.64,.028,.88),woodTbl,0,.16,0);
+addM(new B(1.82,.055,1.04),woodTbl,0,H,0);
+addM(new B(1.86,.022,1.08),goldTrim,0,H+.028,0);
+/* Podium bertingkat di sisi belakang meja untuk memajang tas & bakul tinggi */
+addM(new B(1.18,.16,.38),woodTbl,-.22,T+.08,-.26);
+addM(new B(1.21,.018,.41),goldTrim,-.22,T+.165,-.26);
+
+/* 2. Hamparan Tikar Pandan Halus & Gulungan Tikar Pandan di Sisi Kiri */
+const tableMat=addM(new B(1.66,.012,.88),pNat,0,T+.006,.02);
+/* Dua gulungan tikar pandan berdiri di sudut kiri-belakang & satu setengah terbuka di rak bawah */
+[[-.72,T+.28,-.22,.068,.54,.12,-.08,pMotif],[-.60,T+.24,-.28,.058,.46,-.06,.10,pNat]].forEach(([x,y,z,r,len,rx,rz,m])=>{
+const rl=piv(x,y,z);rl.rotation.set(rx,0,rz);
+addM(new C(r,r,len,20),m,0,0,0,rl);
+addM(new C(r*.72,r*.72,len+.006,16),darkRattan,0,0,0,rl);
+for(const dy of[-.14,.14]){const bd=addM(new THREE.TorusGeometry(r+.004,.008,6,20),rattanMat,0,dy,0,rl);bd.rotation.x=Math.PI/2}
+});
+/* Gulungan tikar pandan yang setengah terbentang di rak bawah meja */
+addM(new B(.85,.012,.52),pMotif,-.18,.18,.04);
+const rollBot=addM(new C(.052,.052,.52,18),pMotif,.25,.225,.04);rollBot.rotation.x=Math.PI/2;
+
+/* 3. Tiga Variasi Tas Anyaman Pandan Khas Ketapang (Tote Bag Bermotif, Tas Bundar Selempang, & Clutch Pandan) */
+/* 3a. Tas Jinjing (Tote Bag) Anyaman Pandan Bermotif di atas podium kiri-tengah */
+const tote=piv(-.36,T+.175,-.24);tote.rotation.y=.22;
+/* Badan tas bervolume dengan sisi membulat & bibir kepang pandan */
+addM(new B(.34,.28,.13),pMotif,0,.14,0,tote);
+for(const sx of[-1,1]){
+addM(new C(.065,.065,.28,14),pMotif,sx*.17,.14,0,tote);
+}
+addM(new B(.36,.028,.145),rattanMat,0,.285,0,tote);
+addM(new B(.36,.022,.142),darkRattan,0,.012,0,tote);
+/* Sepasang tangkai pegangan rotan/pandan melengkung di bagian depan & belakang tas */
+for(const sz of[-1,1]){
+tube([[-.09,.28,sz*.065],[-.08,.41,sz*.075],[0,.45,sz*.08],[.08,.41,sz*.075],[.09,.28,sz*.065]],.011,rattanMat,tote,18,8);
+for(const sx of[-.09,.09])addM(new S(.018,10,8),darkRattan,sx,.28,sz*.068,tote);
+}
+/* Hiasan gantungan rumbai daun pandan pada tas */
+tube([[.09,.28,.075],[.12,.22,.09],[.13,.16,.085]],.005,goldTrim,tote,8,6);
+addM(new C(.008,.024,.07,10),std({color:0xb3261e,roughness:.6}),.13,.13,.085,tote);
+
+/* 3b. Tas Selempang Bundar (Round Sling Bag Anyaman Pandan) dengan penyangga kayu */
+const roundBag=piv(.54,T+.21,-.18);roundBag.rotation.set(-.15,-.38,0);
+const rbBody=addM(new C(.165,.165,.085,28),pNat,0,0,0,roundBag);rbBody.rotation.x=Math.PI/2;
+const rbCenter=addM(new C(.095,.095,.09,24),pMotif,0,0,0,roundBag);rbCenter.rotation.x=Math.PI/2;
+for(const sz of[-.042,.042]){
+const rimT=addM(new THREE.TorusGeometry(.165,.011,8,28),rattanMat,0,0,sz,roundBag);
+}
+/* Kancing pengait kepang & tali selempang melengkung */
+addM(new S(.022,12,10),darkRattan,0,.02,.048,roundBag);
+tube([[0,.165,.01],[0,.02,.052]],.006,rattanMat,roundBag,8,6);
+tube([[-.16,.03,0],[-.18,.22,0],[0,.34,0],[.18,.22,0],[.16,.03,0]],.009,darkRattan,roundBag,22,7);
+/* Tiang penyangga pajangan tas */
+addM(new C(.012,.015,.36,8),woodTbl,.54,T+.18,-.24);
+addM(new B(.16,.02,.16),woodTbl,.54,T+.01,-.24);
+
+/* 3c. Tas Kepit / Dompet Anyaman Pandan (Clutch) di bagian depan kanan meja */
+const clutch=piv(.52,T+.07,.24);clutch.rotation.set(-.32,-.28,.08);
+addM(new B(.27,.15,.045),pMotif,0,0,0,clutch);
+addM(new B(.274,.02,.048),rattanMat,0,.072,0,clutch);
+/* Tutup segitiga amplop clutch & kancing kayu */
+const flapSh=new THREE.Shape();flapSh.moveTo(-.135,.075);flapSh.lineTo(.135,.075);flapSh.lineTo(0,-.035);flapSh.closePath();
+const flap=addM(new THREE.ExtrudeGeometry(flapSh,{depth:.008,bevelEnabled:false}),pNat,0,0,.022,clutch);
+addM(new C(.016,.016,.012,12),darkRattan,0,-.02,.03,clutch).rotation.x=Math.PI/2;
+
+/* 4. Bakul Bertingkat (Rantang Anyaman 2 Susun) & Bakul Bundar Bertangkai (Sesuai Referensi foto28.jpeg) */
+/* 4a. Rantang / Bakul Anyaman Bertingkat Dua Susun dengan Tangkai Tinggi */
+const tiffin=piv(.12,T+.175,-.25);tiffin.rotation.y=-.15;
+[0,.19].forEach((ty,idx)=>{
+addM(new C(.145,.138,.175,24),idx?pNat:pWarm,0,ty+.088,0,tiffin);
+for(const ry of[ty+.012,ty+.168]){
+const band=addM(new C(.151,.151,.024,24),rattanMat,0,ry,0,tiffin);
+}
+});
+/* Tutup atas rantang beranyam kerawang & bingkai rotan */
+addM(new C(.152,.152,.03,24),rattanMat,0,.385,0,tiffin);
+addM(new C(.142,.142,.034,24),pHex,0,.387,0,tiffin);
+/* Tiang penyangga samping & lengkungan tangkai pegangan berikat rotan */
+for(const sx of[-1,1]){
+addM(new B(.018,.38,.026),rattanMat,sx*.156,.20,0,tiffin);
+addM(new B(.026,.028,.034),darkRattan,sx*.156,.18,0,tiffin);
+addM(new B(.026,.028,.034),darkRattan,sx*.156,.36,0,tiffin);
+}
+tube([[-.156,.38,0],[-.15,.54,0],[0,.58,0],[.15,.54,0],[.156,.38,0]],.012,rattanMat,tiffin,20,8);
+for(let i=-3;i<=3;i++)addM(new C(.015,.015,.012,10),darkRattan,i*.018,.576-Math.abs(i)*.003,0,tiffin).rotation.z=Math.PI/2;
+
+/* 4b. Bakul Bundar Bertutup Kerawang & Bertangkai Lengkung */
+const bsk=piv(-.05,T+.008,.04);bsk.rotation.y=.18;
+addM(new C(.16,.14,.17,24),pNat,0,.085,0,bsk);
+addM(new C(.168,.168,.032,24),rattanMat,0,.17,0,bsk);
+addM(new C(.158,.158,.036,24),pHex,0,.172,0,bsk);
+tube([[-.165,.15,0],[-.16,.34,0],[0,.38,0],[.16,.34,0],[.165,.15,0]],.010,rattanMat,bsk,20,8);
+
+/* 5. Tudung Saji Anyaman Pandan Berlis Batik & Nampan Segi Delapan (Sesuai foto28.jpeg) */
+/* Nampan anyaman segi delapan dengan pegangan samping */
+const tray=piv(-.44,T+.01,.22);tray.rotation.y=.12;
+addM(new C(.23,.21,.045,8),pNat,0,.022,0,tray);
+const trayRim=addM(new THREE.TorusGeometry(.225,.014,6,8),rattanMat,0,.045,0,tray);trayRim.rotation.x=Math.PI/2;
+for(const sx of[-.23,.23])addM(new B(.025,.022,.11),rattanMat,sx,.035,0,tray);
+
+/* Tudung saji kubah anyaman pandan bersandar miring di atas tepi nampan */
+const tudung=piv(-.58,T+.09,.16);tudung.rotation.set(.12,.25,-.38);
+const domeGeo=new S(.23,24,14,0,Math.PI*2,0,Math.PI*.48);
+const dome=addM(domeGeo,pHex,0,0,0,tudung);dome.scale.y=.78;
+const tdBand=addM(new C(.228,.232,.038,24,1,true),pMotif,0,.018,0,tudung);
+const tdRim=addM(new THREE.TorusGeometry(.23,.010,8,24),darkRattan,0,.004,0,tudung);tdRim.rotation.x=Math.PI/2;
+addM(new C(.012,.012,.06,10),darkRattan,0,.185,0,tudung).rotation.z=Math.PI/2;
+
+/* Cepuk / Wadah Bulat Anyaman Kerawang di atas tatakan kayu bulat (tengah depan foto28.jpeg) */
+addM(new C(.13,.135,.028,18),woodTbl,.18,T+.014,.28);
+const cepuk=piv(.20,T+.028,.27);
+addM(new S(.085,18,12),pHex,0,.065,0,cepuk).scale.y=.78;
+addM(new C(.088,.088,.024,20),rattanMat,0,.065,0,cepuk);
+addM(new C(.065,.068,.022,18),rattanMat,.09,T+.038,.33);
+addM(new C(.058,.058,.024,18),pNat,.09,T+.039,.33);
+
+/* 6. Bahan Baku Daun Pandan Berduri Segar & Gulungan Pita Iratan Pandan Kering */
+const rawGrp=piv(-.72,T+.01,.28);
+for(let i=0;i<6;i++){
+const ang=-.35+i*.14,len=.38+(i%2)*.06;
+const lf=tube([[0,.01,0],[Math.cos(ang)*len*.5,.05+i*.012,Math.sin(ang)*len*.3],[Math.cos(ang)*len,.02+i*.008,Math.sin(ang)*len*.5]],.014,leafFresh,rawGrp,10,5);
+lf.scale.set(1,.28,1.8);
+}
+/* Pita iratan pandan yang sudah direbus & dikeringkan siap dianyam */
+for(let i=0;i<3;i++){
+const coil=addM(new THREE.TorusGeometry(.045+i*.008,.010,6,18),pNat,-.58+i*.04,T+.022,.36-i*.02);
+coil.rotation.x=Math.PI/2+.15*i;
+}
+
+/* Papan Keterangan Koleksi di Sudut Kanan Depan Meja */
+const pl=new THREE.Mesh(new THREE.PlaneGeometry(.48,.26),new THREE.MeshLambertMaterial({map:tex(384,208,(x,w,h)=>{
+x.fillStyle='#1f3d35';x.fillRect(0,0,w,h);x.strokeStyle='#e0a81f';x.lineWidth=7;x.strokeRect(6,6,w-12,h-12);
+x.textAlign='center';x.fillStyle='#f2dfaf';x.font='bold 28px Georgia,serif';x.fillText('ANYAMAN PANDAN',w/2,52);
+x.fillStyle='#e0a81f';x.font='bold 20px Georgia,serif';x.fillText('Desa Sungai Bakau • Ketapang',w/2,88);
+x.fillStyle='#e6f0ee';x.font='18px Georgia,serif';x.fillText('Tikar • Tas • Tudung Saji • Bakul',w/2,126);
+x.fillText('Warisan Keterampilan Tradisional',w/2,158);
+},1,1)}));
+pl.position.set(.60,T+.15,.36);pl.rotation.set(-.38,-.22,-.08);
+g.add(pl,part(new B(.035,.15,.035),0x4a3220,.62,T+.075,.39));
+
+g.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});
+}
 if(k=='jurongk'){const dm=new THREE.MeshLambertMaterial({map:dykTex(256,128,'#3a2416','#f0e6d0','#b3261e',2,1)}),
 wv=new THREE.MeshLambertMaterial({map:tex(64,64,(x,w,h)=>{x.fillStyle='#b88a4e';x.fillRect(0,0,w,h);x.fillStyle='#8a6232';for(let i=0;i<8;i++)for(let j=0;j<8;j++)if((i+j)%2)x.fillRect(i*8,j*8,8,8)},3,2)});
 g.add(part(new B(1.7,.05,1.5),0x5a4028,0,.025,0));
@@ -1203,65 +1425,478 @@ const bk=lathe([[0,0],[.09,0],[.13,.06],[.14,.1]],0x9a7a4a);bk.position.set(-.55
 /* papan keterangan WBTb 2025 */
 const pl=new THREE.Mesh(new THREE.PlaneGeometry(.5,.3),new THREE.MeshLambertMaterial({map:tex(256,154,(x,w,h)=>{x.fillStyle='#17110d';x.fillRect(0,0,w,h);x.strokeStyle='#e0a81f';x.lineWidth=6;x.strokeRect(5,5,w-10,h-10);x.fillStyle='#e0a81f';x.textAlign='center';x.font='bold 30px Georgia,serif';x.fillText('Warisan Budaya',w/2,48);x.fillText('Takbenda',w/2,82);x.fillStyle='#f0e6d0';x.font='bold 24px Georgia,serif';x.fillText('Indonesia 2025',w/2,120)},1,1)}));
 pl.position.set(.5,T+.2,.25);pl.rotation.x=-.35;g.add(pl,part(new B(.04,.18,.04),0x4a3220,.5,T+.08,.2))}
-if(k=='rahadi'){const mb=0xe9e1d2,bz=new THREE.MeshPhongMaterial({color:0x8a6a3a,specular:0x553311,shininess:30}),bp=(geo,x,y,z)=>{const m=new THREE.Mesh(geo,bz);m.position.set(x,y,z);g.add(m);return m};
-g.add(part(new B(1.05,.18,.85),0xcfc5ae,0,.09,0),part(new B(.72,.62,.56),mb,0,.49,0),part(new B(.8,.06,.62),0xcfc5ae,0,.83,0));
-const pl=new THREE.Mesh(new THREE.PlaneGeometry(.6,.4),new THREE.MeshLambertMaterial({map:tex(256,170,(x,w,h)=>{x.fillStyle='#2b2b33';x.fillRect(0,0,w,h);x.strokeStyle='#e0a81f';x.lineWidth=6;x.strokeRect(5,5,w-10,h-10);x.textAlign='center';x.fillStyle='#e0a81f';x.font='bold 34px Georgia,serif';x.fillText('RAHADI OESMAN',w/2,58);x.fillStyle='#f0e6d0';x.font='22px Georgia,serif';x.fillText('Pejuang Kemerdekaan',w/2,98);x.fillText('Gugur di Sungai Besar',w/2,128);x.fillText('7 Desember 1945',w/2,154)},1,1)}));
-pl.position.set(0,.5,.281);g.add(pl);
-/* patung dada perunggu berpeci */
-bp(new B(.5,.24,.26),0,.98,0);bp(new S(.13,12,8),-.25,1.04,0).scale.set(1,.8,1);bp(new S(.13,12,8),.25,1.04,0).scale.set(1,.8,1);
-bp(new C(.06,.07,.1,10),0,1.14,0);bp(new S(.12,16,12),0,1.28,0).scale.set(.95,1.1,1);bp(new C(.115,.12,.1,16),0,1.39,-.005);
-[-.07,.07].forEach(x=>bp(new B(.08,.18,.01),x,1.0,.132).rotation.z=x>0?-.35:.35);bp(new B(.05,.03,.01),-.15,1.04,.133);
-/* bendera merah putih berkibar */
-g.add(part(new C(.018,.022,2.3,8),0xf0f0f0,-.72,1.15,-.15),part(new S(.035,8,6),0xe0a81f,-.72,2.32,-.15),part(new C(.1,.12,.08,12),0x6b6b6b,-.72,.04,-.15));
-const fg=new THREE.Group();fg.position.set(-.72,2.1,-.15);const fr=part(new B(.6,.18,.01),0xd0202a,.3,0,0),fw=part(new B(.6,.18,.01),0xf6f6f6,.3,-.18,0);fg.add(fr,fw);g.add(fg);
-/* bambu runcing */
-[[.62,-.22,.18],[.74,-.18,-.14]].forEach(q=>{const b=part(new C(.022,.025,1.3,8),0x9bb54a,q[0],.65,q[1]);b.rotation.z=q[2];g.add(b);const tp=part(new THREE.ConeGeometry(.022,.14,8),0xc9b56a,q[0]-Math.sin(q[2])*.72,1.3+.07*Math.cos(q[2])-.05,q[1]);tp.rotation.z=q[2];g.add(tp)});
-/* pesawat kecil: Bandar Udara Rahadi Oesman */
-g.add(part(new C(.012,.012,.32,6),0x4a4a4a,.68,.16,.26));const pw=new THREE.Group();pw.position.set(.68,.36,.26);pw.rotation.y=-.6;
-const fu=part(new C(.035,.02,.36,10),0xf0f0f0,0,0,0);fu.rotation.z=Math.PI/2;pw.add(fu,part(new B(.08,.01,.42),0xf0f0f0,.03,0,0),part(new B(.06,.01,.16),0xf0f0f0,-.16,.01,0),part(new B(.05,.07,.01),0xd0202a,-.16,.045,0),part(new C(.012,.012,.02,6),0x2b2b33,.19,0,0).rotateZ(Math.PI/2));g.add(pw);
-g.userData.anim=t=>{fg.rotation.y=Math.sin(t*1.6)*.18;fr.rotation.y=fw.rotation.y=Math.sin(t*2.4)*.08}}
-/* papan keterangan tokoh (dipakai stadion, rsud, keraton) */
-if(k=='stadion'||k=='rsud'||k=='keraton'){const PQ={stadion:['PANGLIMA TENTEMAK','Pejuang dari Tumbang Titi','Perang Pebihingan 1914','Monumen Pahlawan'],rsud:['dr. AGOESDJAM','Pengabdian Kemanusiaan','1888 – 1944','Tugu interpretatif'],keraton:['G. M. SAUNAN','Raja Terakhir Kerajaan Matan','Panembahan 1922 – 1944','Tugu interpretatif']}[k];
-const pq=new THREE.Mesh(new THREE.PlaneGeometry(.5,.3),new THREE.MeshLambertMaterial({map:tex(256,154,(x,w,h)=>{x.fillStyle='#2b2b33';x.fillRect(0,0,w,h);x.strokeStyle='#e0a81f';x.lineWidth=6;x.strokeRect(5,5,w-10,h-10);x.textAlign='center';x.fillStyle='#e0a81f';x.font='bold 26px Georgia,serif';x.fillText(PQ[0],w/2,44);x.fillStyle='#f0e6d0';x.font='18px Georgia,serif';x.fillText(PQ[1],w/2,78);x.fillText(PQ[2],w/2,104);x.fillText(PQ[3],w/2,130)},1,1)}));
-pq.position.set(0,.34,.68);pq.rotation.x=-.45;g.add(pq,part(new B(.04,.26,.04),0x4a3220,0,.13,.62))}
-if(k=='stadion'){/* Monumen Pahlawan Panglima Tentemak */
-const st=0xcfc5ae,bz=new THREE.MeshPhongMaterial({color:0x8a6a3a,specular:0x553311,shininess:30}),bp=(geo,x,y,z)=>{const m=new THREE.Mesh(geo,bz);m.position.set(x,y,z);g.add(m);return m};
-g.add(part(new B(1.3,.08,1.0),0x9a9282,0,.04,0),part(new B(1.0,.1,.75),st,0,.13,0),part(new B(.7,.1,.5),st,0,.23,0),part(new B(.42,.9,.3),0xe9e1d2,0,.73,0),part(new B(.5,.05,.38),st,0,1.2,0));
-const ins=new THREE.Mesh(new THREE.PlaneGeometry(.36,.5),new THREE.MeshLambertMaterial({map:tex(128,178,(x,w,h)=>{x.fillStyle='#2b2b33';x.fillRect(0,0,w,h);x.strokeStyle='#e0a81f';x.lineWidth=4;x.strokeRect(4,4,w-8,h-8);x.textAlign='center';x.fillStyle='#e0a81f';x.font='bold 16px Georgia,serif';x.fillText('PANGLIMA',w/2,50);x.fillText('TENTEMAK',w/2,72);x.fillStyle='#f0e6d0';x.font='13px Georgia,serif';x.fillText('Gugur',w/2,104);x.fillText('22 Mei 1914',w/2,124);x.fillText('Tumbang Titi',w/2,144)},1,1)}));ins.position.set(0,.76,.152);g.add(ins);
-/* patung pejuang perunggu mengangkat mandau */
-bp(new C(.05,.06,.3,10),-.04,1.37,0);bp(new C(.05,.06,.3,10),.04,1.37,0);bp(new C(.09,.08,.3,12),0,1.65,0);bp(new S(.065,12,10),0,1.86,0);bp(new C(.075,.075,.03,12),0,1.92,0);
-const ar=bp(new C(.025,.025,.26,8),.1,1.86,0);ar.rotation.z=-.5;bp(new C(.025,.025,.22,8),-.1,1.62,.03).rotation.z=.3;
-const bl=new THREE.Mesh(new B(.03,.26,.008),new THREE.MeshPhongMaterial({color:0xc8ccd2,shininess:80}));bl.position.set(.2,2.08,0);bl.rotation.z=-.3;g.add(bl);
-const sh=bp(new B(.14,.26,.02),-.15,1.62,.07);sh.rotation.z=.2;
-/* karangan bunga & bendera */
-[-.4,.4].forEach(x=>{g.add(part(new C(.06,.05,.08,10),0x6b3f1f,x,.22,.32),part(new S(.07,10,8),0xd0202a,x,.3,.32))});
-g.add(part(new C(.015,.018,1.6,8),0xf0f0f0,-.55,.85,-.3));const fg=new THREE.Group();fg.position.set(-.55,1.55,-.3);fg.add(part(new B(.4,.12,.01),0xd0202a,.2,0,0),part(new B(.4,.12,.01),0xf6f6f6,.2,-.12,0));g.add(fg);
-g.userData.anim=t=>{fg.rotation.y=Math.sin(t*1.6)*.18}}
-/* Tugu interpretatif: figur simbolis, bukan rekonstruksi rupa tokoh. */
-if(k=='rsud'||k=='keraton'){
-const doctor=k=='rsud',stone=0xcfc5ae,gold=0xc39a50,
-bronze=new THREE.MeshPhongMaterial({color:0x896b43,specular:0x55412b,shininess:30}),
-bp=(geo,x,y,z)=>{const m=new THREE.Mesh(geo,bronze);m.position.set(x,y,z);g.add(m);return m};
-/* Alas berundak dan badan tugu selaras dengan monumen Panglima Tentemak. */
-g.add(part(new B(1.3,.08,1),0x9a9282,0,.04,0),part(new B(1.05,.1,.8),stone,0,.13,0),part(new B(.82,.1,.62),stone,0,.23,0),part(new B(.68,.9,.46),0xe9e1d2,0,.73,0),part(new B(.8,.07,.58),stone,0,1.215,0),part(new B(.73,.025,.51),gold,0,1.263,0));
-const lines=doctor?['dr. AGOESDJAM','1888 – 1944','Pengabdian untuk','kemanusiaan','Menjangkau pedalaman']:['GUSTI MUHAMMAD','SAUNAN','Panembahan 1922 – 1944','Kepemimpinan dan','ingatan sejarah Matan'];
-const ins=new THREE.Mesh(new THREE.PlaneGeometry(.59,.65),new THREE.MeshLambertMaterial({map:tex(384,420,(x,w,h)=>{x.fillStyle='#29332f';x.fillRect(0,0,w,h);x.strokeStyle='#c39a50';x.lineWidth=8;x.strokeRect(9,9,w-18,h-18);x.textAlign='center';lines.forEach((line,i)=>{x.fillStyle=i<2?'#eed6a0':'#ede4d2';x.font=(i<2?'bold 30':'25')+'px Georgia,serif';x.fillText(line,w/2,65+i*65,w-38)})},1,1)}));ins.position.set(0,.75,.232);g.add(ins);
-/* Figur berdiri dengan sikap tenang, memakai atribut sesuai kisah pengabdian. */
-[-.095,.095].forEach(x=>{bp(new C(.055,.065,.31,10),x,1.44,0);bp(new B(.12,.06,.2),x,1.31,.035)});
-bp(new C(.17,.13,.34,12),0,1.76,0);bp(new C(.045,.05,.08,10),0,1.96,0);bp(new S(.105,16,12),0,2.095,0).scale.set(1,1.15,.95);
-[-1,1].forEach(side=>{const arm=bp(new C(.035,.045,.29,10),side*.2,1.76,.015);arm.rotation.z=side*.13;bp(new S(.042,8,6),side*.218,1.6,.015)});
-if(doctor){
-/* Jas, stetoskop, dan tas medis melambangkan pelayanan ke masyarakat pedalaman. */
-[-1,1].forEach(side=>{const lapel=part(new B(.04,.19,.018),gold,side*.055,1.82,.15);lapel.rotation.z=side*.22;g.add(lapel)});
-const steth=part(new THREE.TorusGeometry(.065,.008,6,20,Math.PI),0x3b3027,0,1.83,.167);steth.rotation.z=Math.PI;g.add(steth,part(new C(.02,.02,.012,12),gold,.065,1.75,.17).rotateX(Math.PI/2));
-bp(new B(.19,.14,.11),.235,1.5,.02);bp(new THREE.TorusGeometry(.04,.009,6,12,Math.PI),.235,1.585,.02);g.add(part(new B(.055,.012,.012),gold,.235,1.51,.08),part(new B(.012,.055,.012),gold,.235,1.51,.08));
-}else{
-/* Peci, selempang dan naskah sebagai simbol kepemimpinan serta warisan Matan. */
-bp(new C(.108,.108,.095,16),0,2.215,0);const sash=part(new B(.045,.32,.022),gold,0,1.77,.155);sash.rotation.z=-.48;g.add(sash,part(new B(.29,.035,.27),gold,0,1.62,0));
-const scroll=part(new C(.026,.026,.22,10),0xd9c9a2,-.218,1.58,.065);scroll.rotation.z=.12;g.add(scroll);
+/* ===== RUANG TOKOH DAN PAHLAWAN (LANTAI 2): RAHADI OESMAN, PANGLIMA TENTEMAK, dr. AGOESDJAM, & G. M. SAUNAN ===== */
+if(k=='rahadi'||k=='stadion'||k=='rsud'||k=='keraton'){
+const std=o=>new THREE.MeshStandardMaterial(o);
+const bronzeMat=std({color:0x967244,roughness:.36,metalness:.72});
+const darkBronze=std({color:0x5c4324,roughness:.44,metalness:.68});
+const goldBronze=std({color:0xdba844,roughness:.28,metalness:.78});
+const silverSteel=std({color:0xd8dfe6,roughness:.22,metalness:.85});
+const marbleLight=std({color:0xede6d6,roughness:.55,metalness:.04});
+const graniteDark=std({color:0x363b3e,roughness:.48,metalness:.08});
+const stoneStep=std({color:0xbab2a0,roughness:.78,metalness:.02});
+const emeraldRoyal=std({color:0x1b5e46,roughness:.58,metalness:.06});
+const yellowRoyal=std({color:0xe8b830,roughness:.52,metalness:.08});
+const redFlag=std({color:0xc92228,roughness:.6,metalness:.02,side:THREE.DoubleSide});
+const whiteFlag=std({color:0xf5f5f2,roughness:.6,metalness:.02,side:THREE.DoubleSide});
+
+/* Tekstur batik blangkon dr. Agoesdjam & songket Panembahan G. M. Saunan */
+const batikBlangkon=tex(128,128,(x,w,h)=>{
+x.fillStyle='#3b2618';x.fillRect(0,0,w,h);x.strokeStyle='#c99b52';x.lineWidth=2.5;
+for(let r=0;r<4;r++)for(let c=0;c<4;c++){
+const cx=16+r*32,cy=16+c*32;
+x.beginPath();x.moveTo(cx,cy-12);x.lineTo(cx+12,cy);x.lineTo(cx,cy+12);x.lineTo(cx-12,cy);x.closePath();x.stroke();
+x.fillStyle='#8c5a2b';x.beginPath();x.arc(cx,cy,4,0,7);x.fill();
+}},2,2);
+const songketMatan=tex(128,128,(x,w,h)=>{
+x.fillStyle='#6e4f2d';x.fillRect(0,0,w,h);x.fillStyle='#e0b24c';
+for(let r=0;r<4;r++)for(let c=0;c<4;c++){
+const cx=16+r*32,cy=16+c*32;
+x.beginPath();x.arc(cx,cy,6,0,7);x.fill();
+for(let a=0;a<4;a++){const ang=a*Math.PI/2;x.fillRect(cx+Math.cos(ang)*9-2,cy+Math.sin(ang)*9-2,4,4)}
+}},2,2);
+const blangkonMat=std({color:0xd8c3a5,map:batikBlangkon,roughness:.6,metalness:.35});
+const songketBronze=std({color:0xe5c888,map:songketMatan,roughness:.42,metalness:.62});
+
+const addM=(geo,m,x=0,y=0,z=0,par=g)=>{const o=new THREE.Mesh(geo,m);o.position.set(x,y,z);par.add(o);return o};
+const piv=(x=0,y=0,z=0,par=g)=>{const o=new THREE.Group();o.position.set(x,y,z);par.add(o);return o};
+const ball=(r,m,x=0,y=0,z=0,sx=1,sy=1,sz=1,par=g)=>{const o=addM(new S(r,20,14),m,x,y,z,par);o.scale.set(sx,sy,sz);return o};
+const tube=(pts,r,m,par=g,seg=18,rad=8)=>addM(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts.map(p=>new THREE.Vector3(...p))),seg,r,rad,false),m,0,0,0,par);
+
+/* Fungsi pembuat kepala & wajah patung perunggu dengan detail anatomi (alis, mata, hidung, bibir, telinga) */
+const buildSculptedHead=(par,yPos,opts={})=>{
+const hd=piv(0,yPos,0,par);
+/* Leher & jakun */
+addM(new C(.048,.056,.11,14),bronzeMat,0,-.06,0,hd);
+/* Tengkorak kepala & rahang */
+ball(.106,bronzeMat,0,.02,0,.94,1.12,.96,hd);
+ball(.078,bronzeMat,0,-.045,.032,.86,.78,.82,hd);
+/* Busur alis, bola mata, kelopak, hidung, bibir & telinga */
+for(const s of[-1,1]){
+tube([[s*.014,.042,.092],[s*.042,.048,.090],[s*.065,.038,.078]],.007,darkBronze,hd,8,6);
+ball(.016,darkBronze,s*.038,.022,.088,1.1,.85,.6,hd);
+ball(.010,bronzeMat,s*.038,.022,.094,1,1,.5,hd);
+ball(.024,bronzeMat,s*.098,.005,-.005,.45,1.15,.7,hd);
+ball(.052,bronzeMat,s*.055,-.008,.058,.75,.95,.65,hd);
 }
-/* Bunga penghormatan pada alas; kisah Mandor tetap disampaikan melalui pemandu. */
-[-.46,.46].forEach(x=>{g.add(part(new C(.065,.05,.08,10),0x65503b,x,.22,.31));for(let i=0;i<3;i++)g.add(part(new S(.035,8,6),i%2?0xe8d9b8:0x964b42,x+(i-1)*.04,.29,.31))});
+/* Batang & cuping hidung */
+tube([[0,.042,.094],[0,.008,.108],[0,-.006,.104]],.009,bronzeMat,hd,8,6);
+for(const s of[-1,1])ball(.011,bronzeMat,s*.012,-.008,.100,1,.75,.8,hd);
+/* Kumis rapi (khusus dr. Agoesdjam sesuai foto40.jpg) */
+if(opts.mustache){
+for(const s of[-1,1])tube([[0,-.022,.104],[s*.022,-.024,.100],[s*.040,-.030,.088]],.0065,darkBronze,hd,8,6);
+}
+/* Bibir atas & bawah */
+tube([[-.028,-.036,.090],[0,-.034,.099],[.028,-.036,.090]],.0055,bronzeMat,hd,8,6);
+tube([[-.024,-.044,.088],[0,-.043,.096],[.024,-.044,.088]],.0055,darkBronze,hd,8,6);
+/* Kacamata bundar khas Rahadi Oesman (sesuai foto39.jpg) */
+if(opts.glasses){
+for(const s of[-1,1]){
+const rim=addM(new THREE.TorusGeometry(.024,.0032,8,20),goldBronze,s*.038,.022,.102,hd);
+const lens=addM(new C(.022,.022,.002,16),std({color:0xd8eef5,transparent:true,opacity:.28,roughness:.1,metalness:.2}),s*.038,.022,.102,hd);lens.rotation.x=Math.PI/2;
+tube([[s*.062,.024,.100],[s*.096,.018,.045],[s*.098,.012,-.005]],.0028,goldBronze,hd,8,5);
+}
+tube([[-.014,.026,.103],[0,.030,.106],[.014,.026,.103]],.0028,goldBronze,hd,6,5);
+}
+return hd;
+};
+
+/* Karangan bunga penghormatan di kaki monumen */
+const addWreath=(x,y,z)=>{
+const wg=piv(x,y,z);
+addM(new C(.065,.052,.08,12),std({color:0x5c3e26,roughness:.8}),0,.04,0,wg);
+const ring=addM(new THREE.TorusGeometry(.075,.024,8,18),std({color:0x2d6634,roughness:.8}),0,.11,0,wg);ring.rotation.x=-.35;
+for(let i=0;i<6;i++){
+const a=i*Math.PI/3;
+ball(.020,i%2?redFlag:goldBronze,Math.cos(a)*.075,.11+Math.sin(a)*.06,.02+Math.cos(a)*.02,1,1,1,wg);
+}};
+
+/* Bendera Merah Putih Berkibar Halus dengan Gelombang Vertex */
+const addFlagpole=(x,z,h)=>{
+addM(new C(.09,.11,.08,14),graniteDark,x,.04,z);
+addM(new C(.016,.022,h,12),silverSteel,x,h/2,z);
+ball(.032,goldBronze,x,h+.02,z);
+const fg=piv(x,h-.22,z);
+const fGeoR=new THREE.PlaneGeometry(.56,.17,12,3),fGeoW=new THREE.PlaneGeometry(.56,.17,12,3);
+const fr=addM(fGeoR,redFlag,.29,.085,0,fg),fw=addM(fGeoW,whiteFlag,.29,-.085,0,fg);
+return {fg,fGeoR,fGeoW};
+};
+
+const animFlag=(fl,t)=>{
+[fl.fGeoR,fl.fGeoW].forEach(geo=>{
+const pos=geo.attributes.position;
+for(let i=0;i<pos.count;i++){
+const u=(pos.getX(i)+.28)/.56;
+pos.setZ(i,Math.sin(u*4.5-t*3.6)*.038*u);
+}
+pos.needsUpdate=true;geo.computeVertexNormals();
+});
+fl.fg.rotation.y=Math.sin(t*1.2)*.12;
+};
+
+/* ============================================================================
+   1. RAHADI OESMAN (u4, foto39.jpg): Patung Dada Berjas & Berkacamata Bundar + Pesawat & Bambu Runcing
+   ============================================================================ */
+if(k=='rahadi'){
+/* Podium Marmer & Granit Berundak */
+addM(new B(1.22,.10,.96),stoneStep,0,.05,0);
+addM(new B(1.02,.10,.78),marbleLight,0,.15,0);
+addM(new B(.78,.64,.58),graniteDark,0,.52,0);
+addM(new B(.84,.05,.64),goldBronze,0,.86,0);
+addM(new B(.76,.05,.56),marbleLight,0,.91,0);
+
+/* Plakat Prasasti Perunggu & Lencana PMI (Palang Merah Indonesia) */
+const pl=new THREE.Mesh(new THREE.PlaneGeometry(.62,.42),new THREE.MeshLambertMaterial({map:tex(384,260,(x,w,h)=>{
+x.fillStyle='#1d2428';x.fillRect(0,0,w,h);x.strokeStyle='#dba844';x.lineWidth=8;x.strokeRect(8,8,w-16,h-16);
+x.textAlign='center';x.fillStyle='#f2cb6c';x.font='bold 36px Georgia,serif';x.fillText('RAHADI OESMAN',w/2,58);
+x.fillStyle='#f0e6d0';x.font='22px Georgia,serif';x.fillText('Pejuang Kemerdekaan RI (1920 – 1945)',w/2,102);
+x.fillText('Ekspedisi Kemerdekaan & Pengabdian PMI',w/2,138);
+x.fillStyle='#e0a81f';x.font='bold 21px Georgia,serif';x.fillText('Gugur di Sungai Besar • 7 Desember 1945',w/2,182);
+x.fillStyle='#c9d6d0';x.font='18px Georgia,serif';x.fillText('Diabadikan: Bandar Udara Rahadi Oesman Ketapang',w/2,222);
+},1,1)}));
+pl.position.set(0,.52,.292);g.add(pl);
+
+/* Lencana Palang Merah Indonesia (PMI) di sudut atas podium */
+ball(.048,whiteFlag,0,.77,.292,1,1,.25);
+addM(new B(.048,.015,.01),redFlag,0,.77,.302);
+addM(new B(.015,.048,.01),redFlag,0,.77,.302);
+
+/* Patung Dada (Bust) Perunggu Rahadi Oesman sesuai foto39.jpg: Jas Berkerah, Dasi Bergaris, Kacamata Bundar & Rambut Belah Pinggir */
+const bust=piv(0,.93,0);
+addM(new C(.14,.18,.08,16),darkBronze,0,.04,0,bust);
+/* Dada & Bahu Berjas */
+ball(.22,bronzeMat,0,.22,0,1.28,.82,.72,bust);
+for(const s of[-1,1]){
+ball(.115,bronzeMat,s*.24,.23,-.01,1,.88,.85,bust);
+/* Kelepak Kerah Jas (Notched Lapels) */
+const lapel=addM(new B(.065,.24,.025),darkBronze,s*.068,.23,.142,bust);
+lapel.rotation.z=s*.32;lapel.rotation.y=s*.15;
+}
+/* Kemeja Dalam & Dasi Garis-Garis (Sesuai foto39.jpg) */
+addM(new B(.11,.22,.02),goldBronze,0,.24,.138,bust);
+const tie=addM(new B(.038,.19,.024),darkBronze,0,.21,.148,bust);
+for(let i=-1;i<=1;i++){
+const stripe=addM(new B(.036,.016,.026),goldBronze,0,.21+i*.045,.150,bust);stripe.rotation.z=.45;
+}
+/* Kepala Rahadi Oesman Berkacamata Bundar & Rambut Belah Samping (Sesuai foto39.jpg) */
+const rHead=buildSculptedHead(bust,.46,{glasses:true});
+rHead.scale.setScalar(1.18);
+/* Rambut rapi belah pinggir kiri khas foto39.jpg */
+ball(.112,darkBronze,0,.045,-.012,.98,1.02,1.0,rHead);
+ball(.095,darkBronze,.022,.092,.025,1.08,.48,.88,rHead).rotation.z=-.15;
+ball(.065,darkBronze,-.068,.075,.02,.65,.52,.82,rHead).rotation.z=.35;
+
+/* Tiang Bendera Merah Putih di Sisi Kiri & Tiga Bambu Runcing di Sisi Kanan */
+const flag=addFlagpole(-.74,-.18,2.28);
+[[.62,-.20,.14,1.38],[.72,-.14,-.08,1.46],[.68,-.26,.04,1.28]].forEach(([bx,bz,rz,bh])=>{
+const bm=piv(bx,0,bz);bm.rotation.z=rz;
+addM(new C(.022,.026,bh,10),std({color:0x8da842,roughness:.65}),0,bh/2,0,bm);
+for(let n=1;n<5;n++)addM(new C(.027,.027,.014,10),std({color:0x647a2b,roughness:.7}),0,n*bh/5,0,bm);
+const tip=addM(new THREE.ConeGeometry(.023,.16,10),std({color:0xd8c378,roughness:.5}),0,bh+.08,0,bm);
+/* Pita Merah Putih di ujung bambu runcing */
+addM(new B(.08,.018,.006),redFlag,.04,bh-.06,0,bm);
+addM(new B(.08,.018,.006),whiteFlag,.04,bh-.078,0,bm);
+});
+
+/* Miniatur Pesawat Terbang (Bandar Udara Rahadi Oesman Ketapang) dengan Baling-Baling Berputar */
+addM(new C(.09,.11,.04,16),graniteDark,.66,.02,.26);
+const stand=addM(new C(.012,.016,.38,10),silverSteel,.66,.21,.26);stand.rotation.z=-.15;
+const plane=piv(.68,.42,.26);plane.rotation.set(.12,-.58,.18);
+/* Badan pesawat (fuselage), moncong kokpit, sayap utama, mesin & ekor */
+const fuse=addM(new C(.036,.026,.46,16),whiteFlag,0,0,0,plane);fuse.rotation.z=Math.PI/2;
+ball(.036,whiteFlag,.23,0,0,1.4,1,1,plane);
+ball(.028,graniteDark,.24,.014,0,1.2,.65,.85,plane);
+addM(new B(.46,.008,.04),redFlag,0,.005,0,plane);
+/* Sayap utama & ekor vertikal merah-putih */
+addM(new B(.10,.012,.54),whiteFlag,.03,.015,0,plane);
+addM(new B(.07,.010,.20),whiteFlag,-.20,.015,0,plane);
+const tailFin=addM(new B(.08,.10,.012),redFlag,-.20,.055,0,plane);tailFin.rotation.z=-.22;
+/* Dua mesin sayap & baling-baling berputar */
+const props=[];
+for(const sz of[-.14,.14]){
+const eng=addM(new C(.016,.014,.09,12),silverSteel,.05,0,sz,plane);eng.rotation.z=Math.PI/2;
+const prp=piv(.10,0,sz,plane);
+addM(new B(.006,.075,.012),graniteDark,0,0,0,prp);
+addM(new B(.006,.012,.075),graniteDark,0,0,0,prp);
+props.push(prp);
+}
+addWreath(-.46,0,.32);
+g.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});
+g.userData.anim=t=>{animFlag(flag,t);props.forEach(p=>p.rotation.x=t*18);plane.position.y=.42+Math.sin(t*2)*.012};
+}
+
+/* Papan Keterangan Bawah untuk Stadion (Tentemak), RSUD (dr. Agoesdjam), & Keraton (G. M. Saunan) */
+if(k=='stadion'||k=='rsud'||k=='keraton'){
+const PQ={
+stadion:['PANGLIMA TENTEMAK','Pejuang dari Tumbang Titi','Perang Pebihingan • 22 Mei 1914','Stadion Tentemak & Makam Pengatapan'],
+rsud:['dr. AGOESDJAM','Dokter Pengabdi Kemanusiaan (1888–1944)','Alumni STOVIA 1913 • Menjangkau Pedalaman','Diabadikan: RSUD dr. Agoesdjam Ketapang'],
+keraton:['PANEMBAHAN G. M. SAUNAN','Raja Terakhir Kerajaan Matan','Memerintah 1922–1942 • Wafat 1944','Warisan Keraton Matan Muliakerta']
+}[k];
+const pq=new THREE.Mesh(new THREE.PlaneGeometry(.58,.32),new THREE.MeshLambertMaterial({map:tex(384,212,(x,w,h)=>{
+x.fillStyle='#1f2826';x.fillRect(0,0,w,h);x.strokeStyle='#dba844';x.lineWidth=7;x.strokeRect(6,6,w-12,h-12);
+x.textAlign='center';x.fillStyle='#f2cb6c';x.font='bold 28px Georgia,serif';x.fillText(PQ[0],w/2,46);
+x.fillStyle='#f0e6d0';x.font='20px Georgia,serif';x.fillText(PQ[1],w/2,88);
+x.fillText(PQ[2],w/2,126);
+x.fillStyle='#e0a81f';x.font='18px Georgia,serif';x.fillText(PQ[3],w/2,168);
+},1,1)}));
+pq.position.set(0,.34,.72);pq.rotation.x=-.45;g.add(pq,part(new B(.04,.26,.04),0x4a3220,0,.13,.66));
+}
+
+/* ============================================================================
+   2. PANGLIMA TENTEMAK (u8, foto38.jpg): Patung Pejuang Dayak Bermandau & Perisai Talawang + Miniatur Nisan Pengatapan
+   ============================================================================ */
+if(k=='stadion'){
+/* Podium Monumen Berundak dengan Sabuk Ukiran Aso Dayak */
+addM(new B(1.36,.08,1.06),stoneStep,0,.04,0);
+addM(new B(1.08,.10,.82),marbleLight,0,.13,0);
+addM(new B(.82,.10,.62),stoneStep,0,.23,0);
+addM(new B(.54,.88,.42),graniteDark,0,.72,0);
+const dayakBand=new THREE.Mesh(new B(.56,.14,.44),new THREE.MeshLambertMaterial({map:dykTex(256,64,'#2b1a10','#e0a81f','#b3261e',2,1)}));
+dayakBand.position.set(0,1.10,0);g.add(dayakBand);
+addM(new B(.64,.06,.50),goldBronze,0,1.20,0);
+/* Batu Pijakan Heroik di Puncak Podium */
+addM(new C(.24,.28,.08,12),stoneStep,0,1.27,0);
+
+const ins=new THREE.Mesh(new THREE.PlaneGeometry(.44,.54),new THREE.MeshLambertMaterial({map:tex(256,314,(x,w,h)=>{
+x.fillStyle='#1d2224';x.fillRect(0,0,w,h);x.strokeStyle='#dba844';x.lineWidth=6;x.strokeRect(6,6,w-12,h-12);
+x.textAlign='center';x.fillStyle='#f2cb6c';x.font='bold 28px Georgia,serif';x.fillText('PANGLIMA',w/2,58);x.fillText('TENTEMAK',w/2,94);
+x.fillStyle='#f0e6d0';x.font='20px Georgia,serif';x.fillText('Pejuang Perang Pebihingan',w/2,146);
+x.fillStyle='#e0a81f';x.font='bold 21px Georgia,serif';x.fillText('Gugur 22 Mei 1914',w/2,188);
+x.fillStyle='#d8e2dc';x.font='19px Georgia,serif';x.fillText('Tumbang Titi • Ketapang',w/2,232);
+x.fillText('Melawan Pajak Belasting',w/2,268);
+},1,1)}));
+ins.position.set(0,.68,.212);g.add(ins);
+
+/* Patung Perunggu Panglima Tentemak dalam Kuda-Kuda Menerjang Mengangkat Mandau & Perisai Talawang */
+const heroFig=piv(0,1.31,0);
+/* Kaki Kiri (Maju Menekuk) & Kaki Kanan (Menumpu di Belakang) */
+const legL=piv(-.09,.36,.04,heroFig);legL.rotation.set(-.32,0,-.12);
+addM(new C(.052,.042,.22,12),bronzeMat,0,-.11,0,legL);
+const shinL=piv(0,-.22,0,legL);shinL.rotation.x=.42;
+addM(new C(.042,.034,.20,12),bronzeMat,0,-.10,0,shinL);
+ball(.048,darkBronze,0,-.20,.03,.85,.45,1.45,shinL);
+
+const legR=piv(.09,.36,-.04,heroFig);legR.rotation.set(.28,0,.14);
+addM(new C(.052,.042,.22,12),bronzeMat,0,-.11,0,legR);
+const shinR=piv(0,-.22,0,legR);shinR.rotation.x=.18;
+addM(new C(.042,.034,.20,12),bronzeMat,0,-.10,0,shinR);
+ball(.048,darkBronze,0,-.20,.03,.85,.45,1.45,shinR);
+
+/* Pinggang, Cawat Adat Dayak (Apron), & Sarung Mandau (Kumpang) di Pinggang Kiri */
+addM(new C(.105,.095,.12,14),darkBronze,0,.38,0,heroFig);
+addM(new C(.112,.112,.04,14),goldBronze,0,.41,0,heroFig);
+addM(new B(.13,.24,.022),goldBronze,0,.28,.095,heroFig);
+const scabbard=addM(new C(.018,.014,.32,8),darkBronze,-.13,.32,-.02,heroFig);scabbard.rotation.set(.35,0,.45);
+
+/* Dada & Rompi Perang Dayak (Baju Sangkarut) + Kalung Taring */
+const wTorso=piv(0,.44,0,heroFig);wTorso.rotation.set(-.08,-.15,0);
+addM(new C(.135,.102,.32,16),bronzeMat,0,.16,0,wTorso);
+addM(new C(.140,.108,.28,16,1,true),darkBronze,0,.16,0,wTorso);
+for(const s of[-1,1])addM(new B(.022,.28,.025),goldBronze,s*.038,.16,.112,wTorso);
+addM(new THREE.TorusGeometry(.082,.010,8,16,Math.PI),goldBronze,0,.29,.085,wTorso).rotation.z=Math.PI;
+
+/* Kepala Panglima Tentemak Berikat Kepala Lavung Dayak & 3 Bulu Burung Enggang */
+const tHead=buildSculptedHead(wTorso,.42,{});
+ball(.108,darkBronze,0,.03,-.01,1,1,1,tHead);
+addM(new C(.110,.110,.042,16),goldBronze,0,.055,0,tHead);
+for(let i=-1;i<=1;i++){
+const fth=addM(new B(.022,.22,.008),goldBronze,i*.032,.19+(1-Math.abs(i))*.03,-.04,tHead);
+fth.rotation.z=-i*.22;fth.rotation.x=-.25;
+}
+
+/* Lengan Kanan: Mengangkat Tinggi Mandau Kalimantan */
+const rArm=piv(.155,.28,0,wTorso);rArm.rotation.set(-.35,0,-2.35);
+ball(.048,bronzeMat,0,0,0,1,1,1,rArm);
+addM(new C(.042,.035,.22,12),bronzeMat,0,-.11,0,rArm);
+const rElb=piv(0,-.22,0,rArm);rElb.rotation.set(-.25,0,-.28);
+addM(new C(.035,.030,.20,12),bronzeMat,0,-.10,0,rElb);
+ball(.036,bronzeMat,0,-.21,0,1,1,1,rElb);
+/* Hulu Mandau Berukir Tanduk & Bilah Mandau Baja Berkilau */
+const mandau=piv(0,-.22,0,rElb);mandau.rotation.x=Math.PI/2;
+addM(new C(.016,.020,.12,10),goldBronze,0,0,0,mandau);
+addM(new C(.026,.026,.02,10),darkBronze,0,-.05,0,mandau);
+const mShape=new THREE.Shape();
+mShape.moveTo(-.012,-.06);mShape.lineTo(.016,-.06);
+mShape.quadraticCurveTo(.034,-.24,.002,-.44);
+mShape.lineTo(-.014,-.38);mShape.closePath();
+const blade=addM(new THREE.ExtrudeGeometry(mShape,{depth:.007,bevelEnabled:true,bevelSize:.002,bevelThickness:.002}),silverSteel,0,0,-.0035,mandau);
+
+/* Lengan Kiri: Menahan Perisai Talawang Segi Enam Berukir Aso Dayak */
+const lArm=piv(-.155,.27,.02,wTorso);lArm.rotation.set(-.65,.35,.48);
+ball(.048,bronzeMat,0,0,0,1,1,1,lArm);
+addM(new C(.042,.035,.22,12),bronzeMat,0,-.11,0,lArm);
+const lElb=piv(0,-.22,0,lArm);lElb.rotation.set(-.55,0,-.35);
+addM(new C(.035,.030,.19,12),bronzeMat,0,-.095,0,lElb);
+/* Perisai Talawang Dayak */
+const tlw=piv(-.03,-.14,.04,lElb);tlw.rotation.set(.45,.35,-.25);
+const shShape=new THREE.Shape();
+shShape.moveTo(0,.24);shShape.lineTo(.11,.14);shShape.lineTo(.11,-.14);
+shShape.lineTo(0,-.24);shShape.lineTo(-.11,-.14);shShape.lineTo(-.11,.14);shShape.closePath();
+addM(new THREE.ExtrudeGeometry(shShape,{depth:.018,bevelEnabled:false}),darkBronze,0,0,0,tlw);
+addM(new B(.14,.28,.022),goldBronze,0,0,.002,tlw);
+ball(.032,goldBronze,0,0,.018,1,1,.5,tlw);
+
+/* Miniatur Makam Pengatapan Tumbang Titi (Sesuai foto38.jpg: Nisan Kayu Ulin & Aksen Kuning-Hijau) di Sisi Kanan Alas */
+const tomb=piv(.44,.18,-.08);
+addM(new B(.28,.05,.36),emeraldRoyal,0,.025,0,tomb);
+addM(new B(.22,.04,.30),emeraldRoyal,0,.07,0,tomb);
+for(const dz of[-.09,.09]){
+addM(new C(.022,.026,.14,8),std({color:0x9c6228,roughness:.6}),0,.16,dz,tomb);
+ball(.026,std({color:0xb57432,roughness:.55}),0,.24,dz,1,1.2,1,tomb);
+}
+/* Pagar kuning-hijau khas Pendopo Makam Panglima Tentemak di foto38.jpg */
+for(const sx of[-.15,.15])addM(new B(.02,.10,.36),yellowRoyal,sx,.07,0,tomb);
+
+addWreath(-.44,.18,.28);addWreath(.44,.18,.28);
+const flag=addFlagpole(-.56,-.32,1.85);
+g.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});
+g.userData.anim=t=>animFlag(flag,t);
+}
+
+/* ============================================================================
+   3. DOKTER AGOESDJAM & 4. PANEMBAHAN GUSTI MUHAMMAD SAUNAN (u9 / rsud & u10 / keraton)
+   ============================================================================ */
+if(k=='rsud'||k=='keraton'){
+const doctor=k=='rsud';
+/* Podium Berundak dengan Aksen Marmer, Granit & Lis Kuningan Emas */
+addM(new B(1.34,.08,1.04),stoneStep,0,.04,0);
+addM(new B(1.08,.10,.82),marbleLight,0,.13,0);
+addM(new B(.84,.10,.64),doctor?stoneStep:emeraldRoyal,0,.23,0);
+addM(new B(.68,.90,.48),marbleLight,0,.73,0);
+addM(new B(.70,.12,.50),doctor?graniteDark:emeraldRoyal,0,1.12,0);
+addM(new B(.82,.06,.60),stoneStep,0,1.21,0);
+addM(new B(.75,.03,.53),goldBronze,0,1.255,0);
+
+const lines=doctor
+?['dr. AGOESDJAM','Pacitan, 28 Jan 1888 – Mandor, 1944','Alumni STOVIA 1913 • Dokter Kemanusiaan','Menjangkau Pedalaman Kalimantan Barat','Diabadikan: RSUD dr. Agoesdjam']
+:['GUSTI MUHAMMAD SAUNAN','Panembahan Matan (1922 – 1942)','Raja Terakhir Kerajaan Matan','Pembaruan Keraton Muliakerta 1924','Gugur dalam Peristiwa Mandor 1944'];
+const ins=new THREE.Mesh(new THREE.PlaneGeometry(.60,.66),new THREE.MeshLambertMaterial({map:tex(384,420,(x,w,h)=>{
+x.fillStyle=doctor?'#1e2d2b':'#18382e';x.fillRect(0,0,w,h);x.strokeStyle='#dba844';x.lineWidth=8;x.strokeRect(9,9,w-18,h-18);
+x.textAlign='center';lines.forEach((line,i)=>{
+x.fillStyle=i===0?'#f5d076':i===1?'#eed6a0':'#e8efe9';
+x.font=(i<2?'bold 27':'21')+'px Georgia,serif';
+x.fillText(line,w/2,64+i*70,w-36);
+});
+},1,1)}));
+ins.position.set(0,.72,.242);g.add(ins);
+
+/* Patung Figur Berdiri Realistis di Atas Podium */
+const fig=piv(0,1.27,0);
+
+if(doctor){
+/* === PATUNG dr. AGOESDJAM (Sesuai foto40.jpg: Blangkon Batik, Kumis Rapi, Kerah Tinggi STOVIA, Dasi Kupu-Kupu, Jas Dokter, Stetoskop & Tas Medis) === */
+/* Celana panjang & sepatu pantofel */
+for(const s of[-1,1]){
+addM(new C(.058,.050,.36,14),darkBronze,s*.095,.20,0,fig);
+ball(.062,darkBronze,s*.095,.035,.035,.85,.48,1.55,fig);
+}
+/* Badan Berjas Dokter Formal, Rompi Dalam (Waistcoat), Kemeja Kerah Tinggi, & Dasi Kupu-Kupu (Sesuai foto40.jpg) */
+addM(new C(.165,.142,.40,18),bronzeMat,0,.54,0,fig);
+/* Belahan jas depan & kelepak kerah jas */
+addM(new B(.11,.36,.02),goldBronze,0,.57,.138,fig);
+addM(new B(.09,.24,.024),darkBronze,0,.51,.142,fig);
+for(const s of[-1,1]){
+const lapel=addM(new B(.055,.26,.026),darkBronze,s*.065,.58,.145,fig);
+lapel.rotation.z=s*.24;lapel.rotation.y=s*.15;
+}
+/* Kerah kemeja tinggi (wing collar) & Dasi Kupu-Kupu (Bow Tie) persis foto40.jpg */
+addM(new C(.054,.058,.055,14),goldBronze,0,.755,.01,fig);
+for(const s of[-1,1]){
+const bt=addM(new THREE.ConeGeometry(.022,.042,4),darkBronze,s*.022,.74,.068,fig);
+bt.rotation.z=s*Math.PI/2;
+}
+ball(.010,goldBronze,0,.74,.072,1,1,.6,fig);
+
+/* Stetoskop Medis Melingkar di Leher */
+tube([[-.055,.73,.05],[-.075,.64,.145],[-.045,.54,.155],[0,.50,.158],[.045,.54,.155],[.075,.64,.145],[.055,.73,.05]],.007,darkBronze,fig,20,6);
+tube([[0,.50,.158],[.04,.43,.16],[.065,.38,.155]],.006,darkBronze,fig,10,6);
+addM(new C(.022,.022,.012,14),goldBronze,.065,.37,.16,fig).rotation.x=Math.PI/2;
+
+/* Kepala dr. Agoesdjam dengan Kumis Rapi & Blangkon Batik (Sesuai foto40.jpg) */
+const dHead=buildSculptedHead(fig,.84,{mustache:true});
+/* Blangkon Batik Jawa dengan lipatan depan & mondolan di belakang */
+const blk=addM(new S(.112,20,14,0,Math.PI*2,0,Math.PI*.58),blangkonMat,0,.025,-.005,dHead);
+blk.rotation.x=-.12;
+for(const s of[-1,1]){
+const fold=addM(new B(.09,.028,.02),goldBronze,s*.038,.055,.088,dHead);
+fold.rotation.z=-s*.28;fold.rotation.y=s*.35;
+}
+ball(.038,blangkonMat,0,.02,-.108,1.1,.85,.9,dHead);
+
+/* Lengan Kanan Membawa Tas Medis Kulit (Gladstone Doctor Bag) & Lengan Kiri Memegang Buku Catatan Medis */
+for(const s of[-1,1]){
+const arm=piv(s*.195,.68,0,fig);arm.rotation.z=s*.12;arm.rotation.x=s<0?-.28:-.08;
+ball(.052,bronzeMat,0,0,0,1,1,1,arm);
+addM(new C(.045,.038,.30,12),bronzeMat,0,-.15,0,arm);
+ball(.038,goldBronze,0,-.31,.01,1,1,1,arm);
+}
+/* Tas Medis Kulit Klasik dengan Palang Kesehatan Emas di Tangan Kanan */
+const bag=piv(.23,.28,.02,fig);
+addM(new B(.21,.15,.12),darkBronze,0,0,0,bag);
+addM(new B(.215,.025,.125),goldBronze,0,.065,0,bag);
+addM(new THREE.TorusGeometry(.042,.008,8,14,Math.PI),goldBronze,0,.08,0,bag);
+addM(new B(.055,.014,.01),goldBronze,0,-.005,.062,bag);
+addM(new B(.014,.055,.01),goldBronze,0,-.005,.062,bag);
+/* Buku Catatan / Kitab Pengobatan di Tangan Kiri */
+const book=addM(new B(.09,.12,.025),goldBronze,-.21,.39,.09,fig);book.rotation.set(.4,.2,-.2);
+
+/* Miniatur Sampan Kayu Pedalaman di Sisi Kiri Podium (Simbol Perjalanan Sungai ke Kampung Dayak) */
+const sampan=piv(-.48,.24,-.05);sampan.rotation.y=.35;
+ball(.16,darkBronze,0,.03,0,1.8,.25,.48,sampan);
+addM(new B(.18,.015,.08),goldBronze,0,.045,0,sampan);
+
+}else{
+/* === PATUNG PANEMBAHAN GUSTI MUHAMMAD SAUNAN (Sesuai foto37.jpg: Tanjak Bangsawan Melayu, Baju Sikap Songket, Pending Emas, Kain Sampin Panjang, & Keris) === */
+/* Celana Bangsawan & Sepatu Kerajaan */
+for(const s of[-1,1]){
+addM(new C(.062,.054,.22,14),bronzeMat,s*.09,.12,0,fig);
+ball(.062,darkBronze,s*.09,.035,.035,.85,.48,1.55,fig);
+}
+/* Kain Sampin Songket Panjang hingga Lutut (Sesuai foto37.jpg) */
+addM(new C(.148,.156,.34,20),songketBronze,0,.35,0,fig);
+/* Lipatan vertikal kain sampin di bagian depan */
+addM(new B(.09,.345,.025),goldBronze,-.02,.35,.142,fig);
+
+/* Sabuk Lebar Kerajaan & Kepala Ikat Pinggang Pending Emas + Hulu Keris Matan (Sesuai foto37.jpg) */
+addM(new C(.146,.146,.085,20),darkBronze,0,.52,0,fig);
+ball(.052,goldBronze,0,.52,.148,1.35,.85,.35,fig);
+/* Keris Pusaka Kerajaan Matan terselip di pinggang kanan */
+const keris=piv(.12,.55,.10,fig);keris.rotation.set(.2,.3,-.35);
+addM(new C(.014,.010,.14,8),darkBronze,0,-.05,0,keris);
+ball(.020,goldBronze,.01,.03,0,1.3,.8,.8,keris);
+
+/* Baju Teluk Belanga / Sikap Berlengan Lebar & Kerah Lipat (Sesuai foto37.jpg) */
+addM(new C(.162,.142,.26,18),songketBronze,0,.64,0,fig);
+const placket=addM(new B(.11,.18,.022),goldBronze,-.01,.66,.142,fig);placket.rotation.z=-.12;
+addM(new C(.052,.058,.05,14),goldBronze,0,.76,0,fig);
+
+/* Kepala Panembahan G. M. Saunan & Tanjak / Destar Lipat Bangsawan Melayu (Sesuai foto37.jpg) */
+const sHead=buildSculptedHead(fig,.84,{});
+const tanjak=piv(0,.05,0,sHead);
+addM(new C(.110,.106,.055,18),songketBronze,0,0,0,tanjak);
+addM(new C(.113,.113,.016,18),goldBronze,0,-.018,0,tanjak);
+/* Lipatan puncak Tanjak Melayu miring ke kanan-atas & Bros Emas Kesultanan */
+const peak1=addM(new THREE.ConeGeometry(.075,.14,4),songketBronze,.035,.065,-.01,tanjak);
+peak1.rotation.set(-.15,.4,-.32);
+const peak2=addM(new THREE.ConeGeometry(.065,.11,4),goldBronze,-.035,.05,.01,tanjak);
+peak2.rotation.set(.1,-.3,.28);
+ball(.018,goldBronze,0,.01,.112,1.2,1.2,.4,tanjak);
+
+/* Kedua Lengan Berbaju Longgar (Tangan Kanan Memegang Gulungan Piagam/Saputangan Kerajaan sesuai foto37.jpg) */
+for(const s of[-1,1]){
+const arm=piv(s*.19,.69,0,fig);arm.rotation.z=s*.11;arm.rotation.x=s>0?-.18:-.06;
+ball(.052,songketBronze,0,0,0,1,1,1,arm);
+addM(new C(.048,.056,.26,14),songketBronze,0,-.13,0,arm);
+addM(new C(.058,.058,.035,14),goldBronze,0,-.25,0,arm);
+ball(.038,bronzeMat,0,-.29,.01,1,1,1,arm);
+}
+const scroll=addM(new C(.022,.022,.18,12),marbleLight,.21,.40,.06,fig);scroll.rotation.set(.6,0,.15);
+addM(new C(.024,.024,.02,12),goldBronze,.21,.40,.06,fig).rotation.set(.6,0,.15);
+}
+
+addWreath(-.46,.18,.31);addWreath(.46,.18,.31);
+g.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});
+}
 }
 if(k=='ring'){g.add(part(new THREE.TorusGeometry(.32,.07,12,28),M.gold,0,.5,0),part(new S(.09,10,8),0xc43a2b,0,.84,0))}
 /* Podium koleksi Ngalu dan Bedansai: model serta animasinya tetap satu kelompok. */
