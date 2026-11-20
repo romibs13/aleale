@@ -1256,7 +1256,7 @@
                 g.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true } }); return g;
             }
             /* Pajangan sejarah: geometri ringan, tanpa ketergantungan aset eksternal. */
-            if (['rebana', 'baboretn', 'masjidpawan', 'gunungpalung', 'rumahpanjang', 'pawan', 'tengkuyung'].includes(k)) {
+            if (['rebana', 'baboretn', 'masjidpawan', 'gunungpalung', 'tengkuyung'].includes(k)) {
                 const wood = 0x543823, gold = 0xc99b46, cream = 0xeee0bd, green = 0x31594b;
                 const slab = (w, h, d, x, y, z, c) => { const m = part(new B(w, h, d), c, x, y, z); g.add(m); return m };
                 const plaque = (lines, w, h, x, y, z) => {
@@ -1307,42 +1307,6 @@
                     slab(.04, 1.5, .04, -1.04, 1, -.5, gold); slab(.04, 1.5, .04, 1.04, 1, -.5, gold);
                     plaque(['1937 • Konservasi', '1990 • Taman nasional', '±108.044 ha'], 1.25, .45, 0, .32, .86);
                 }
-                if (k === 'rumahpanjang') {
-                    // Miniatur arsitektur umum, tanpa mengklaim bentuk komunitas tertentu.
-                    [-1, -.5, 0, .5, 1].forEach(x => [-.3, .28].forEach(z => g.add(part(new C(.035, .045, .5, 7), wood, x, .5, z))));
-                    slab(2.3, .07, .95, 0, .76, 0, wood); slab(2.2, .5, .52, 0, 1.04, -.16, 0x93633d);
-                    [-.84, -.28, .28, .84].forEach(x => { slab(.19, .32, .018, x, 1, .11, 0x382b21); slab(.21, .025, .025, x, 1.17, .13, gold) });
-                    // Serambi terbuka di depan deretan ruang keluarga.
-                    slab(2.3, .035, .035, 0, 1.02, .43, gold);
-                    for (let x = -1.05; x < 1.1; x += .21)slab(.025, .24, .025, x, .9, .43, wood);
-                    [-1, 1].forEach(side => { const roof = slab(2.5, .06, .67, 0, 1.43, side * .24 - .13, 0x5a3c2c); roof.rotation.x = side * .48 });
-                    slab(2.55, .05, .07, 0, 1.59, -.13, gold);
-                    const stair = slab(.09, .55, .08, .75, .5, .65, wood); stair.rotation.x = -.5;
-                    for (let i = 0; i < 5; i++)slab(.34, .03, .1, .75, .3 + i * .09, .77 - i * .05, 0xaf8b51);
-                    plaque(['RUMAH PANJANG DAYAK', 'Ruang keluarga • Serambi bersama'], 2.4, .43, 0, 1.97, -.45);
-                    plaque(['Miniatur ilustratif', 'Kebersamaan & gotong royong'], 2, .3, 0, .15, .86);
-                }
-                if (k === 'pawan') {
-                    slab(2.4, .025, .7, 0, .27, .05, 0x4c9197);
-                    [-.57, .62].forEach(x => {
-                        slab(.52, .035, .34, x, .29, -.5, 0x8a9764);
-                        [-.17, .17].forEach(dx => [-.12, .1].forEach(dz => g.add(part(new C(.018, .025, .27, 6), wood, x + dx, .42, -.5 + dz))));
-                        slab(.47, .045, .34, x, .56, -.5, wood); slab(.39, .27, .29, x, .72, -.5, 0xba996b);
-                        slab(.1, .18, .018, x, .68, -.345, green);
-                        const roof = part(new THREE.ConeGeometry(.36, .23, 4), 0x795139, x, .98, -.5); roof.rotation.y = Math.PI / 4; roof.scale.z = .8; g.add(roof)
-                    });
-                    // Dermaga dan perahu bermuatan menggambarkan transportasi dan perdagangan.
-                    slab(.4, .04, .52, .76, .38, -.15, wood);
-                    [-.1, .1].forEach(dx => g.add(part(new C(.018, .02, .27, 6), wood, .76 + dx, .3, .02)));
-                    const hull = part(new S(.4, 16, 8), 0x65432b, -.35, .34, .13); hull.scale.set(1.5, .22, .4); g.add(hull);
-                    slab(.76, .025, .18, -.35, .38, .13, 0xc6aa70);
-                    [-.53, -.27].forEach(x => slab(.14, .13, .12, x, .46, .13, 0x957046));
-                    const paddle = slab(.6, .025, .035, -.65, .42, .32, wood); paddle.rotation.y = .5;
-                    for (let i = 0; i < 5; i++)slab(.18, .006, .012, -1 + i * .45, .29, .25 + (i % 2) * .07, 0xb3d3cb);
-                    plaque(['SUNGAI PAWAN', 'Transportasi • Perdagangan • Permukiman'], 2.45, .48, 0, 1.7, -.48);
-                    slab(.04, 1.2, .04, -1.05, .92, -.5, gold); slab(.04, 1.2, .04, 1.05, .92, -.5, gold);
-                    plaque(['Diorama kehidupan sungai', 'Ilustrasi, bukan peta geografis'], 2.3, .32, 0, .15, .86);
-                }
 
                 if (k === 'rebana') {
                     [-.82, 0, .82].forEach((x, i) => {
@@ -1382,6 +1346,519 @@
                     plaque(['MASJID & SUNGAI PAWAN', 'Ilustrasi simbolis'], 2.25, .42, 0, .12, .86);
                     plaque(['JEJAK ISLAM KETAPANG', 'Abad ke-16 • 1876–1908 • 1952'], 2.5, .42, 0, 2.35, -.48);
                 }
+            }
+
+            /* ===== DIORAMA REALISTIS LANTAI 2: RUMAH PANJANG DAYAK & SUNGAI PAWAN ===== */
+            if (k === 'rumahpanjang' || k === 'pawan') {
+                const std = o => new THREE.MeshStandardMaterial(o);
+                const addM = (geo, m, x = 0, y = 0, z = 0, par = g) => { const o = new THREE.Mesh(geo, m); o.position.set(x, y, z); par.add(o); return o };
+                const piv = (x = 0, y = 0, z = 0, par = g) => { const o = new THREE.Group(); o.position.set(x, y, z); par.add(o); return o };
+                const tube = (pts, r, m, par = g, seg = 24, rad = 8) => addM(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts.map(p => new THREE.Vector3(...p))), seg, r, rad, false), m, 0, 0, 0, par);
+
+                /* Tekstur prosedural kayu ulin, papan dinding, atap sirap, dan tanah tropis */
+                const ulinTex = tex(256, 256, (c, W, H) => {
+                    c.fillStyle = '#472f1e'; c.fillRect(0, 0, W, H);
+                    for (let i = 0; i < 140; i++) {
+                        const y = Math.random() * H;
+                        c.strokeStyle = i % 3 ? 'rgba(30,17,9,.38)' : 'rgba(138,94,58,.24)';
+                        c.lineWidth = 1 + Math.random() * 2;
+                        c.beginPath(); c.moveTo(0, y); c.bezierCurveTo(W * .33, y + (Math.random() - .5) * 6, W * .66, y + (Math.random() - .5) * 6, W, y); c.stroke();
+                    }
+                    spk(c, W, H, 320, .06);
+                }, 2, 2);
+                const plankTex = tex(256, 256, (c, W, H) => {
+                    const rows = 8, rh = H / rows;
+                    for (let r = 0; r < rows; r++) {
+                        const l = 27 + (r * 7) % 9;
+                        c.fillStyle = `hsl(26,40%,${l}%)`; c.fillRect(0, r * rh, W, rh);
+                        c.fillStyle = 'rgba(18,10,5,.58)'; c.fillRect(0, r * rh, W, 2.2);
+                        c.fillStyle = 'rgba(215,175,125,.14)'; c.fillRect(0, r * rh + 2.5, W, 1.5);
+                        const jx = ((r * 73 + 40) % (W - 40)) + 20;
+                        c.fillStyle = 'rgba(18,10,5,.45)'; c.fillRect(jx, r * rh, 2, rh);
+                    }
+                    spk(c, W, H, 380, .07);
+                }, 3, 2);
+                const wallPlankTex = tex(256, 256, (c, W, H) => {
+                    const rows = 10, rh = H / rows;
+                    for (let r = 0; r < rows; r++) {
+                        const l = 31 + (r * 5) % 8;
+                        c.fillStyle = `hsl(27,44%,${l}%)`; c.fillRect(0, r * rh, W, rh);
+                        c.fillStyle = 'rgba(26,14,6,.55)'; c.fillRect(0, r * rh, W, 2);
+                        c.fillStyle = 'rgba(235,195,140,.13)'; c.fillRect(0, r * rh + 2, W, 1.5);
+                    }
+                    spk(c, W, H, 300, .06);
+                }, 3, 1);
+                const sirapTex = tex(256, 256, (c, W, H) => {
+                    c.fillStyle = '#2d1e15'; c.fillRect(0, 0, W, H);
+                    const rows = 12, cols = 10, rh = H / rows, cw = W / cols;
+                    for (let r = 0; r < rows; r++) {
+                        const off = (r % 2) * (cw * .5);
+                        for (let i = -1; i <= cols; i++) {
+                            const l = 15 + ((r * 13 + i * 7) & 7) * 1.4;
+                            c.fillStyle = `hsl(22,30%,${l}%)`;
+                            c.fillRect(i * cw + off + 1, r * rh + 1, cw - 2, rh - 1.5);
+                            c.fillStyle = 'rgba(0,0,0,.52)';
+                            c.fillRect(i * cw + off, r * rh + rh - 2.2, cw, 2.2);
+                        }
+                    }
+                    spk(c, W, H, 360, .06);
+                }, 4, 2);
+
+                const ulinMat = std({ map: ulinTex, roughness: .78, metalness: .04 });
+                const darkWood = std({ color: 0x352215, roughness: .82, metalness: .04 });
+                const plankMat = std({ map: plankTex, bumpMap: plankTex, bumpScale: .012, roughness: .76, metalness: .03 });
+                const wallPlankMat = std({ map: wallPlankTex, bumpMap: wallPlankTex, bumpScale: .01, roughness: .74, metalness: .03 });
+                const sirapMat = std({ map: sirapTex, bumpMap: sirapTex, bumpScale: .018, roughness: .84, metalness: .05 });
+                const goldTrim = std({ color: 0xd6a645, roughness: .34, metalness: .62 });
+                const greenSkirt = std({ color: 0x1d4338, roughness: .72, metalness: .05 });
+                const stoneMat = std({ color: 0x7a7970, roughness: .9, metalness: .02 });
+                const warmGlowMat = std({ color: 0xffe2a8, emissive: 0xffa838, emissiveIntensity: .85, roughness: .4 });
+
+                /* Meja Pajangan Museum (kaki ulin, lis emas, pita motif Dayak) — ukuran 2.65 x 1.65 */
+                const H = .42, T = H + .046;
+                [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(([sx, sz]) => {
+                    addM(new C(.048, .054, H, 12), darkWood, sx * 1.14, H / 2, sz * .66);
+                    addM(new C(.058, .06, .042, 12), goldTrim, sx * 1.14, .021, sz * .66);
+                });
+                addM(new B(2.42, .30, 1.44), greenSkirt, 0, .24, 0);
+                addM(new B(2.45, .09, 1.47), new THREE.MeshLambertMaterial({ map: dykTex(256, 64, '#24140c', '#e6b84c', '#b52a1e', 5, 1) }), 0, .34, 0);
+                addM(new B(2.65, .065, 1.65), ulinMat, 0, H, 0);
+                addM(new B(2.69, .024, 1.69), goldTrim, 0, H + .035, 0);
+
+                const museumCard = (lines, w, h, x, y, z) => {
+                    const cvTex = tex(768, Math.round(768 * h / w), (c, W, Hc) => {
+                        c.fillStyle = '#18332b'; c.fillRect(0, 0, W, Hc);
+                        c.strokeStyle = '#d6a645'; c.lineWidth = 8; c.strokeRect(10, 10, W - 20, Hc - 20);
+                        c.textAlign = 'center'; c.textBaseline = 'middle';
+                        lines.forEach((line, i) => {
+                            let sz = i === 0 ? 46 : 28;
+                            c.font = (i === 0 ? 'bold ' : '') + sz + 'px Georgia,serif';
+                            while (c.measureText(line).width > W - 52 && sz > 14) { sz--; c.font = (i === 0 ? 'bold ' : '') + sz + 'px Georgia,serif' }
+                            c.fillStyle = i === 0 ? '#f6e1ae' : '#d8e3da';
+                            c.fillText(line, W / 2, Hc * (i + 1) / (lines.length + 1));
+                        });
+                    }, 1, 1);
+                    return addM(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ map: cvTex }), x, y, z);
+                };
+
+                /* Helper vegetasi tropis (pohon kelapa / palem & semak) */
+                const palms = [];
+                const addPalm = (px, py, pz, h, bend, sc = 1, par = g) => {
+                    const pg = piv(px, py, pz, par);
+                    tube([[0, 0, 0], [bend * .35, h * .38, bend * .2], [bend * .75, h * .75, bend * .35], [bend, h, bend * .4]], .022 * sc, darkWood, pg, 12, 7);
+                    const crown = piv(bend, h, bend * .4, pg);
+                    const frondMat = std({ color: 0x356f32, roughness: .78, side: THREE.DoubleSide });
+                    for (let i = 0; i < 7; i++) {
+                        const a = i * Math.PI * 2 / 7 + .2;
+                        const fg = piv(0, 0, 0, crown); fg.rotation.y = a;
+                        const f = addM(new B(.055 * sc, .008, .26 * sc), frondMat, 0, .01, .13 * sc, fg); f.rotation.x = .32;
+                        const tip = addM(new B(.04 * sc, .007, .14 * sc), std({ color: 0x45853b, roughness: .8 }), 0, -.05, .30 * sc, fg); tip.rotation.x = .72;
+                    }
+                    palms.push({ crown, phase: px * 3 + pz * 2 });
+                };
+                const addBush = (bx, by, bz, r, col = 0x386636, par = g) => {
+                    const bm = std({ color: col, roughness: .88 });
+                    for (let i = 0; i < 3; i++) {
+                        const a = i * 2.1, m = addM(new THREE.IcosahedronGeometry(r * (i === 0 ? 1 : .74), 1), bm, bx + Math.cos(a) * r * .55, by + r * .5, bz + Math.sin(a) * r * .55, par);
+                        m.scale.set(1.15, .75, 1.1);
+                    }
+                };
+
+                /* =========================================================
+                   1. DIORAMA REALISTIS: RUMAH PANJANG DAYAK (RUMAH BETANG)
+                   ========================================================= */
+                if (k === 'rumahpanjang') {
+                    /* Lanskap tanah & rumput halaman Rumah Betang dengan jalan setapak */
+                    const yardTex = tex(512, 320, (c, W, Hc) => {
+                        c.fillStyle = '#4c6639'; c.fillRect(0, 0, W, Hc);
+                        for (let i = 0; i < 700; i++) {
+                            c.fillStyle = i % 3 ? 'rgba(60,92,42,.32)' : 'rgba(116,96,64,.28)';
+                            c.beginPath(); c.arc(Math.random() * W, Math.random() * Hc, 4 + Math.random() * 14, 0, Math.PI * 2); c.fill();
+                        }
+                        /* Area tanah padat di kolong rumah & jalan setapak menuju tangga */
+                        c.fillStyle = 'rgba(128,104,74,.75)';
+                        c.fillRect(W * .09, Hc * .18, W * .82, Hc * .52);
+                        c.fillStyle = 'rgba(148,120,84,.82)';
+                        c.beginPath(); c.moveTo(W * .66, Hc * .68); c.quadraticCurveTo(W * .70, Hc * .84, W * .78, Hc); c.lineTo(W * .62, Hc); c.quadraticCurveTo(W * .58, Hc * .84, W * .56, Hc * .68); c.closePath(); c.fill();
+                        spk(c, W, Hc, 900, .09);
+                    }, 1, 1);
+                    addM(new B(2.48, .045, 1.48), std({ map: yardTex, roughness: .94 }), 0, T + .022, 0);
+
+                    /* Motif ukiran Dayak merah-putih-hitam pada tiang panggung depan (seperti Rumah Betang asli) */
+                    const dykPillarMat = std({ map: dykTex(128, 256, '#1a110d', '#f1e7d2', '#b8281d', 1, 3), roughness: .65, metalness: .05 });
+                    const dykFasciaMat = std({ map: dykTex(256, 64, '#1b110d', '#f2e8d4', '#b8281d', 6, 1), roughness: .68 });
+
+                    const yGround = T + .045;
+                    const yDeck = yGround + .44;
+                    const xs = [-.96, -.64, -.32, 0, .32, .64, .96];
+                    const zs = [-.38, -.02, .34];
+
+                    /* Tiang panggung (3 x 7 = 21 tiang) + umpak batu + balok gelagar + skur silang */
+                    xs.forEach(x => {
+                        zs.forEach((z, zi) => {
+                            addM(new B(.075, .045, .075), stoneMat, x, yGround + .022, z);
+                            const isFront = zi === 2;
+                            addM(new C(.026, .028, .42, 10), isFront ? dykPillarMat : darkWood, x, yGround + .24, z);
+                        });
+                        /* Balok lintang bawah lantai */
+                        addM(new B(.038, .042, .80), darkWood, x, yDeck - .03, -.02);
+                    });
+                    zs.forEach(z => addM(new B(2.12, .042, .042), darkWood, 0, yDeck - .03, z));
+                    /* Skur kayu diagonal di kolong rumah */
+                    [-.80, 0, .80].forEach(x => {
+                        const br = addM(new B(.02, .38, .02), darkWood, x, yGround + .23, -.02); br.rotation.z = .58;
+                        const br2 = addM(new B(.02, .38, .02), darkWood, x, yGround + .23, -.02); br2.rotation.z = -.58;
+                    });
+
+                    /* Lantai panggung papan kayu ulin & lis motif Dayak di tepi serambi */
+                    addM(new B(2.26, .045, .94), plankMat, 0, yDeck + .01, -.02);
+                    addM(new B(2.28, .052, .016), dykFasciaMat, 0, yDeck + .01, .454);
+                    addM(new B(.016, .052, .95), dykFasciaMat, -1.132, yDeck + .01, -.02);
+                    addM(new B(.016, .052, .95), dykFasciaMat, 1.132, yDeck + .01, -.02);
+
+                    /* Pagar serambi terbuka (Ruai/Pante) dengan bukaan tangga di x = +0.48 */
+                    const railY = yDeck + .032;
+                    /* Sisi kiri bukaan tangga (-1.10 .. +0.34) */
+                    addM(new B(1.44, .022, .026), ulinMat, -.38, railY + .18, .42);
+                    addM(new B(1.44, .015, .02), darkWood, -.38, railY + .09, .42);
+                    for (let x = -1.08; x <= .34; x += .14) addM(new B(.016, .18, .016), darkWood, x, railY + .09, .42);
+                    /* Sisi kanan bukaan tangga (+0.62 .. +1.10) */
+                    addM(new B(.48, .022, .026), ulinMat, .86, railY + .18, .42);
+                    addM(new B(.48, .015, .02), darkWood, .86, railY + .09, .42);
+                    for (let x = .62; x <= 1.09; x += .15) addM(new B(.016, .18, .016), darkWood, x, railY + .09, .42);
+                    /* Pagar samping kiri & kanan serambi */
+                    [-1.10, 1.10].forEach(sx => {
+                        addM(new B(.024, .022, .44), ulinMat, sx, railY + .18, .20);
+                        addM(new B(.018, .015, .44), darkWood, sx, railY + .09, .20);
+                        for (let z = .02; z <= .40; z += .12) addM(new B(.016, .18, .016), darkWood, sx, railY + .09, z);
+                    });
+
+                    /* Tiang penyangga atap serambi depan */
+                    [-1.02, -.52, 0, .52, 1.02].forEach(x => addM(new C(.022, .024, .46, 8), darkWood, x, railY + .23, .38));
+                    addM(new B(2.24, .035, .035), darkWood, 0, railY + .45, .38);
+
+                    /* Badan utama Rumah Panjang (deretan 5 bilik keluarga) */
+                    const bodyH = .44, bodyY = railY + bodyH / 2;
+                    addM(new B(2.14, bodyH, .50), wallPlankMat, 0, bodyY, -.19);
+                    /* Gevel segitiga (dinding papan ujung atap kiri & kanan) */
+                    const gableShape = new THREE.Shape();
+                    gableShape.moveTo(-.47, 0); gableShape.lineTo(.47, 0); gableShape.lineTo(0, .38); gableShape.closePath();
+                    const gableGeo = new THREE.ExtrudeGeometry(gableShape, { depth: .03, bevelEnabled: false });
+                    [-1.08, 1.05].forEach(gx => {
+                        const gb = addM(gableGeo, wallPlankMat, gx, railY + bodyH - .01, -.04);
+                        gb.rotation.y = Math.PI / 2;
+                    });
+
+                    /* 5 Pintu Bilik, Jendela Berdaun & Cahaya Hangat Interior */
+                    const glows = [];
+                    [-.80, -.40, 0, .40, .80].forEach((bx, bi) => {
+                        /* Kusen & daun pintu bilik */
+                        addM(new B(.16, .28, .024), darkWood, bx - .07, railY + .14, .065);
+                        const ajar = bi === 1 || bi === 3;
+                        if (ajar) {
+                            const gl = addM(new B(.12, .24, .01), warmGlowMat, bx - .07, railY + .14, .072);
+                            glows.push(gl);
+                            const dr = addM(new B(.12, .25, .014), ulinMat, bx - .02, railY + .14, .11);
+                            dr.rotation.y = .72;
+                        } else {
+                            addM(new B(.125, .25, .016), ulinMat, bx - .07, railY + .14, .074);
+                        }
+                        /* Lis ukiran Dayak di atas pintu */
+                        addM(new B(.19, .026, .026), dykFasciaMat, bx - .07, railY + .295, .072);
+                        /* Jendela kayu di samping pintu */
+                        addM(new B(.12, .12, .022), darkWood, bx + .10, railY + .22, .065);
+                        const wgl = addM(new B(.085, .085, .012), bi % 2 === 0 ? warmGlowMat : darkWood, bx + .10, railY + .22, .074);
+                        if (bi % 2 === 0) glows.push(wgl);
+                        addM(new B(.14, .018, .035), ulinMat, bx + .10, railY + .155, .076);
+                    });
+
+                    /* Atap Sirap Kayu Ulin Pelana Lebar + Kaso Menjorok (seperti foto/foto35.jpg) + Ornamen Enggang Bubungan */
+                    const roofSpan = 2.48;
+                    [-1, 1].forEach(side => {
+                        const rf = addM(new B(roofSpan, .036, .66), sirapMat, 0, railY + .61, -.04 + side * .25);
+                        rf.rotation.x = side * .64;
+                        /* Kaso / usuk menjorok di kedua tepi atap */
+                        [-1, 1].forEach(end => {
+                            for (let r = 0; r < 5; r++) {
+                                const kz = -.04 + side * (.07 + r * .115);
+                                const ky = railY + .76 - r * .072;
+                                addM(new B(.16, .014, .016), darkWood, end * (roofSpan / 2 + .05), ky, kz);
+                            }
+                        });
+                    });
+                    /* Bubungan atap & ukiran puncak burung enggang / pakis di kedua ujung */
+                    addM(new B(roofSpan + .06, .048, .065), darkWood, 0, railY + .82, -.04);
+                    addM(new B(roofSpan + .02, .014, .072), goldTrim, 0, railY + .848, -.04);
+                    [-1, 1].forEach(end => {
+                        const fin = piv(end * (roofSpan / 2 + .02), railY + .85, -.04);
+                        addM(new C(.012, .016, .11, 8), darkWood, 0, .05, 0, fin);
+                        const beak = addM(new THREE.ConeGeometry(.024, .10, 6), goldTrim, end * .04, .10, 0, fin);
+                        beak.rotation.z = -end * 1.15;
+                    });
+
+                    /* Tangga Hejan (Tangga Kayu Bulat Berlekuk khas Dayak + Pegangan Samping) */
+                    const stG = piv(.48, yGround, .64);
+                    const log = addM(new C(.048, .056, .66, 10), ulinMat, 0, .23, -.02, stG);
+                    log.rotation.x = -.68;
+                    for (let i = 0; i < 7; i++) {
+                        addM(new B(.11, .018, .06), plankMat, 0, .05 + i * .062, .16 - i * .052, stG);
+                    }
+                    [-.085, .085].forEach(rx => {
+                        const hr = addM(new C(.009, .009, .68, 6), darkWood, rx, .34, -.02, stG);
+                        hr.rotation.x = -.68;
+                        addM(new C(.008, .008, .22, 6), darkWood, rx, .11, .18, stG);
+                        addM(new C(.008, .008, .32, 6), darkWood, rx, .24, -.08, stG);
+                    });
+
+                    /* Perabot Kehidupan di Serambi: Tikar Rotan, Lesung & Alu, Bakul, dan Tajau (Tempayan) */
+                    const matTex = tex(128, 128, (c, W, Hc) => {
+                        c.fillStyle = '#c9a66b'; c.fillRect(0, 0, W, Hc);
+                        c.strokeStyle = '#8b6331'; c.lineWidth = 3;
+                        for (let i = -Hc; i < W + Hc; i += 16) { c.beginPath(); c.moveTo(i, 0); c.lineTo(i + Hc, Hc); c.stroke(); c.beginPath(); c.moveTo(i + Hc, 0); c.lineTo(i, Hc); c.stroke() }
+                    }, 2, 1);
+                    addM(new B(.46, .008, .24), std({ map: matTex, roughness: .85 }), -.62, railY + .006, .24);
+                    addM(new B(.38, .008, .22), std({ map: matTex, roughness: .85 }), .04, railY + .006, .24);
+                    /* Lesung padi & alu */
+                    addM(new B(.18, .048, .065), darkWood, -.18, railY + .026, .25);
+                    const alu = addM(new C(.008, .008, .20, 6), ulinMat, -.15, railY + .07, .24); alu.rotation.z = .38;
+                    /* Bakul anyaman & tempayan tajau */
+                    addM(new C(.042, .032, .055, 12), std({ color: 0xc29754, roughness: .82 }), -.86, railY + .03, .22);
+                    const tajau = lathe([[0, 0], [.026, 0], [.045, .04], [.042, .08], [.024, .105], [.03, .115]], 0x6b3e22);
+                    tajau.position.set(.86, railY, .18); g.add(tajau);
+
+                    /* 3 Tiang Pantak / Patung Burung Enggang di Halaman Depan Kiri (khas Rumah Betang foto/foto35.jpg) */
+                    [[-.98, .56, .48], [-.85, .58, .41], [-.72, .59, .35]].forEach(([tx, tz, th]) => {
+                        addM(new C(.022, .026, th, 10), darkWood, tx, yGround + th / 2, tz);
+                        addM(new C(.026, .026, .04, 10), dykPillarMat, tx, yGround + th * .55, tz);
+                        /* Patung Burung Enggang di puncak tiang */
+                        const eb = piv(tx, yGround + th, tz); eb.rotation.y = .35;
+                        addM(new S(.028, 10, 8), std({ color: 0x161618, roughness: .55 }), 0, .03, 0, eb).scale.set(.85, 1.1, 1.35);
+                        addM(new B(.016, .008, .055), std({ color: 0xf2f0ea, roughness: .6 }), 0, .01, -.045, eb).rotation.x = -.45;
+                        addM(new B(.018, .009, .015), std({ color: 0x161618, roughness: .6 }), 0, .006, -.05, eb).rotation.x = -.45;
+                        const bk = addM(new THREE.ConeGeometry(.012, .055, 6), std({ color: 0xe69c24, roughness: .4 }), 0, .048, .048, eb);
+                        bk.rotation.x = Math.PI / 2 + .2;
+                    });
+
+                    /* Vegetasi tropis mengelilingi halaman Rumah Panjang */
+                    addPalm(-1.12, yGround, -.56, .62, .12, 1.0);
+                    addPalm(1.12, yGround, -.55, .58, -.14, .95);
+                    addBush(-1.08, yGround, .22, .09, 0x356834);
+                    addBush(1.08, yGround, .48, .10, 0x3e7338);
+                    addBush(.15, yGround, .60, .07, 0x457a3b);
+                    addBush(-1.12, yGround, -.22, .08, 0x2f5e31);
+
+                    /* Plakat museum rapi di bagian depan meja */
+                    museumCard(['RUMAH PANJANG DAYAK', 'Rumah Betang • Panggung, Serambi & Kebersamaan'], 1.92, .22, 0, .20, .725);
+
+                    g.userData.anim = t => {
+                        glows.forEach((m, i) => { m.material.emissiveIntensity = .72 + Math.sin(t * 3.1 + i * 1.4) * .16 });
+                        palms.forEach(p => { p.crown.rotation.z = Math.sin(t * 1.3 + p.phase) * .045 });
+                    };
+                }
+
+                /* =========================================================
+                   2. DIORAMA REALISTIS: SUNGAI PAWAN & JEMBATAN PAWAN
+                   ========================================================= */
+                if (k === 'pawan') {
+                    const yBase = T + .022;
+                    const yWater = T + .062;
+
+                    /* Dasar sungai berlumpur/berpasir di bawah permukaan air */
+                    const bedTex = tex(256, 256, (c, W, Hc) => {
+                        c.fillStyle = '#3a4c3e'; c.fillRect(0, 0, W, Hc);
+                        for (let i = 0; i < 180; i++) {
+                            c.fillStyle = i % 2 ? 'rgba(42,68,60,.45)' : 'rgba(84,72,50,.35)';
+                            c.fillRect(Math.random() * W, Math.random() * Hc, 22 + Math.random() * 44, 6 + Math.random() * 14);
+                        }
+                    }, 2, 2);
+                    addM(new B(2.48, .035, 1.48), std({ map: bedTex, roughness: .92 }), 0, yBase, 0);
+
+                    /* Permukaan air Sungai Pawan mengilap & mengalir */
+                    const riverTex = tex(512, 256, (c, W, Hc) => {
+                        const grd = c.createLinearGradient(0, 0, 0, Hc);
+                        grd.addColorStop(0, '#2b6a6e'); grd.addColorStop(.5, '#357b82'); grd.addColorStop(1, '#29636a');
+                        c.fillStyle = grd; c.fillRect(0, 0, W, Hc);
+                        for (let i = 0; i < 140; i++) {
+                            const px = Math.random() * W, py = Math.random() * Hc, len = 18 + Math.random() * 42;
+                            c.strokeStyle = i % 3 === 0 ? 'rgba(215,244,242,.34)' : 'rgba(18,54,60,.32)';
+                            c.lineWidth = 1.2 + Math.random() * 1.2;
+                            c.beginPath(); c.moveTo(px, py); c.quadraticCurveTo(px + len * .5, py + 2.5, px + len, py); c.stroke();
+                        }
+                    }, 3, 2);
+                    const riverMat = std({ color: 0x7bc2c7, map: riverTex, roughness: .15, metalness: .28, transparent: true, opacity: .88 });
+                    addM(new B(2.46, .016, 1.44), riverMat, 0, yWater, 0);
+
+                    /* Tepi daratan / bantaran sungai berlapis rumput & tanah liat (Utara/Belakang & Sudut Depan) */
+                    const bankMat = std({ color: 0x4b6e3c, roughness: .92 });
+                    const mudMat = std({ color: 0x6b563c, roughness: .95 });
+                    /* Bantaran belakang penuh */
+                    addM(new B(2.48, .085, .44), mudMat, 0, yBase + .042, -.52);
+                    addM(new B(2.48, .04, .40), bankMat, 0, yBase + .095, -.54);
+                    /* Bantaran tanjung depan-kiri (tumpuan Jembatan Pawan) */
+                    addM(new B(.86, .08, .36), mudMat, -.81, yBase + .04, .56);
+                    addM(new B(.82, .038, .32), bankMat, -.83, yBase + .09, .58);
+                    /* Bantaran depan-kanan kecil */
+                    addM(new B(.58, .075, .28), mudMat, .95, yBase + .038, .60);
+                    addM(new B(.54, .035, .24), bankMat, .97, yBase + .085, .62);
+
+                    /* Cerucuk kayu penahan tebing & bebatuan sungai di tepian */
+                    for (let x = -1.16; x <= 1.16; x += .11) {
+                        addM(new C(.012, .014, .11, 6), darkWood, x, yWater + .01, -.31 + Math.sin(x * 3) * .012);
+                    }
+                    [[-.42, .42], [-.56, .40], [.72, .48], [.88, .47], [-.25, -.31], [.18, -.31]].forEach(([rx, rz]) => {
+                        addM(new THREE.DodecahedronGeometry(.038, 0), stoneMat, rx, yWater + .015, rz).scale.set(1.2, .65, 1);
+                    });
+
+                    /* === JEMBATAN PAWAN (Jembatan Lengkung Baja Kuning Ikonik — foto/ketapang4.jpeg) === */
+                    const brG = piv(-.46, yWater, .12);
+                    brG.rotation.y = .34;
+                    const brLen = 1.44, brDeckY = .17, brW = .20;
+                    const yellowSteel = std({ color: 0xe8b620, roughness: .36, metalness: .52 });
+                    const cableSteel = std({ color: 0xcfd6da, roughness: .35, metalness: .72 });
+                    const roadTex = tex(256, 64, (c, W, Hc) => {
+                        c.fillStyle = '#3f4348'; c.fillRect(0, 0, W, Hc);
+                        c.fillStyle = '#e5e0c8';
+                        for (let i = 10; i < W; i += 32) c.fillRect(i, Hc / 2 - 2, 18, 4);
+                        c.fillStyle = '#d4a62a'; c.fillRect(0, 2, W, 3); c.fillRect(0, Hc - 5, W, 3);
+                    }, 3, 1);
+
+                    /* Pilar beton jembatan di kedua sisi tepi sungai */
+                    [-.60, .60].forEach(px => {
+                        addM(new B(.11, .21, .24), stoneMat, px, .08, 0, brG);
+                        addM(new B(.14, .035, .28), std({ color: 0x909088, roughness: .85 }), px, .17, 0, brG);
+                        [-.11, .11].forEach(fz => addM(new C(.012, .014, .15, 6), darkWood, px + (px < 0 ? .07 : -.07), .04, fz, brG));
+                    });
+                    /* Gelagar jalan & pagar pengaman samping */
+                    addM(new B(brLen, .032, brW), std({ map: roadTex, roughness: .84 }), 0, brDeckY + .018, 0, brG);
+                    [-brW / 2, brW / 2].forEach(sz => {
+                        addM(new B(brLen, .026, .016), yellowSteel, 0, brDeckY + .04, sz, brG);
+                        /* Lengkung baja kuning parabolik kembar */
+                        const archPts = [];
+                        for (let i = 0; i <= 14; i++) {
+                            const u = i / 14, ax = (u - .5) * 1.18, ay = brDeckY + .03 + Math.sin(u * Math.PI) * .33;
+                            archPts.push([ax, ay, sz]);
+                        }
+                        tube(archPts, .016, yellowSteel, brG, 28, 8);
+                        /* Kabel penggantung vertikal dari lengkung ke gelagar */
+                        for (let i = 1; i <= 11; i++) {
+                            const u = i / 12, ax = (u - .5) * 1.18, hCable = Math.sin(u * Math.PI) * .32;
+                            addM(new C(.0035, .0035, hCable, 5), cableSteel, ax, brDeckY + .03 + hCable / 2, sz, brG);
+                        }
+                    });
+                    /* Ikatan angin (cross-bracing) atas antar dua lengkung baja kuning */
+                    for (let i = 2; i <= 10; i += 2) {
+                        const u = i / 12, ax = (u - .5) * 1.18, ay = brDeckY + .03 + Math.sin(u * Math.PI) * .33;
+                        addM(new B(.014, .014, brW), yellowSteel, ax, ay, 0, brG);
+                    }
+
+                    /* === PERMUKIMAN PANGGUNG TEPI SUNGAI PAWAN === */
+                    const addStiltHouse = (hx, hz, w, d, hWall, roofCol, rotY = 0) => {
+                        const hg = piv(hx, yWater, hz); hg.rotation.y = rotY;
+                        const yFl = .18;
+                        /* Tiang panggung kayu ulin di atas air dangkal / tebing */
+                        [-w * .42, 0, w * .42].forEach(px => [-d * .4, d * .4].forEach(pz => addM(new C(.012, .014, yFl + .06, 6), darkWood, px, yFl / 2 - .02, pz, hg)));
+                        /* Lantai papan & serambi depan */
+                        addM(new B(w + .04, .026, d + .10), plankMat, 0, yFl, .04, hg);
+                        /* Pagar serambi */
+                        addM(new B(w + .02, .012, .012), darkWood, 0, yFl + .08, d / 2 + .08, hg);
+                        for (let rx = -w * .45; rx <= w * .46; rx += .09) addM(new B(.01, .07, .01), darkWood, rx, yFl + .045, d / 2 + .08, hg);
+                        /* Dinding papan rumah */
+                        addM(new B(w, hWall, d), wallPlankMat, 0, yFl + hWall / 2 + .01, -.01, hg);
+                        /* Pintu & jendela berdaun hangat */
+                        addM(new B(.075, .14, .014), darkWood, -.06, yFl + .08, d / 2 - .005, hg);
+                        addM(new B(.065, .065, .014), warmGlowMat, .09, yFl + .11, d / 2 - .005, hg);
+                        addM(new B(.075, .012, .018), darkWood, .09, yFl + .075, d / 2, hg);
+                        /* Atap pelana / limasan sirap */
+                        const rMat = std({ color: roofCol, map: sirapTex, roughness: .82 });
+                        [-1, 1].forEach(side => {
+                            const rp = addM(new B(w + .10, .022, d * .78), rMat, 0, yFl + hWall + .085, side * d * .26, hg);
+                            rp.rotation.x = side * .56;
+                        });
+                        addM(new B(w + .12, .024, .03), darkWood, 0, yFl + hWall + .165, 0, hg);
+                    };
+                    addStiltHouse(.30, -.46, .38, .28, .21, 0x6f432c, .04);
+                    addStiltHouse(.86, -.44, .44, .30, .23, 0x5c3a28, -.08);
+                    addStiltHouse(-.92, -.50, .36, .26, .20, 0x734a30, .10);
+                    /* Gertak kayu (jembatan papan penghubung antar rumah tepi sungai) */
+                    addM(new B(.95, .02, .11), plankMat, .58, yWater + .14, -.26);
+                    [.20, .58, .96].forEach(gx => addM(new C(.012, .014, .18, 6), darkWood, gx, yWater + .06, -.26));
+
+                    /* === DERMAGA / PELANTAR KAYU TRADISIONAL DI SISI KANAN === */
+                    const pierG = piv(.78, yWater, -.02);
+                    /* Tiang pancang dermaga + papan lantai kayu ulin */
+                    [-.16, .16].forEach(px => [-.24, 0, .24].forEach(pz => addM(new C(.015, .017, .20, 7), darkWood, px, .02, pz, pierG)));
+                    addM(new B(.42, .026, .58), plankMat, 0, .10, 0, pierG);
+                    /* Tonggak tambat tali (bollard) */
+                    [-.17, .17].forEach(bx => addM(new C(.018, .02, .08, 8), ulinMat, bx, .14, .25, pierG));
+                    /* Pondok kecil beratap sirap di ujung dermaga */
+                    [-.13, .13].forEach(px => [-.18, -.02].forEach(pz => addM(new C(.01, .01, .22, 6), darkWood, px, .21, pz, pierG)));
+                    const pRoof = addM(new THREE.ConeGeometry(.24, .12, 4), sirapMat, 0, .37, -.10, pierG); pRoof.rotation.y = Math.PI / 4; pRoof.scale.set(1.15, 1, .95);
+                    /* Muatan perdagangan: karung hasil bumi, peti kayu & bakul rotan */
+                    addM(new B(.09, .065, .08), std({ color: 0xa67a44, roughness: .82 }), -.09, .145, .12, pierG);
+                    addM(new S(.042, 10, 8), std({ color: 0xc9b48a, roughness: .9 }), .05, .135, .14, pierG).scale.set(1.3, .72, .9);
+                    addM(new S(.038, 10, 8), std({ color: 0xbfa77a, roughness: .9 }), .11, .132, .08, pierG).scale.set(1.2, .75, .95);
+                    addM(new C(.034, .026, .048, 10), std({ color: 0xc59a54, roughness: .84 }), -.02, .135, .02, pierG);
+
+                    /* === PERAHU KLOTOK (Perahu Sungai Bermotor Khas Kalimantan) DI TENGAH SUNGAI === */
+                    const klotok = piv(-.06, yWater + .012, .24);
+                    klotok.rotation.y = .14;
+                    const hullShape = new THREE.Shape();
+                    hullShape.moveTo(-.34, 0); hullShape.quadraticCurveTo(-.18, .095, 0, .10); hullShape.quadraticCurveTo(.20, .095, .36, 0);
+                    hullShape.quadraticCurveTo(.20, -.095, 0, -.10); hullShape.quadraticCurveTo(-.18, -.095, -.34, 0);
+                    const hullGeo = new THREE.ExtrudeGeometry(hullShape, { depth: .065, bevelEnabled: true, bevelThickness: .012, bevelSize: .01, bevelSegments: 3 });
+                    const kHull = addM(hullGeo, ulinMat, 0, .048, 0, klotok); kHull.rotation.x = Math.PI / 2;
+                    /* Lis cat biru-putih khas perahu sungai Ketapang */
+                    const kTrim = addM(hullGeo, std({ color: 0x266591, roughness: .5 }), 0, .056, 0, klotok); kTrim.rotation.x = Math.PI / 2; kTrim.scale.set(1.02, 1.02, .25);
+                    addM(new B(.46, .014, .14), plankMat, -.01, .052, 0, klotok);
+                    /* Kanopi lengkung (Atap Kajang) perahu klotok */
+                    [-.15, .11].forEach(cx => [-.068, .068].forEach(cz => addM(new C(.006, .006, .12, 6), darkWood, cx, .11, cz, klotok)));
+                    const canopy = addM(new C(.092, .092, .30, 14, 1, true, 0, Math.PI), std({ color: 0xc8a468, roughness: .82, side: THREE.DoubleSide }), -.02, .125, 0, klotok);
+                    canopy.rotation.z = Math.PI / 2;
+                    /* Muatan karung & bakul di dalam perahu */
+                    addM(new B(.075, .055, .065), std({ color: 0x9e6f3b, roughness: .8 }), .16, .08, 0, klotok);
+                    addM(new C(.028, .022, .042, 10), std({ color: 0xc49a52, roughness: .82 }), -.21, .076, .02, klotok);
+                    /* Jejak riak V (wake) di buritan perahu klotok */
+                    const wakeMat = std({ color: 0xe6f8f7, transparent: true, opacity: .45, roughness: .2 });
+                    const wake1 = addM(new B(.26, .005, .016), wakeMat, -.46, .006, .05, klotok); wake1.rotation.y = -.26;
+                    const wake2 = addM(new B(.26, .005, .016), wakeMat, -.46, .006, -.05, klotok); wake2.rotation.y = .26;
+
+                    /* === SAMPAN KAYU TRADISIONAL TERTAMBAT DI SAMPING DERMAGA === */
+                    const sampan = piv(.42, yWater + .01, .28);
+                    sampan.rotation.y = -.48;
+                    const sGeo = new THREE.ExtrudeGeometry(hullShape, { depth: .042, bevelEnabled: true, bevelThickness: .008, bevelSize: .008, bevelSegments: 2 });
+                    const sHull = addM(sGeo, std({ color: 0x694226, roughness: .78 }), 0, .034, 0, sampan); sHull.rotation.x = Math.PI / 2; sHull.scale.set(.74, .64, 1);
+                    [-.08, .06].forEach(bx => addM(new B(.035, .01, .095), plankMat, bx, .038, 0, sampan));
+                    addM(new C(.026, .02, .038, 10), std({ color: 0xc89e56, roughness: .84 }), -.01, .052, 0, sampan);
+                    /* Dayung kayu melintang di atas sampan */
+                    const oar = addM(new B(.34, .01, .018), ulinMat, .04, .048, .055, sampan); oar.rotation.y = .32;
+
+                    /* === VEGETASI TEPI SUNGAI PAWAN (Pohon Kelapa, Nipah & Hutan Tepi Air) === */
+                    addPalm(-1.12, yBase + .11, -.56, .54, .11, .92);
+                    addPalm(-.34, yBase + .11, -.58, .50, -.09, .88);
+                    addPalm(1.12, yBase + .11, -.54, .56, -.12, .95);
+                    addPalm(-1.05, yBase + .10, .58, .48, .10, .85);
+                    addPalm(1.06, yBase + .10, .62, .44, -.08, .80);
+                    [[-.65, -.56, .11], [-.06, -.58, .12], [.58, -.58, .10], [1.14, -.42, .09], [-.72, .56, .10], [-1.14, .48, .09], [.86, .58, .09]].forEach(([bx, bz, br], i) => {
+                        addBush(bx, yBase + .10, bz, br, [0x2f6033, 0x3b7038, 0x457d3d][i % 3]);
+                    });
+
+                    /* Plakat museum rapi di bagian depan meja */
+                    museumCard(['SUNGAI PAWAN', 'Nadi Kehidupan • Jembatan, Dermaga & Transportasi'], 1.96, .22, 0, .20, .725);
+
+                    g.userData.anim = t => {
+                        riverTex.offset.x = (t * .045) % 1;
+                        klotok.position.y = yWater + .012 + Math.sin(t * 2.2) * .005;
+                        klotok.rotation.z = Math.sin(t * 1.7) * .025;
+                        klotok.rotation.x = Math.cos(t * 1.4) * .018;
+                        wakeMat.opacity = .32 + Math.sin(t * 4.5) * .12;
+                        sampan.position.y = yWater + .01 + Math.sin(t * 2.6 + 1.2) * .005;
+                        sampan.rotation.z = Math.sin(t * 2.1 + .8) * .032;
+                        palms.forEach(p => { p.crown.rotation.z = Math.sin(t * 1.25 + p.phase) * .045 });
+                    };
+                }
+
+                g.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true } });
+                return g;
             }
 
             if (k == 'tree') {
@@ -1944,7 +2421,7 @@
             }
             if (k == 'jurongk') {
                 const dm = new THREE.MeshLambertMaterial({ map: dykTex(256, 128, '#3a2416', '#f0e6d0', '#b3261e', 2, 1) }),
-                wv = new THREE.MeshLambertMaterial({ map: tex(64, 64, (x, w, h) => { x.fillStyle = '#b88a4e'; x.fillRect(0, 0, w, h); x.fillStyle = '#8a6232'; for (let i = 0; i < 8; i++)for (let j = 0; j < 8; j++)if ((i + j) % 2) x.fillRect(i * 8, j * 8, 8, 8) }, 3, 2) });
+                    wv = new THREE.MeshLambertMaterial({ map: tex(64, 64, (x, w, h) => { x.fillStyle = '#b88a4e'; x.fillRect(0, 0, w, h); x.fillStyle = '#8a6232'; for (let i = 0; i < 8; i++)for (let j = 0; j < 8; j++)if ((i + j) % 2) x.fillRect(i * 8, j * 8, 8, 8) }, 3, 2) });
                 g.add(part(new B(1.7, .05, 1.5), 0x5a4028, 0, .025, 0));
                 [[-.42, -.32], [.42, -.32], [-.42, .32], [.42, .32]].forEach(q => { g.add(part(new C(.045, .055, .62, 8), 0x4a3220, q[0], .33, q[1]), part(new C(.13, .13, .03, 14), 0x6b4328, q[0], .56, q[1])) });
                 g.add(part(new B(1.05, .06, .85), 0x6b4328, 0, .62, 0));
@@ -2012,7 +2489,7 @@
             }
             if (k == 'gamelan') {
                 const wv = new THREE.MeshLambertMaterial({ map: tex(64, 64, (x, w, h) => { x.fillStyle = '#b88a4e'; x.fillRect(0, 0, w, h); x.strokeStyle = '#6b4328'; x.lineWidth = 3; for (let i = 0; i < w; i += 8) { x.beginPath(); x.moveTo(i, 0); x.lineTo(i, h); x.stroke() } }, 4, 3) }),
-                dm = new THREE.MeshLambertMaterial({ map: dykTex(256, 64, '#3a2416', '#f0e6d0', '#b3261e', 3, 1) }), br = 0xb8862b, bs = 0xd9a63a;
+                    dm = new THREE.MeshLambertMaterial({ map: dykTex(256, 64, '#3a2416', '#f0e6d0', '#b3261e', 3, 1) }), br = 0xb8862b, bs = 0xd9a63a;
                 const mt = new THREE.Mesh(new B(2, .04, 1.35), wv); mt.position.y = .02; g.add(mt);
                 const gong = (r, x, y, z, up) => {
                     const d = part(new C(r, r, r * .32, 24), br, x, y, z), b = part(new S(r * .32, 12, 8), bs, x, y, z), t = part(new THREE.TorusGeometry(r * .8, r * .05, 5, 24), 0x8a5a1a, x, y, z);
