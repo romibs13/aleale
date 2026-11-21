@@ -5295,8 +5295,7 @@ transformed.y+=0.018*treeBend*sin(treeWindTime*4.3+treePhase+position.z*2.1);`: 
             hero.g.position.copy(me); hero.g.rotation.y = face;
             $('who').textContent = 'Halo, ' + n + ' (' + o + ')'; hero.g.add(nameSprite(n));
             started = true; inGame = true; document.body.classList.add('ig'); $('pbtn').style.display = 'block'; $('start').classList.remove('on'); $('mbtn').style.display = 'block'; playMusic();
-            const lokal = /ketapang/i.test(o);
-            say('Pemandu Museum', ['Selamat datang di Museum Virtual Ketapang, ' + n + ' dari ' + o + '!', lokal ? 'Wah, orang Ketapang sendiri! Senang sekali kamu ikut menjelajahi sejarah dan budaya daerahmu.' : 'Terima kasih sudah datang dari ' + o + ' untuk mengenal sejarah dan budaya Ketapang.', 'Masuklah lewat pintu utama. Dekati para pemandu yang bertanda "!" untuk mendengar ceritanya. Selamat menjelajah!'], null)
+            say('Pemandu Museum', ['Selamat datang di Museum Virtual Ketapang! Terima kasih sudah datang untuk mengenal sejarah dan budaya Ketapang.', 'Masuklah lewat pintu utama. Dekati para pemandu yang bertanda "!" untuk mendengar ceritanya. Selamat menjelajah!'], null)
         }
         $('go').onclick = startGame;
         ['inNama', 'inAsal'].forEach(id => $(id).addEventListener('keydown', e => { if (e.key == 'Enter') { e.stopPropagation(); startGame() } }));
@@ -5319,9 +5318,34 @@ transformed.y+=0.018*treeBend*sin(treeWindTime*4.3+treePhase+position.z*2.1);`: 
             const f = vs.find(v => /gadis|damayanti|google.*indonesia|female|perempuan|wanita/i.test(v.name)); VOICE = f || vs.find(v => !/andika|\bmale\b/i.test(v.name)) || vs[0] || null; FEM = !!f
         }
         if ('speechSynthesis' in window) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice }
+        const VOICE_CLIPS = new Set(['intro_1', 'intro_2', 'intro_jonathan_1', 'intro_jonathan_2']);
+        const voiceAudio = new Audio();
+        function stopVoice() {
+            voiceAudio.pause(); voiceAudio.currentTime = 0;
+            if ('speechSynthesis' in window) speechSynthesis.cancel();
+            bgm.volume = MV;
+        }
+        function speakFallback(t) {
+            if (!('speechSynthesis' in window) || !voiceOn) return;
+            const u = new SpeechSynthesisUtterance(t); u.lang = 'id-ID'; u.rate = .95;
+            if (!VOICE) pickVoice(); if (VOICE) u.voice = VOICE; u.pitch = FEM ? 1 : 1.2;
+            u.onstart = () => { bgm.volume = .15 }; u.onend = u.onerror = () => { bgm.volume = MV };
+            speechSynthesis.speak(u);
+        }
         function speak(t) {
-            if (!('speechSynthesis' in window)) return; speechSynthesis.cancel(); if (!voiceOn) return; const u = new SpeechSynthesisUtterance(t); u.lang = 'id-ID'; u.rate = .95;
-            if (!VOICE) pickVoice(); if (VOICE) u.voice = VOICE; u.pitch = FEM ? 1 : 1.2; u.onstart = () => { bgm.volume = .15 }; u.onend = u.onerror = () => { bgm.volume = MV }; speechSynthesis.speak(u)
+            stopVoice(); if (!voiceOn) return;
+            const introKey = (LOOKS[PL.look] && LOOKS[PL.look].st === 'melayu') ? 'intro' : 'intro_jonathan';
+            const clipKey = (dE ? dE.id : introKey) + '_' + (dPage + 1);
+            if (VOICE_CLIPS.has(clipKey)) {
+                voiceAudio.src = 'suara/' + clipKey + '.mp3';
+                bgm.volume = .15;
+                voiceAudio.onended = () => { bgm.volume = MV };
+                voiceAudio.onerror = () => { bgm.volume = MV; speakFallback(t) };
+                const p = voiceAudio.play();
+                if (p && p.catch) p.catch(() => { bgm.volume = MV; speakFallback(t) });
+                return;
+            }
+            speakFallback(t);
         }
         function typeLine() {
             const last = dPage == dLines.length - 1; const t = dLines[dPage]; let i = 0; clearInterval(dTimer); $('dtext').textContent = '';
@@ -5340,10 +5364,10 @@ transformed.y+=0.018*treeBend*sin(treeWindTime*4.3+treePhase+position.z*2.1);`: 
             seen.add(e.id); hud(); try { localStorage.setItem('ketapang-seen', JSON.stringify([...seen])) } catch (_) { } say(gn, L, e)
         }
         function dlgNext() { const t = dLines[dPage]; if ($('dtext').textContent.length < t.length) { clearInterval(dTimer); $('dtext').textContent = t; return } if (dPage < dLines.length - 1) { dPage++; typeLine() } else closeDlg() }
-        function closeDlg() { if (!dlgOpen) return; clearInterval(dTimer); if ('speechSynthesis' in window) speechSynthesis.cancel(); bgm.volume = MV; dlgOpen = false; open = false; document.body.classList.remove('dlgon'); $('dlg').style.display = 'none' }
+        function closeDlg() { if (!dlgOpen) return; clearInterval(dTimer); stopVoice(); dlgOpen = false; open = false; document.body.classList.remove('dlgon'); $('dlg').style.display = 'none' }
         $('dnext').onclick = dlgNext;
         $('dcard').onclick = () => { const e = dE; closeDlg(); show(e) };
-        $('dvoice').onclick = () => { voiceOn = !voiceOn; $('dvoice').textContent = voiceOn ? '🔊 Suara' : '🔇 Suara'; if (voiceOn && dlgOpen) speak(dLines[dPage]); else if ('speechSynthesis' in window) speechSynthesis.cancel(); saveSet(); updSet() };
+        $('dvoice').onclick = () => { voiceOn = !voiceOn; $('dvoice').textContent = voiceOn ? '🔊 Suara' : '🔇 Suara'; if (voiceOn && dlgOpen) speak(dLines[dPage]); else stopVoice(); saveSet(); updSet() };
         $('dvoice').textContent = voiceOn ? '🔊 Suara' : '🔇 Suara';
         const clock = new THREE.Clock();
         // Mulai di luar gapura (z=28.4), menghadap museum ke arah -Z.
