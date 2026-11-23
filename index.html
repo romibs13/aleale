@@ -5318,9 +5318,11 @@ transformed.y+=0.018*treeBend*sin(treeWindTime*4.3+treePhase+position.z*2.1);`: 
             const f = vs.find(v => /gadis|damayanti|google.*indonesia|female|perempuan|wanita/i.test(v.name)); VOICE = f || vs.find(v => !/andika|\bmale\b/i.test(v.name)) || vs[0] || null; FEM = !!f
         }
         if ('speechSynthesis' in window) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice }
-        const VOICE_CLIPS = new Set(['intro_1', 'intro_2', 'intro_jonathan_1', 'intro_jonathan_2']);
         const voiceAudio = new Audio();
+        let voiceSeq = 0;
         function stopVoice() {
+            voiceSeq++;
+            voiceAudio.onended = null; voiceAudio.onerror = null;
             voiceAudio.pause(); voiceAudio.currentTime = 0;
             if ('speechSynthesis' in window) speechSynthesis.cancel();
             bgm.volume = MV;
@@ -5334,18 +5336,15 @@ transformed.y+=0.018*treeBend*sin(treeWindTime*4.3+treePhase+position.z*2.1);`: 
         }
         function speak(t) {
             stopVoice(); if (!voiceOn) return;
+            const seq = voiceSeq;
             const introKey = (LOOKS[PL.look] && LOOKS[PL.look].st === 'melayu') ? 'intro' : 'intro_jonathan';
             const clipKey = (dE ? dE.id : introKey) + '_' + (dPage + 1);
-            if (VOICE_CLIPS.has(clipKey)) {
-                voiceAudio.src = 'suara/' + clipKey + '.mp3';
-                bgm.volume = .15;
-                voiceAudio.onended = () => { bgm.volume = MV };
-                voiceAudio.onerror = () => { bgm.volume = MV; speakFallback(t) };
-                const p = voiceAudio.play();
-                if (p && p.catch) p.catch(() => { bgm.volume = MV; speakFallback(t) });
-                return;
-            }
-            speakFallback(t);
+            voiceAudio.src = 'suara/' + clipKey + '.mp3';
+            bgm.volume = .15;
+            voiceAudio.onended = () => { if (seq === voiceSeq) bgm.volume = MV };
+            voiceAudio.onerror = () => { if (seq === voiceSeq) { bgm.volume = MV; speakFallback(t) } };
+            const p = voiceAudio.play();
+            if (p && p.catch) p.catch(() => { if (seq === voiceSeq) { bgm.volume = MV; speakFallback(t) } });
         }
         function typeLine() {
             const last = dPage == dLines.length - 1; const t = dLines[dPage]; let i = 0; clearInterval(dTimer); $('dtext').textContent = '';
@@ -5360,7 +5359,6 @@ transformed.y+=0.018*treeBend*sin(treeWindTime*4.3+treePhase+position.z*2.1);`: 
         function say(name, lines, e) { dE = e; dLines = lines; dPage = 0; dlgOpen = true; open = true; document.body.classList.add('dlgon'); $('dname').textContent = name; $('dlg').style.display = 'block'; typeLine() }
         function talk(e) {
             const L = (DIALOGS[e.id] || [e.text]).slice(), gn = e.guideName || 'Pemandu';
-            if (PL.nama && !greeted.has(gn)) { greeted.add(gn); L.unshift('Halo, ' + PL.nama + '! Aku ' + gn + '. Senang bertemu denganmu.') }
             seen.add(e.id); hud(); try { localStorage.setItem('ketapang-seen', JSON.stringify([...seen])) } catch (_) { } say(gn, L, e)
         }
         function dlgNext() { const t = dLines[dPage]; if ($('dtext').textContent.length < t.length) { clearInterval(dTimer); $('dtext').textContent = t; return } if (dPage < dLines.length - 1) { dPage++; typeLine() } else closeDlg() }
